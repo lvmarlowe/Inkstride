@@ -1,3 +1,3 @@
 package com.inkstride.app.data.db.entities
 
-data class DailyStats()
+// data class DailyStats()

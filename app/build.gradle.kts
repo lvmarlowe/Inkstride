@@ -1,12 +1,12 @@
 @file:Suppress("DEPRECATION")
 
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.android)
 }
-
 android {
     namespace = "com.inkstride.app"
     compileSdk = 36
@@ -47,6 +47,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

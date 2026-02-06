@@ -1,3 +1,3 @@
 package com.inkstride.app.data.db.entities
 
-data class Milestone()
+// data class Milestone()
