@@ -1,4 +1,4 @@
-package com.inkstride.app.data
+package com.inkstride.app.data.db.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
