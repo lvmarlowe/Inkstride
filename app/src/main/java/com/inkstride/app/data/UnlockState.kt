@@ -1,4 +1,3 @@
 package com.inkstride.app.data
 
-class UnlockState {
-}
+data class UnlockState()
