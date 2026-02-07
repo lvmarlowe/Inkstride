@@ -33,14 +33,33 @@ class HealthConnectManager(private val context: Context) {
         return granted.containsAll(requiredPermissions())
     }
 
-    suspend fun getTotalSteps(journeyStartDate: LocalDate): Long {
-        val zoneId = ZoneId.systemDefault()
-        val start = journeyStartDate.atStartOfDay(zoneId).toInstant()
+    suspend fun getTotalSteps(journeyStartInstant: Instant): Long {
         val end = Instant.now()
+        val request = AggregateRequest(
+            metrics = setOf(StepsRecord.COUNT_TOTAL),
+            timeRangeFilter = TimeRangeFilter.between(journeyStartInstant, end)
+        )
+        val response = healthConnectClient.aggregate(request)
+        return response[StepsRecord.COUNT_TOTAL] ?: 0L
+    }
+
+    suspend fun getDailySteps(journeyStartInstant: Instant): Long {
+        val now = Instant.now()
+        val zoneId = ZoneId.systemDefault()
+        val today = LocalDate.now(zoneId)
+        val journeyStartDate = journeyStartInstant.atZone(zoneId).toLocalDate()
+
+        val startOfToday = today.atStartOfDay(zoneId).toInstant()
+
+        val start = if (journeyStartDate == today) {
+            journeyStartInstant
+        } else {
+            startOfToday
+        }
 
         val request = AggregateRequest(
             metrics = setOf(StepsRecord.COUNT_TOTAL),
-            timeRangeFilter = TimeRangeFilter.between(start, end)
+            timeRangeFilter = TimeRangeFilter.between(start, now)
         )
         val response = healthConnectClient.aggregate(request)
         return response[StepsRecord.COUNT_TOTAL] ?: 0L
