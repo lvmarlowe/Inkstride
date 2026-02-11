@@ -10,10 +10,7 @@ class ReadStepsWorker(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result = try {
-        val manager = HealthConnectManager(applicationContext)
-        if (manager.hasAllPermissions()) {
-            manager.getStepTotals()
-        }
+        StepsSyncer.syncIfPermitted(applicationContext)
         Result.success()
     } catch (_: Exception) {
         Result.retry()

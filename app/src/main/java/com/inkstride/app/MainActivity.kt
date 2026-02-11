@@ -31,7 +31,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
@@ -47,19 +46,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.lifecycle.repeatOnLifecycle
 import com.inkstride.app.health.HealthConnectManager
-import com.inkstride.app.health.ReadStepsWorker
+import com.inkstride.app.health.StepsSyncScheduler
+import com.inkstride.app.health.StepsSyncer
 import com.inkstride.app.ui.theme.InkstrideTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 private const val BACKGROUND_PERMISSION = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
-private const val STEPS_SYNC_WORK = "steps_sync_work"
+private const val FOREGROUND_SYNC_MINUTES = 5L
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,15 +99,6 @@ fun JourneyScreen() {
         if (!granted) bgLauncher.launch(BACKGROUND_PERMISSION)
     }
 
-    fun enqueueWorker() {
-        val req = PeriodicWorkRequestBuilder<ReadStepsWorker>(15, TimeUnit.MINUTES).build()
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            STEPS_SYNC_WORK,
-            ExistingPeriodicWorkPolicy.KEEP,
-            req
-        )
-    }
-
     fun flash(ok: Boolean, text: String) {
         msgOk = ok
         msgText = text
@@ -122,19 +110,16 @@ fun JourneyScreen() {
     }
 
     suspend fun sync(showFeedback: Boolean) {
-        hasPerm = hc.hasAllPermissions()
-        if (!hasPerm) return
         if (loading) return
-
-        requestBgPermissionIfNeeded()
-        enqueueWorker()
-
         loading = true
         try {
-            val totals = hc.getStepTotals()
-            total = totals.cumulativeSteps
-            today = totals.todaySteps
-            if (showFeedback) flash(true, "Synced")
+            val totals = StepsSyncer.syncIfPermitted(context)
+            hasPerm = totals != null
+            if (totals != null) {
+                total = totals.cumulativeSteps
+                today = totals.todaySteps
+                if (showFeedback) flash(true, "Synced")
+            }
         } catch (_: Exception) {
             if (showFeedback) flash(false, "Sync failed")
         } finally {
@@ -149,6 +134,8 @@ fun JourneyScreen() {
             hasPerm = hc.hasAllPermissions()
             if (hasPerm) {
                 hc.onPermissionsGranted()
+                requestBgPermissionIfNeeded()
+                StepsSyncScheduler.schedule(context)
                 sync(showFeedback = true)
             }
         }
@@ -169,15 +156,24 @@ fun JourneyScreen() {
     )
 
     LaunchedEffect(Unit) {
+        hasPerm = hc.hasAllPermissions()
+        if (hasPerm) {
+            hc.onPermissionsGranted()
+            requestBgPermissionIfNeeded()
+            StepsSyncScheduler.schedule(context)
+        }
         sync(showFeedback = false)
     }
 
-    DisposableEffect(lifecycleOwner) {
-        val obs = LifecycleEventObserver { _, e ->
-            if (e == Lifecycle.Event.ON_RESUME) scope.launch { sync(showFeedback = false) }
+    LaunchedEffect(hasPerm, lifecycleOwner) {
+        if (!hasPerm) return@LaunchedEffect
+        lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            sync(showFeedback = false)
+            while (true) {
+                delay(TimeUnit.MINUTES.toMillis(FOREGROUND_SYNC_MINUTES))
+                sync(showFeedback = false)
+            }
         }
-        lifecycleOwner.lifecycle.addObserver(obs)
-        onDispose { lifecycleOwner.lifecycle.removeObserver(obs) }
     }
 
     Surface(modifier = Modifier.fillMaxSize(), color = Color.Black) {
