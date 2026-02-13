@@ -1,5 +1,6 @@
 package com.inkstride.app
 
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -54,9 +55,13 @@ import com.inkstride.app.ui.theme.InkstrideTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
+import kotlin.math.max
 
 private const val BACKGROUND_PERMISSION = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
 private const val FOREGROUND_SYNC_MINUTES = 5L
+
+private const val PREFS_NAME = "inkstride_prefs"
+private const val PERM_GRANTED_TS_KEY = "perm_granted_ts"
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,6 +85,39 @@ fun JourneyScreen() {
     val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
     val hc = remember { HealthConnectManager(context) }
 
+    val prefs = remember {
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    }
+
+    fun ensurePermissionTimestamp() {
+        val existing = prefs.getLong(PERM_GRANTED_TS_KEY, 0L)
+        if (existing == 0L) {
+            prefs.edit().putLong(PERM_GRANTED_TS_KEY, System.currentTimeMillis()).apply()
+        }
+    }
+
+    fun computeDayNumber(): Int {
+        val ts = prefs.getLong(PERM_GRANTED_TS_KEY, 0L)
+        if (ts == 0L) return 1
+        val days = ((System.currentTimeMillis() - ts) / TimeUnit.DAYS.toMillis(1)) + 1
+        return max(1, days.toInt())
+    }
+
+    var dayNumber by remember { mutableStateOf(1) }
+
+    fun refreshDayNumber() {
+        dayNumber = computeDayNumber()
+    }
+
+    /*
+    // DEBUG helper (temporary): force the permission-grant timestamp back a few days.
+    fun forcePermissionTimestampDaysAgo(daysAgo: Int) {
+        val ts = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(daysAgo.toLong())
+        prefs.edit().putLong(PERM_GRANTED_TS_KEY, ts).apply()
+        dayNumber = computeDayNumber()
+    }
+    */
+
     var hasPerm by remember { mutableStateOf(false) }
     var loading by remember { mutableStateOf(false) }
     var refreshing by remember { mutableStateOf(false) }
@@ -95,7 +133,8 @@ fun JourneyScreen() {
     ) { }
 
     fun requestBgPermissionIfNeeded() {
-        val granted = ContextCompat.checkSelfPermission(context, BACKGROUND_PERMISSION) == PackageManager.PERMISSION_GRANTED
+        val granted = ContextCompat.checkSelfPermission(context, BACKGROUND_PERMISSION) ==
+                PackageManager.PERMISSION_GRANTED
         if (!granted) bgLauncher.launch(BACKGROUND_PERMISSION)
     }
 
@@ -134,6 +173,9 @@ fun JourneyScreen() {
             hasPerm = hc.hasAllPermissions()
             if (hasPerm) {
                 hc.onPermissionsGranted()
+                ensurePermissionTimestamp()
+                refreshDayNumber()
+
                 requestBgPermissionIfNeeded()
                 StepsSyncScheduler.schedule(context)
                 sync(showFeedback = true)
@@ -148,6 +190,7 @@ fun JourneyScreen() {
                 refreshing = true
                 try {
                     sync(showFeedback = true)
+                    refreshDayNumber()
                 } finally {
                     refreshing = false
                 }
@@ -159,6 +202,9 @@ fun JourneyScreen() {
         hasPerm = hc.hasAllPermissions()
         if (hasPerm) {
             hc.onPermissionsGranted()
+            ensurePermissionTimestamp()
+            refreshDayNumber()
+
             requestBgPermissionIfNeeded()
             StepsSyncScheduler.schedule(context)
         }
@@ -172,6 +218,7 @@ fun JourneyScreen() {
             while (true) {
                 delay(TimeUnit.MINUTES.toMillis(FOREGROUND_SYNC_MINUTES))
                 sync(showFeedback = false)
+                refreshDayNumber()
             }
         }
     }
@@ -196,6 +243,29 @@ fun JourneyScreen() {
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
+
+                if (hasPerm) {
+                    Spacer(modifier = Modifier.height(6.dp))
+                    Text(
+                        text = "Day $dayNumber",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.White
+                    )
+
+                    /*
+                    // DEBUG button (temporary): set start date back 4 days.
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Button(
+                        onClick = { forcePermissionTimestampDaysAgo(4) },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.DarkGray,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text("DEBUG: Set Start Date -4 Days")
+                    }
+                    */
+                }
 
                 Spacer(modifier = Modifier.height(28.dp))
 

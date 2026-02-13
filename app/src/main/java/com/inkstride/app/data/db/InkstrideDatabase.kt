@@ -25,7 +25,7 @@ import com.inkstride.app.data.db.entities.UnlockState
         UnlockState::class
     ],
     version = 1,
-    exportSchema = true
+    exportSchema = false
 )
 abstract class InkstrideDatabase : RoomDatabase() {
 
