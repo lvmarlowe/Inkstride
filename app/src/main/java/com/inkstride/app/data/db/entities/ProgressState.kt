@@ -9,6 +9,6 @@ data class ProgressState(
 
     val dayNumber: Int = 1,
     val totalSteps: Long = 0L,
-    val totalMiles: Double = 0.0,
+    val totalDistance: Double = 0.0,
     val lastSyncEpochMilliseconds: Long = 0L
 )

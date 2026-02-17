@@ -6,8 +6,8 @@ import androidx.work.WorkerParameters
 
 class ReadStepsWorker(
     context: Context,
-    params: WorkerParameters
-) : CoroutineWorker(context, params) {
+    parameters: WorkerParameters
+) : CoroutineWorker(context, parameters) {
 
     override suspend fun doWork(): Result = try {
         StepsSyncer.syncIfPermitted(applicationContext)

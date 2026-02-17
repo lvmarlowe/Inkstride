@@ -11,11 +11,11 @@ private const val STEPS_SYNC_WORK = "steps_sync_work"
 object StepsSyncScheduler {
 
     fun schedule(context: Context) {
-        val req = PeriodicWorkRequestBuilder<ReadStepsWorker>(15, TimeUnit.MINUTES).build()
+        val r = PeriodicWorkRequestBuilder<ReadStepsWorker>(15, TimeUnit.MINUTES).build()
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             STEPS_SYNC_WORK,
             ExistingPeriodicWorkPolicy.UPDATE,
-            req
+            r
         )
     }
 }

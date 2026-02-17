@@ -21,7 +21,7 @@ data class StepTotals(
 class HealthConnectManager(context: Context) {
 
     private val client = HealthConnectClient.getOrCreate(context)
-    private val prefs = context.getSharedPreferences("inkstride_prefs", Context.MODE_PRIVATE)
+    private val preferences = context.getSharedPreferences("inkstride_prefs", Context.MODE_PRIVATE)
 
     fun requestPermissionsActivityContract(): ActivityResultContract<Set<String>, Set<String>> =
         PermissionController.createRequestPermissionResultContract()
@@ -57,11 +57,11 @@ class HealthConnectManager(context: Context) {
     }
 
     private fun ensureJourneyStartInstant(): Instant {
-        val existing = prefs.getString("journey_start_instant", null)
+        val existing = preferences.getString("journey_start_instant", null)
         if (!existing.isNullOrBlank()) return Instant.parse(existing)
 
         val now = Instant.now()
-        prefs.edit { putString("journey_start_instant", now.toString()) }
+        preferences.edit { putString("journey_start_instant", now.toString()) }
         return now
     }
 

@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "daily_stats")
 data class DailyStats(
-    @PrimaryKey val dateKey: String,   // e.g., "2026-02-11"
+    @PrimaryKey val dateKey: String,
     val stepsToday: Long = 0L,
-    val milesToday: Double = 0.0
+    val distanceToday: Double = 0.0
 )

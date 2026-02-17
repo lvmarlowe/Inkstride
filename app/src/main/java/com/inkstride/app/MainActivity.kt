@@ -34,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,12 +57,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import kotlin.math.max
+import androidx.core.content.edit
 
 private const val BACKGROUND_PERMISSION = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
 private const val FOREGROUND_SYNC_MINUTES = 5L
 
-private const val PREFS_NAME = "inkstride_prefs"
-private const val PERM_GRANTED_TS_KEY = "perm_granted_ts"
+private const val PREFS_NAME = "inkstride_preferences"
+private const val PERMISSION_GRANTED_TIMESTAMP_KEY = "permission_granted_ts"
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,27 +85,32 @@ fun JourneyScreen() {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
-    val hc = remember { HealthConnectManager(context) }
+    val healthConnectManager = remember { HealthConnectManager(context) }
 
-    val prefs = remember {
+    val sharedPreferences = remember {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
 
     fun ensurePermissionTimestamp() {
-        val existing = prefs.getLong(PERM_GRANTED_TS_KEY, 0L)
+        val existing = sharedPreferences.getLong(PERMISSION_GRANTED_TIMESTAMP_KEY, 0L)
         if (existing == 0L) {
-            prefs.edit().putLong(PERM_GRANTED_TS_KEY, System.currentTimeMillis()).apply()
+            sharedPreferences.edit {
+                putLong(
+                    PERMISSION_GRANTED_TIMESTAMP_KEY,
+                    System.currentTimeMillis()
+                )
+            }
         }
     }
 
     fun computeDayNumber(): Int {
-        val ts = prefs.getLong(PERM_GRANTED_TS_KEY, 0L)
-        if (ts == 0L) return 1
-        val days = ((System.currentTimeMillis() - ts) / TimeUnit.DAYS.toMillis(1)) + 1
+        val timestamp = sharedPreferences.getLong(PERMISSION_GRANTED_TIMESTAMP_KEY, 0L)
+        if (timestamp == 0L) return 1
+        val days = ((System.currentTimeMillis() - timestamp) / TimeUnit.DAYS.toMillis(1)) + 1
         return max(1, days.toInt())
     }
 
-    var dayNumber by remember { mutableStateOf(1) }
+    var dayNumber by remember { mutableIntStateOf(1) }
 
     fun refreshDayNumber() {
         dayNumber = computeDayNumber()
@@ -112,13 +119,13 @@ fun JourneyScreen() {
     /*
     // DEBUG helper (temporary): force the permission-grant timestamp back a few days.
     fun forcePermissionTimestampDaysAgo(daysAgo: Int) {
-        val ts = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(daysAgo.toLong())
-        prefs.edit().putLong(PERM_GRANTED_TS_KEY, ts).apply()
+        val timestamp = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(daysAgo.toLong())
+        sharedPreferences.edit().putLong(PERM_GRANTED_TIMESTAMP_KEY, timestamp).apply()
         dayNumber = computeDayNumber()
     }
     */
 
-    var hasPerm by remember { mutableStateOf(false) }
+    var hasPermission by remember { mutableStateOf(false) }
     var loading by remember { mutableStateOf(false) }
     var refreshing by remember { mutableStateOf(false) }
     var total by remember { mutableLongStateOf(0L) }
@@ -153,7 +160,7 @@ fun JourneyScreen() {
         loading = true
         try {
             val totals = StepsSyncer.syncIfPermitted(context)
-            hasPerm = totals != null
+            hasPermission = totals != null
             if (totals != null) {
                 total = totals.cumulativeSteps
                 today = totals.todaySteps
@@ -167,12 +174,12 @@ fun JourneyScreen() {
     }
 
     val permLauncher = rememberLauncherForActivityResult(
-        hc.requestPermissionsActivityContract()
+        healthConnectManager.requestPermissionsActivityContract()
     ) {
         scope.launch {
-            hasPerm = hc.hasAllPermissions()
-            if (hasPerm) {
-                hc.onPermissionsGranted()
+            hasPermission = healthConnectManager.hasAllPermissions()
+            if (hasPermission) {
+                healthConnectManager.onPermissionsGranted()
                 ensurePermissionTimestamp()
                 refreshDayNumber()
 
@@ -199,9 +206,9 @@ fun JourneyScreen() {
     )
 
     LaunchedEffect(Unit) {
-        hasPerm = hc.hasAllPermissions()
-        if (hasPerm) {
-            hc.onPermissionsGranted()
+        hasPermission = healthConnectManager.hasAllPermissions()
+        if (hasPermission) {
+            healthConnectManager.onPermissionsGranted()
             ensurePermissionTimestamp()
             refreshDayNumber()
 
@@ -211,8 +218,8 @@ fun JourneyScreen() {
         sync(showFeedback = false)
     }
 
-    LaunchedEffect(hasPerm, lifecycleOwner) {
-        if (!hasPerm) return@LaunchedEffect
+    LaunchedEffect(hasPermission, lifecycleOwner) {
+        if (!hasPermission) return@LaunchedEffect
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             sync(showFeedback = false)
             while (true) {
@@ -244,7 +251,7 @@ fun JourneyScreen() {
                     color = Color.White
                 )
 
-                if (hasPerm) {
+                if (hasPermission) {
                     Spacer(modifier = Modifier.height(6.dp))
                     Text(
                         text = "Day $dayNumber",
@@ -269,11 +276,11 @@ fun JourneyScreen() {
 
                 Spacer(modifier = Modifier.height(28.dp))
 
-                if (!hasPerm) {
+                if (!hasPermission) {
                     Text(text = "Health Connect permissions required", color = Color.White)
                     Spacer(modifier = Modifier.height(16.dp))
                     Button(
-                        onClick = { permLauncher.launch(hc.requiredPermissions()) },
+                        onClick = { permLauncher.launch(healthConnectManager.requiredPermissions()) },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.White,
                             contentColor = Color.Black
@@ -289,7 +296,11 @@ fun JourneyScreen() {
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
-                        Text("total steps", style = MaterialTheme.typography.bodyLarge, color = Color.White)
+                        Text(
+                            "total steps",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.White
+                        )
 
                         Spacer(modifier = Modifier.height(22.dp))
 
@@ -299,7 +310,11 @@ fun JourneyScreen() {
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
-                        Text("steps today", style = MaterialTheme.typography.bodyLarge, color = Color.White)
+                        Text(
+                            "steps today",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.White
+                        )
 
                         Spacer(modifier = Modifier.height(26.dp))
 

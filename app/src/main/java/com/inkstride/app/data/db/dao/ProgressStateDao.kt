@@ -11,6 +11,6 @@ interface ProgressStateDao {
     @Query("SELECT * FROM progress_state WHERE id = 1 LIMIT 1")
     suspend fun get(): ProgressState?
 
-    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(state: ProgressState)
 }

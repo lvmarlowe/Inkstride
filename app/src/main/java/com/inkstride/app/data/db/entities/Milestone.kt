@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "milestone")
 data class Milestone(
     @PrimaryKey val id: Int,
-    val mileMarker: Double,
+    val distanceMarker: Double,
     val isMajor: Boolean = false
 )

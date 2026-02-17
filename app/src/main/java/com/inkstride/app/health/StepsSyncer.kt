@@ -5,9 +5,9 @@ import android.content.Context
 object StepsSyncer {
 
     suspend fun syncIfPermitted(context: Context): StepTotals? {
-        val hc = HealthConnectManager(context)
-        if (!hc.hasAllPermissions()) return null
-        hc.onPermissionsGranted()
-        return hc.getStepTotals()
+        val healthConnectManager = HealthConnectManager(context)
+        if (!healthConnectManager.hasAllPermissions()) return null
+        healthConnectManager.onPermissionsGranted()
+        return healthConnectManager.getStepTotals()
     }
 }
