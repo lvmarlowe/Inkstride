@@ -13,4 +13,7 @@ interface SettingsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(settings: Settings)
+
+    @Query("SELECT COUNT(*) FROM settings")
+    suspend fun countRows(): Int
 }

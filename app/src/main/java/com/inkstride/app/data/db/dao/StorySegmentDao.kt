@@ -8,7 +8,7 @@ import com.inkstride.app.data.db.entities.StorySegment
 
 @Dao
 interface StorySegmentDao {
-    @Query("SELECT * FROM story_segment WHERE id = :id lIMIT 1")
+    @Query("SELECT * FROM story_segment WHERE id = :id LIMIT 1")
     suspend fun getById(id: Int): StorySegment?
 
     @Query("SELECT * FROM story_segment WHERE milestoneId = :milestoneId ORDER BY id ASC")
@@ -22,4 +22,7 @@ interface StorySegmentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(storySegments: List<StorySegment>)
+
+    @Query("SELECT COUNT(*) FROM story_segment")
+    suspend fun countRows(): Int
 }

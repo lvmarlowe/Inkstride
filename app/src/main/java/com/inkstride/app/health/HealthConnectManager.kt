@@ -12,6 +12,7 @@ import androidx.health.connect.client.time.TimeRangeFilter
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 
 data class StepTotals(
     val cumulativeSteps: Long,
@@ -44,7 +45,14 @@ class HealthConnectManager(context: Context) {
         val cumulative = readSteps(journeyStart, now)
         val today = readSteps(todayStart, now)
 
-        return StepTotals(cumulativeSteps = cumulative, todaySteps = today)
+        return StepTotals(
+            cumulativeSteps = cumulative,
+            todaySteps = today
+        )
+    }
+
+    fun getJourneyStartInstant(): Instant {
+        return ensureJourneyStartInstant()
     }
 
     private suspend fun readSteps(start: Instant, end: Instant): Long {
@@ -69,6 +77,20 @@ class HealthConnectManager(context: Context) {
         val zone = ZoneId.systemDefault()
         val today = LocalDate.now(zone)
         val journeyDay = journeyStart.atZone(zone).toLocalDate()
-        return if (today == journeyDay) journeyStart else today.atStartOfDay(zone).toInstant()
+        return if (today == journeyDay) {
+            journeyStart
+        } else {
+            today.atStartOfDay(zone).toInstant()
+        }
+    }
+
+    companion object {
+        fun computeDayNumberFromJourneyStart(journeyStart: Instant): Int {
+            val zone = ZoneId.systemDefault()
+            val startDate = journeyStart.atZone(zone).toLocalDate()
+            val today = LocalDate.now(zone)
+            val daysBetween = ChronoUnit.DAYS.between(startDate, today)
+            return (daysBetween + 1).toInt().coerceAtLeast(1)
+        }
     }
 }

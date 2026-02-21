@@ -25,4 +25,10 @@ interface UnlockStateDao {
 
     @Query("DELETE FROM unlock_state")
     suspend fun deleteAll()
+
+    @Query("SELECT COUNT(*) FROM unlock_state")
+    suspend fun countRows(): Int
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertAll(states: List<UnlockState>)
 }

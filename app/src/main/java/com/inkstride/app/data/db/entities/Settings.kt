@@ -5,5 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "settings")
 data class Settings(
-    @PrimaryKey val id: Int = 1
+    @PrimaryKey val id: Int = 1,
+
+    val distanceUnit: String = "mile"
 )

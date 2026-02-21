@@ -25,4 +25,7 @@ interface MilestoneDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(milestones: List<Milestone>)
+
+    @Query("SELECT COUNT(*) FROM milestone")
+    suspend fun countRows(): Int
 }
