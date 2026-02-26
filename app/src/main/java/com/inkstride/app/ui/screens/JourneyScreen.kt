@@ -42,8 +42,10 @@ import com.inkstride.app.health.StepsSyncScheduler
 import com.inkstride.app.health.StepsSyncer
 import com.inkstride.app.services.AppErrorHandler
 import com.inkstride.app.services.MilestoneEngine
+import com.inkstride.app.services.ProgressCalculator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 private const val BACKGROUND_PERMISSION = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
@@ -76,13 +78,16 @@ fun JourneyScreen(
 
     val storyRepository = remember { StoryRepository(context) }
     val milestoneEngine = remember { MilestoneEngine(context) }
+    val progressCalculator = remember { ProgressCalculator() }
 
     var dayNumber by remember { mutableIntStateOf(1) }
     var hasPermission by remember { mutableStateOf(false) }
     var loading by remember { mutableStateOf(false) }
     var refreshing by remember { mutableStateOf(false) }
-    var total by remember { mutableLongStateOf(0L) }
-    var today by remember { mutableLongStateOf(0L) }
+    var totalDistance by remember { mutableDoubleStateOf(0.0) }
+    var todayDistance by remember { mutableDoubleStateOf(0.0) }
+    var nextMilestoneDistance by remember { mutableDoubleStateOf(0.0) }
+    var distanceUnit by remember { mutableStateOf("miles") }
 
     var showMsg by remember { mutableStateOf(false) }
     var msgOk by remember { mutableStateOf(true) }
@@ -107,16 +112,26 @@ fun JourneyScreen(
             hasPermission = totals != null
             if (totals == null) return@runSuspend
 
-            total = totals.cumulativeSteps
-            today = totals.todaySteps
+            todayDistance = progressCalculator.roundDistance(progressCalculator.stepsToDistance(totals.todaySteps))
 
             val journeyStart = healthConnectManager.getJourneyStartInstant()
             dayNumber = HealthConnectManager.computeDayNumberFromJourneyStart(journeyStart)
 
-            val totalDistance = progressRepository.persistSnapshotFromHealthConnect(
+            totalDistance = progressRepository.persistSnapshotFromHealthConnect(
                 stepTotals = totals,
                 dayNumber = dayNumber
             )
+
+            val nextMilestone = database.milestoneDao().getNextUnreached(totalDistance)
+            nextMilestoneDistance = progressCalculator.roundDistance(
+                progressCalculator.getRemainingDistance(
+                    currentDistance = totalDistance,
+                    nextMilestoneDistance = nextMilestone?.distanceMarker ?: totalDistance
+                )
+            )
+
+            val rawDistanceUnit = database.settingsDao().get()?.distanceUnit ?: "miles"
+            distanceUnit = if (rawDistanceUnit.equals("mile", ignoreCase = true)) "miles" else rawDistanceUnit
 
             milestoneEngine.checkAndUnlockForDistance(totalDistance)
 
@@ -194,7 +209,7 @@ fun JourneyScreen(
                 )
 
                 if (!forcePermissionsPrompt && hasPermission) {
-                    Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(modifier = Modifier.height(14.dp))
                     Text(
                         text = "Day $dayNumber",
                         style = MaterialTheme.typography.bodyLarge,
@@ -219,40 +234,60 @@ fun JourneyScreen(
                         CircularProgressIndicator(color = Color.White)
                     } else {
                         Text(
-                            text = "$total",
+                            "Today's distance",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.White
+                        )
+                        Text(
+                            text = formatDistance(todayDistance),
                             style = MaterialTheme.typography.displayLarge,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
                         Text(
-                            "total steps",
-                            style = MaterialTheme.typography.bodyLarge,
+                            distanceUnit,
+                            style = MaterialTheme.typography.bodySmall,
                             color = Color.White
                         )
 
                         Spacer(modifier = Modifier.height(22.dp))
 
                         Text(
-                            text = "$today",
-                            style = MaterialTheme.typography.headlineLarge,
+                            "Total distance",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.White
+                        )
+                        Text(
+                            text = formatDistance(totalDistance),
+                            style = MaterialTheme.typography.displayLarge,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
                         Text(
-                            "steps today",
-                            style = MaterialTheme.typography.bodyLarge,
+                            distanceUnit,
+                            style = MaterialTheme.typography.bodySmall,
                             color = Color.White
                         )
 
-                        Spacer(modifier = Modifier.height(26.dp))
+                        Spacer(modifier = Modifier.height(22.dp))
 
-                        Button(
-                            onClick = { scope.launch { sync(showFeedback = true) } },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color.White,
-                                contentColor = Color.Black
-                            )
-                        ) { Text("Refresh") }
+                        Text(
+                            "Next milestone in",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.White
+                        )
+                        Text(
+                            text = formatDistance(nextMilestoneDistance),
+                            style = MaterialTheme.typography.displayLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White
+                        )
+                        Text(
+                            distanceUnit,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.White
+                        )
+
                     }
                 }
 
@@ -289,4 +324,8 @@ fun JourneyScreen(
             )
         }
     }
+}
+
+private fun formatDistance(distance: Double): String {
+    return String.format(Locale.US, "%.2f", distance)
 }
