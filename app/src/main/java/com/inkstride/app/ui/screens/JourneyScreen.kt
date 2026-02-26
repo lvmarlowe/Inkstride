@@ -1,7 +1,5 @@
 package com.inkstride.app.ui.screens
 
-import android.content.Context
-import android.content.pm.PackageManager
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -18,9 +16,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -31,12 +26,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.inkstride.app.data.db.DatabaseProvider
 import com.inkstride.app.data.repository.ProgressRepository
 import com.inkstride.app.data.repository.StoryRepository
+import com.inkstride.app.ui.components.NeutralLoadingScreen
 import com.inkstride.app.health.HealthConnectManager
 import com.inkstride.app.health.StepsSyncScheduler
 import com.inkstride.app.health.StepsSyncer
@@ -48,15 +43,13 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-private const val BACKGROUND_PERMISSION = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
 private const val FOREGROUND_SYNC_MINUTES = 5L
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun JourneyScreen(
     modifier: Modifier = Modifier,
-    forcePermissionsPrompt: Boolean,
-    onRequestPermissions: () -> Unit,
+    onPermissionsRevoked: () -> Unit,
     onPotentialIntroUnlocked: () -> Unit
 ) {
     val context = LocalContext.current
@@ -110,7 +103,10 @@ fun JourneyScreen(
         val outcome = errorHandler.runSuspend(shouldRetry = false) {
             val totals = StepsSyncer.syncIfPermitted(context)
             hasPermission = totals != null
-            if (totals == null) return@runSuspend
+            if (totals == null) {
+                onPermissionsRevoked()
+                return@runSuspend
+            }
 
             todayDistance = progressCalculator.roundDistance(progressCalculator.stepsToDistance(totals.todaySteps))
 
@@ -187,6 +183,11 @@ fun JourneyScreen(
         }
     }
 
+    if (loading || refreshing) {
+        NeutralLoadingScreen(modifier = modifier)
+        return
+    }
+
     Surface(modifier = modifier.fillMaxSize(), color = Color.Black) {
         Box(
             modifier = Modifier
@@ -208,7 +209,7 @@ fun JourneyScreen(
                     color = Color.White
                 )
 
-                if (!forcePermissionsPrompt && hasPermission) {
+                if (hasPermission) {
                     Spacer(modifier = Modifier.height(14.dp))
                     Text(
                         text = "Day $dayNumber",
@@ -219,77 +220,60 @@ fun JourneyScreen(
 
                 Spacer(modifier = Modifier.height(28.dp))
 
-                if (forcePermissionsPrompt || !hasPermission) {
-                    Text(text = "Health Connect permissions required", color = Color.White)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Button(
-                        onClick = onRequestPermissions,
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color.White,
-                            contentColor = Color.Black
-                        )
-                    ) { Text("Grant permissions") }
-                } else {
-                    if (loading) {
-                        CircularProgressIndicator(color = Color.White)
-                    } else {
-                        Text(
-                            "Today's distance",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.White
-                        )
-                        Text(
-                            text = formatDistance(todayDistance),
-                            style = MaterialTheme.typography.displayLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                        Text(
-                            distanceUnit,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.White
-                        )
+                Text(
+                    "Today's distance",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.White
+                )
+                Text(
+                    text = formatDistance(todayDistance),
+                    style = MaterialTheme.typography.displayLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Text(
+                    distanceUnit,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.White
+                )
 
-                        Spacer(modifier = Modifier.height(22.dp))
+                Spacer(modifier = Modifier.height(22.dp))
 
-                        Text(
-                            "Total distance",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.White
-                        )
-                        Text(
-                            text = formatDistance(totalDistance),
-                            style = MaterialTheme.typography.displayLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                        Text(
-                            distanceUnit,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.White
-                        )
+                Text(
+                    "Total distance",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.White
+                )
+                Text(
+                    text = formatDistance(totalDistance),
+                    style = MaterialTheme.typography.displayLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Text(
+                    distanceUnit,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.White
+                )
 
-                        Spacer(modifier = Modifier.height(22.dp))
+                Spacer(modifier = Modifier.height(22.dp))
 
-                        Text(
-                            "Next milestone in",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.White
-                        )
-                        Text(
-                            text = formatDistance(nextMilestoneDistance),
-                            style = MaterialTheme.typography.displayLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                        Text(
-                            distanceUnit,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.White
-                        )
-
-                    }
-                }
+                Text(
+                    "Next milestone in",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.White
+                )
+                Text(
+                    text = formatDistance(nextMilestoneDistance),
+                    style = MaterialTheme.typography.displayLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                Text(
+                    distanceUnit,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.White
+                )
 
                 Spacer(modifier = Modifier.height(240.dp))
             }

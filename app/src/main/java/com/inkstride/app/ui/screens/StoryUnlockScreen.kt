@@ -63,7 +63,7 @@ fun StoryUnlockScreen(
                         containerColor = Color.White,
                         contentColor = Color.Black
                     )
-                ) { Text("Begin") }
+                ) { Text("You start walking...") }
             }
         }
     }
