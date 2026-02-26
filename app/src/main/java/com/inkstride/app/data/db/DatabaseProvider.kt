@@ -34,9 +34,11 @@ object DatabaseProvider {
     private suspend fun ensureDefaultSettings(context: Context) {
         val database = getDatabase(context)
         val settingsDao = database.settingsDao()
+        val currentSettings = settingsDao.get()
+        val normalizedSettings = (currentSettings ?: Settings()).normalized()
 
-        if (settingsDao.countRows() == 0) {
-            settingsDao.upsert(Settings())
+        if (currentSettings != normalizedSettings) {
+            settingsDao.upsert(normalizedSettings)
         }
     }
 
@@ -58,6 +60,9 @@ object DatabaseProvider {
             Milestone(id = 8, distanceMarker = 0.0, isMajor = true)
         )
 
+        val characterName = database.settingsDao().get()?.normalized()?.characterName
+            ?: Settings.DEFAULT_CHARACTER_NAME
+
         val segments = listOf(
             StorySegment(id = 1, milestoneId = 1, text = "[main story segment 1]"),
             StorySegment(id = 2, milestoneId = 2, text = "[main story segment 2]"),
@@ -66,7 +71,7 @@ object DatabaseProvider {
             StorySegment(id = 5, milestoneId = 5, text = "[main story segment 5]"),
             StorySegment(id = 6, milestoneId = 6, text = "[main story segment 6]"),
             StorySegment(id = 7, milestoneId = 7, text = "[act 1 complete]"),
-            StorySegment(id = 8, milestoneId = 8, text = "[act 1 intro]")
+            StorySegment(id = 8, milestoneId = 8, text = "Hello, $characterName!")
         )
 
         if (milestoneDao.countRows() == 0) milestoneDao.insertAll(milestones)

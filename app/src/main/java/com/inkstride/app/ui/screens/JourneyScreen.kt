@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import com.inkstride.app.data.db.DatabaseProvider
+import com.inkstride.app.data.db.entities.DistanceUnit
 import com.inkstride.app.data.repository.ProgressRepository
 import com.inkstride.app.data.repository.StoryRepository
 import com.inkstride.app.ui.components.NeutralLoadingScreen
@@ -36,6 +37,7 @@ import com.inkstride.app.health.HealthConnectManager
 import com.inkstride.app.health.StepsSyncScheduler
 import com.inkstride.app.health.StepsSyncer
 import com.inkstride.app.services.AppErrorHandler
+import com.inkstride.app.services.DistanceUnitLabelFormatter
 import com.inkstride.app.services.MilestoneEngine
 import com.inkstride.app.services.ProgressCalculator
 import kotlinx.coroutines.delay
@@ -72,6 +74,7 @@ fun JourneyScreen(
     val storyRepository = remember { StoryRepository(context) }
     val milestoneEngine = remember { MilestoneEngine(context) }
     val progressCalculator = remember { ProgressCalculator() }
+    val distanceUnitLabelFormatter = remember { DistanceUnitLabelFormatter() }
 
     var dayNumber by remember { mutableIntStateOf(1) }
     var hasPermission by remember { mutableStateOf(false) }
@@ -80,7 +83,7 @@ fun JourneyScreen(
     var totalDistance by remember { mutableDoubleStateOf(0.0) }
     var todayDistance by remember { mutableDoubleStateOf(0.0) }
     var nextMilestoneDistance by remember { mutableDoubleStateOf(0.0) }
-    var distanceUnit by remember { mutableStateOf("miles") }
+    var distanceUnit by remember { mutableStateOf(DistanceUnit.MILE) }
 
     var showMsg by remember { mutableStateOf(false) }
     var msgOk by remember { mutableStateOf(true) }
@@ -126,8 +129,8 @@ fun JourneyScreen(
                 )
             )
 
-            val rawDistanceUnit = database.settingsDao().get()?.distanceUnit ?: "miles"
-            distanceUnit = if (rawDistanceUnit.equals("mile", ignoreCase = true)) "miles" else rawDistanceUnit
+            val rawDistanceUnit = database.settingsDao().get()?.distanceUnit
+            distanceUnit = DistanceUnit.fromStorageValue(rawDistanceUnit)
 
             milestoneEngine.checkAndUnlockForDistance(totalDistance)
 
@@ -232,7 +235,7 @@ fun JourneyScreen(
                     color = Color.White
                 )
                 Text(
-                    distanceUnit,
+                    distanceUnitLabelFormatter.unitLabel(todayDistance, distanceUnit),
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White
                 )
@@ -251,7 +254,7 @@ fun JourneyScreen(
                     color = Color.White
                 )
                 Text(
-                    distanceUnit,
+                    distanceUnitLabelFormatter.unitLabel(totalDistance, distanceUnit),
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White
                 )
@@ -270,7 +273,7 @@ fun JourneyScreen(
                     color = Color.White
                 )
                 Text(
-                    distanceUnit,
+                    distanceUnitLabelFormatter.unitLabel(nextMilestoneDistance, distanceUnit),
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White
                 )
