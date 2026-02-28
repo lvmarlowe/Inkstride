@@ -19,7 +19,16 @@ import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,19 +36,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.inkstride.app.data.db.DatabaseProvider
 import com.inkstride.app.data.db.entities.DistanceUnit
-import com.inkstride.app.data.repository.ProgressRepository
-import com.inkstride.app.data.repository.StoryRepository
-import com.inkstride.app.ui.components.NeutralLoadingScreen
 import com.inkstride.app.health.HealthConnectManager
+import com.inkstride.app.health.StepSyncCoordinator
+import com.inkstride.app.health.StepSyncResult
+import com.inkstride.app.health.StepSyncTrigger
 import com.inkstride.app.health.StepsSyncScheduler
-import com.inkstride.app.health.StepsSyncer
-import com.inkstride.app.services.AppErrorHandler
 import com.inkstride.app.services.DistanceUnitLabelFormatter
-import com.inkstride.app.services.MilestoneEngine
-import com.inkstride.app.services.ProgressCalculator
+import com.inkstride.app.ui.components.NeutralLoadingScreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -56,24 +64,9 @@ fun JourneyScreen(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    val errorHandler = remember { AppErrorHandler() }
     val healthConnectManager = remember { HealthConnectManager(context) }
-
-    val database = remember { DatabaseProvider.getDatabase(context) }
-
-    val progressRepository = remember {
-        ProgressRepository(
-            context = context,
-            progressStateDao = database.progressStateDao(),
-            dailyStatsDao = database.dailyStatsDao()
-        )
-    }
-
-    val storyRepository = remember { StoryRepository(context) }
-    val milestoneEngine = remember { MilestoneEngine(context) }
-    val progressCalculator = remember { ProgressCalculator() }
     val distanceUnitLabelFormatter = remember { DistanceUnitLabelFormatter() }
 
     var dayNumber by remember { mutableIntStateOf(1) }
@@ -99,54 +92,52 @@ fun JourneyScreen(
         }
     }
 
-    suspend fun sync(showFeedback: Boolean) {
-        if (loading) return
-        loading = true
+    suspend fun sync(showFeedback: Boolean, trigger: StepSyncTrigger) {
+        val result = StepSyncCoordinator.syncNow(context, trigger)
+        when (result) {
+            is StepSyncResult.Success -> {
+                hasPermission = true
+                dayNumber = result.snapshot.dayNumber
+                todayDistance = result.snapshot.todayDistance
+                totalDistance = result.snapshot.totalDistance
+                nextMilestoneDistance = result.snapshot.nextMilestoneDistance
+                distanceUnit = result.snapshot.distanceUnit
 
-        val outcome = errorHandler.runSuspend(shouldRetry = false) {
-            val totals = StepsSyncer.syncIfPermitted(context)
-            hasPermission = totals != null
-            if (totals == null) {
+                if (result.snapshot.introUnlocked) {
+                    onPotentialIntroUnlocked()
+                }
+
+                if (showFeedback) {
+                    flash(true, "Synced")
+                }
+            }
+
+            StepSyncResult.NoPermission -> {
+                hasPermission = false
                 onPermissionsRevoked()
-                return@runSuspend
+                if (showFeedback) {
+                    flash(false, "Permission required")
+                }
             }
 
-            todayDistance = progressCalculator.roundDistance(progressCalculator.stepsToDistance(totals.todaySteps))
-
-            val journeyStart = healthConnectManager.getJourneyStartInstant()
-            dayNumber = HealthConnectManager.computeDayNumberFromJourneyStart(journeyStart)
-
-            totalDistance = progressRepository.persistSnapshotFromHealthConnect(
-                stepTotals = totals,
-                dayNumber = dayNumber
-            )
-
-            val nextMilestone = database.milestoneDao().getNextUnreached(totalDistance)
-            nextMilestoneDistance = progressCalculator.roundDistance(
-                progressCalculator.getRemainingDistance(
-                    currentDistance = totalDistance,
-                    nextMilestoneDistance = nextMilestone?.distanceMarker ?: totalDistance
-                )
-            )
-
-            val rawDistanceUnit = database.settingsDao().get()?.distanceUnit
-            distanceUnit = DistanceUnit.fromStorageValue(rawDistanceUnit)
-
-            milestoneEngine.checkAndUnlockForDistance(totalDistance)
-
-            val intro = storyRepository.getIntroSegmentIfUnreadUnlocked()
-            if (intro != null) {
-                onPotentialIntroUnlocked()
+            StepSyncResult.SkippedAlreadyRunning -> {
+                if (showFeedback) {
+                    flash(true, "Sync already running")
+                }
             }
 
-            if (showFeedback) flash(true, "Synced")
-        }
+            StepSyncResult.QueuedForRerun -> {
+                if (showFeedback) {
+                    flash(true, "Refresh queued")
+                }
+            }
 
-        if (outcome is AppErrorHandler.Outcome.Failure) {
-            if (showFeedback) flash(false, "Sync failed")
+            is StepSyncResult.Failure -> {
+                if (showFeedback) {
+                    flash(false, "Sync failed")
+                }
+            }
         }
-
-        loading = false
     }
 
     val pullState = rememberPullRefreshState(
@@ -155,7 +146,7 @@ fun JourneyScreen(
             scope.launch {
                 refreshing = true
                 try {
-                    sync(showFeedback = true)
+                    sync(showFeedback = true, trigger = StepSyncTrigger.MANUAL)
                 } finally {
                     refreshing = false
                 }
@@ -172,17 +163,40 @@ fun JourneyScreen(
             StepsSyncScheduler.schedule(context)
         }
 
-        sync(showFeedback = false)
+        loading = true
+        try {
+            sync(showFeedback = false, trigger = StepSyncTrigger.AUTOMATIC)
+        } finally {
+            loading = false
+        }
     }
 
     LaunchedEffect(hasPermission, lifecycleOwner) {
         if (!hasPermission) return@LaunchedEffect
+
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            sync(showFeedback = false)
+            sync(showFeedback = false, trigger = StepSyncTrigger.AUTOMATIC)
             while (true) {
                 delay(TimeUnit.MINUTES.toMillis(FOREGROUND_SYNC_MINUTES))
-                sync(showFeedback = false)
+                sync(showFeedback = false, trigger = StepSyncTrigger.AUTOMATIC)
             }
+        }
+    }
+
+    DisposableEffect(hasPermission, lifecycleOwner) {
+        if (!hasPermission) return@DisposableEffect onDispose { }
+
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                scope.launch {
+                    sync(showFeedback = false, trigger = StepSyncTrigger.AUTOMATIC)
+                }
+            }
+        }
+
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
 

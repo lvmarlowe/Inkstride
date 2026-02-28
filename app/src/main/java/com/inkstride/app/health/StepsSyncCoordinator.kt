@@ -1,0 +1,143 @@
+package com.inkstride.app.health
+
+import android.content.Context
+import com.inkstride.app.data.db.DatabaseProvider
+import com.inkstride.app.data.db.entities.DistanceUnit
+import com.inkstride.app.data.repository.ProgressRepository
+import com.inkstride.app.data.repository.StoryRepository
+import com.inkstride.app.services.AppErrorHandler
+import com.inkstride.app.services.MilestoneEngine
+import com.inkstride.app.services.ProgressCalculator
+
+object StepSyncCoordinator {
+
+    private val stateLock = Any()
+    private var isSyncRunning = false
+    private var pendingManualRerun = false
+
+    private val errorHandler = AppErrorHandler()
+
+    suspend fun syncNow(
+        context: Context,
+        trigger: StepSyncTrigger = StepSyncTrigger.AUTOMATIC
+    ): StepSyncResult {
+        synchronized(stateLock) {
+            if (isSyncRunning) {
+                return when (trigger) {
+                    StepSyncTrigger.MANUAL -> {
+                        pendingManualRerun = true
+                        StepSyncResult.QueuedForRerun
+                    }
+
+                    StepSyncTrigger.AUTOMATIC,
+                    StepSyncTrigger.BACKGROUND -> StepSyncResult.SkippedAlreadyRunning
+                }
+            }
+
+            isSyncRunning = true
+        }
+
+        var latestResult: StepSyncResult
+        while (true) {
+            latestResult = runSingleSync(context)
+
+            val shouldRunAgain = synchronized(stateLock) {
+                if (pendingManualRerun) {
+                    pendingManualRerun = false
+                    true
+                } else {
+                    isSyncRunning = false
+                    false
+                }
+            }
+
+            if (!shouldRunAgain) {
+                return latestResult
+            }
+        }
+    }
+
+    private suspend fun runSingleSync(context: Context): StepSyncResult {
+        val outcome = errorHandler.runSuspend(shouldRetry = true) {
+            val totals = StepsSyncer.syncIfPermitted(context)
+            if (totals == null) {
+                StepSyncResult.NoPermission
+            } else {
+                val healthConnectManager = HealthConnectManager(context)
+                val journeyStart = healthConnectManager.getJourneyStartInstant()
+                val dayNumber = HealthConnectManager.computeDayNumberFromJourneyStart(journeyStart)
+
+                val database = DatabaseProvider.getDatabase(context)
+                val progressRepository = ProgressRepository(
+                    context = context,
+                    progressStateDao = database.progressStateDao(),
+                    dailyStatsDao = database.dailyStatsDao()
+                )
+                val progressCalculator = ProgressCalculator()
+
+                val totalDistance = progressRepository.persistSnapshotFromHealthConnect(
+                    stepTotals = totals,
+                    dayNumber = dayNumber
+                )
+
+                val milestoneEngine = MilestoneEngine(context)
+                milestoneEngine.checkAndUnlockForDistance(totalDistance)
+
+                val nextMilestone = database.milestoneDao().getNextUnreached(totalDistance)
+                val nextMilestoneDistance = progressCalculator.roundDistance(
+                    progressCalculator.getRemainingDistance(
+                        currentDistance = totalDistance,
+                        nextMilestoneDistance = nextMilestone?.distanceMarker ?: totalDistance
+                    )
+                )
+
+                val rawDistanceUnit = database.settingsDao().get()?.distanceUnit
+                val distanceUnit = DistanceUnit.fromStorageValue(rawDistanceUnit)
+
+                val storyRepository = StoryRepository(context)
+                val introUnlocked = storyRepository.getIntroSegmentIfUnreadUnlocked() != null
+
+                StepSyncResult.Success(
+                    snapshot = StepSyncSnapshot(
+                        dayNumber = dayNumber,
+                        todayDistance = progressCalculator.roundDistance(
+                            progressCalculator.stepsToDistance(totals.todaySteps)
+                        ),
+                        totalDistance = totalDistance,
+                        nextMilestoneDistance = nextMilestoneDistance,
+                        distanceUnit = distanceUnit,
+                        introUnlocked = introUnlocked
+                    )
+                )
+            }
+        }
+
+        return when (outcome) {
+            is AppErrorHandler.Outcome.Success -> outcome.value
+            is AppErrorHandler.Outcome.Failure -> StepSyncResult.Failure(outcome.shouldRetry)
+        }
+    }
+}
+
+enum class StepSyncTrigger {
+    MANUAL,
+    AUTOMATIC,
+    BACKGROUND
+}
+
+data class StepSyncSnapshot(
+    val dayNumber: Int,
+    val todayDistance: Double,
+    val totalDistance: Double,
+    val nextMilestoneDistance: Double,
+    val distanceUnit: DistanceUnit,
+    val introUnlocked: Boolean
+)
+
+sealed interface StepSyncResult {
+    data class Success(val snapshot: StepSyncSnapshot) : StepSyncResult
+    data object NoPermission : StepSyncResult
+    data object SkippedAlreadyRunning : StepSyncResult
+    data object QueuedForRerun : StepSyncResult
+    data class Failure(val shouldRetry: Boolean) : StepSyncResult
+}
