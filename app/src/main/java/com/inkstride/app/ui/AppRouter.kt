@@ -3,7 +3,9 @@ package com.inkstride.app.ui
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,8 +14,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -21,10 +25,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.inkstride.app.data.db.DatabaseProvider
 import com.inkstride.app.data.repository.StoryRepository
 import com.inkstride.app.health.HealthConnectManager
+import com.inkstride.app.ui.components.BottomNavigationBar
 import com.inkstride.app.ui.components.NeutralLoadingScreen
 import com.inkstride.app.ui.screens.JourneyScreen
 import com.inkstride.app.ui.screens.PermissionsScreen
 import com.inkstride.app.ui.screens.StoryUnlockScreen
+import com.inkstride.app.ui.screens.StorybookScreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -35,6 +41,7 @@ private const val PERMISSION_RECHECK_DELAY_MS = 220L
 private enum class Screen {
     PERMISSIONS,
     JOURNEY,
+    STORYBOOK,
     INTRO
 }
 
@@ -67,6 +74,7 @@ fun AppRouter(innerPadding: PaddingValues) {
         afterPermissionRequest: Boolean = false,
         afterBackgroundPermissionRequest: Boolean = false
     ) {
+        val previousScreen = screen
         screen = null
         scope.launch {
             var hasPermission = healthConnectManager.hasAllPermissions()
@@ -93,7 +101,7 @@ fun AppRouter(innerPadding: PaddingValues) {
 
             val intro = storyRepository.getIntroSegmentIfUnreadUnlocked()
             introSegmentId = intro?.id
-            screen = if (intro != null) Screen.INTRO else Screen.JOURNEY
+            screen = if (intro != null) Screen.INTRO else if (previousScreen == Screen.STORYBOOK) Screen.STORYBOOK else Screen.JOURNEY
         }
     }
 
@@ -119,13 +127,17 @@ fun AppRouter(innerPadding: PaddingValues) {
         }
     }
 
+    val contentModifier = Modifier
+        .fillMaxSize()
+        .padding(innerPadding)
+
     when (screen) {
         null -> NeutralLoadingScreen(
-            modifier = Modifier.padding(innerPadding)
+            modifier = contentModifier
         )
 
         Screen.PERMISSIONS -> PermissionsScreen(
-            modifier = Modifier.padding(innerPadding),
+            modifier = contentModifier,
             onGrantPermissions = {
                 permLauncher.launch(healthConnectManager.requiredPermissions())
             }
@@ -135,11 +147,12 @@ fun AppRouter(innerPadding: PaddingValues) {
             val segmentId = introSegmentId
             if (segmentId != null) {
                 StoryUnlockScreen(
-                    modifier = Modifier.padding(innerPadding),
+                    modifier = contentModifier,
                     storySegmentId = segmentId,
                     onContinue = {
                         scope.launch {
                             storyRepository.markAsRead(segmentId)
+                            screen = Screen.JOURNEY
                             refreshRoute()
                         }
                     }
@@ -149,14 +162,37 @@ fun AppRouter(innerPadding: PaddingValues) {
             }
         }
 
-        Screen.JOURNEY -> JourneyScreen(
-            modifier = Modifier.padding(innerPadding),
-            onPermissionsRevoked = {
-                refreshRoute()
-            },
-            onPotentialIntroUnlocked = {
-                refreshRoute()
+        Screen.JOURNEY,
+        Screen.STORYBOOK -> {
+            Box(modifier = contentModifier) {
+                when (screen) {
+                    Screen.JOURNEY -> JourneyScreen(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = 56.dp),
+                        onPermissionsRevoked = {
+                            refreshRoute()
+                        },
+                        onPotentialIntroUnlocked = {
+                            refreshRoute()
+                        }
+                    )
+
+                    Screen.STORYBOOK -> StorybookScreen(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = 56.dp)
+                    )
+
+                    else -> Unit
+                }
+
+                BottomNavigationBar(
+                    onJourneyClick = { screen = Screen.JOURNEY },
+                    onStorybookClick = { screen = Screen.STORYBOOK },
+                    modifier = Modifier.align(Alignment.BottomCenter)
+                )
             }
-        )
+        }
     }
 }

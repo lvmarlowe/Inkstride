@@ -21,6 +21,15 @@ class StoryRepository(context: Context) {
         return if (state.unlocked && !state.read) introSegment else null
     }
 
+    suspend fun getReadUnlockedSegments(): List<StorySegment> {
+        val readUnlockedSegmentIds = unlockStateDao
+            .getAllUnlocked()
+            .filter { it.read }
+            .map { it.storySegmentId }
+
+        return readUnlockedSegmentIds.mapNotNull { storySegmentDao.getById(it) }
+    }
+
     suspend fun markAsRead(storySegmentId: Int) {
         unlockStateDao.markAsRead(storySegmentId)
     }
