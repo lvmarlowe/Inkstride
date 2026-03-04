@@ -46,10 +46,12 @@ import com.inkstride.app.health.StepSyncCoordinator
 import com.inkstride.app.health.StepSyncResult
 import com.inkstride.app.health.StepSyncTrigger
 import com.inkstride.app.health.StepsSyncScheduler
+import com.inkstride.app.services.ProgressCalculator
 import com.inkstride.app.services.DistanceUnitLabelFormatter
 import com.inkstride.app.ui.components.NeutralLoadingScreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
@@ -140,6 +142,70 @@ fun JourneyScreen(
         }
     }
 
+    suspend fun syncOnOpenWithRetry() {
+        var attempt = 0
+        while (attempt < 3) {
+            val result = StepSyncCoordinator.syncNow(context, StepSyncTrigger.AUTOMATIC)
+            when (result) {
+                is StepSyncResult.Success -> {
+                    hasPermission = true
+                    dayNumber = result.snapshot.dayNumber
+                    todayDistance = result.snapshot.todayDistance
+                    totalDistance = result.snapshot.totalDistance
+                    nextMilestoneDistance = result.snapshot.nextMilestoneDistance
+                    distanceUnit = result.snapshot.distanceUnit
+
+                    if (result.snapshot.introUnlocked) {
+                        onPotentialIntroUnlocked()
+                    }
+                    return
+                }
+
+                StepSyncResult.NoPermission -> {
+                    hasPermission = false
+                    onPermissionsRevoked()
+                    return
+                }
+
+                StepSyncResult.SkippedAlreadyRunning,
+                StepSyncResult.QueuedForRerun,
+                is StepSyncResult.Failure -> {
+                    attempt += 1
+                    if (attempt < 3) {
+                        delay(900)
+                    }
+                }
+            }
+        }
+    }
+
+    suspend fun loadPersistedSnapshot() {
+        val database = DatabaseProvider.getDatabase(context)
+        val progressState = database.progressStateDao().get()
+        val settings = database.settingsDao().get()
+
+        distanceUnit = DistanceUnit.fromStorageValue(settings?.distanceUnit)
+
+        if (progressState == null) {
+            return
+        }
+
+        dayNumber = progressState.dayNumber
+        totalDistance = progressState.totalDistance
+
+        val todayKey = LocalDate.now().toString()
+        todayDistance = database.dailyStatsDao().getByDate(todayKey)?.distanceToday ?: 0.0
+
+        val nextMilestone = database.milestoneDao().getNextUnreached(totalDistance)
+        val progressCalculator = ProgressCalculator()
+        nextMilestoneDistance = progressCalculator.roundDistance(
+            progressCalculator.getRemainingDistance(
+                currentDistance = totalDistance,
+                nextMilestoneDistance = nextMilestone?.distanceMarker ?: totalDistance
+            )
+        )
+    }
+
     val pullState = rememberPullRefreshState(
         refreshing = refreshing,
         onRefresh = {
@@ -165,7 +231,8 @@ fun JourneyScreen(
 
         loading = true
         try {
-            sync(showFeedback = false, trigger = StepSyncTrigger.AUTOMATIC)
+            loadPersistedSnapshot()
+            syncOnOpenWithRetry()
         } finally {
             loading = false
         }
