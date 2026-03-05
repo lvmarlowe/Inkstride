@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AutoStories
 import androidx.compose.material.icons.rounded.Forest
@@ -25,6 +26,7 @@ private val BottomNavigationBottomSpacing = 20.dp
 fun BottomNavigationBar(
     onJourneyClick: () -> Unit,
     onStorybookClick: () -> Unit,
+    hasStorybookNotification: Boolean,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -60,12 +62,24 @@ fun BottomNavigationBar(
                     .clickable(onClick = onStorybookClick),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
-                    imageVector = Icons.Rounded.AutoStories,
-                    contentDescription = "Storybook",
-                    tint = Color.White,
-                    modifier = Modifier.size(42.dp)
-                )
+                Box {
+                    Icon(
+                        imageVector = Icons.Rounded.AutoStories,
+                        contentDescription = "Storybook",
+                        tint = Color.White,
+                        modifier = Modifier.size(42.dp)
+                    )
+
+                    if (hasStorybookNotification) {
+                        Box(
+                            modifier = Modifier
+                                .align(Alignment.TopEnd)
+                                .padding(top = 4.dp, end = 2.dp)
+                                .size(10.dp)
+                                .background(color = Color.Red, shape = CircleShape)
+                        )
+                    }
+                }
             }
         }
     }

@@ -42,7 +42,8 @@ private enum class Screen {
     PERMISSIONS,
     JOURNEY,
     STORYBOOK,
-    INTRO
+    INTRO,
+    STORY_UNLOCK
 }
 
 @Composable
@@ -56,6 +57,9 @@ fun AppRouter(innerPadding: PaddingValues) {
 
     var screen by remember { mutableStateOf<Screen?>(null) }
     var introSegmentId by remember { mutableStateOf<Int?>(null) }
+    var unreadUnlockSegmentIds by remember { mutableStateOf<List<Int>>(emptyList()) }
+    var hasStoryNotification by remember { mutableStateOf(false) }
+    var returnScreenAfterStoryUnlock by remember { mutableStateOf(Screen.JOURNEY) }
 
     fun hasBackgroundPermission(): Boolean {
         return ContextCompat.checkSelfPermission(context, BACKGROUND_PERMISSION) ==
@@ -88,6 +92,8 @@ fun AppRouter(innerPadding: PaddingValues) {
 
             if (!hasPermission) {
                 introSegmentId = null
+                unreadUnlockSegmentIds = emptyList()
+                hasStoryNotification = false
                 screen = Screen.PERMISSIONS
                 return@launch
             }
@@ -101,10 +107,41 @@ fun AppRouter(innerPadding: PaddingValues) {
 
             val intro = storyRepository.getIntroSegmentIfUnreadUnlocked()
             introSegmentId = intro?.id
-            screen = if (intro != null) Screen.INTRO else if (previousScreen == Screen.STORYBOOK) Screen.STORYBOOK else Screen.JOURNEY
+            if (intro != null) {
+                hasStoryNotification = true
+                screen = Screen.INTRO
+                return@launch
+            }
+
+            hasStoryNotification = storyRepository.hasUnlockedUnreadSegments()
+            if (previousScreen == Screen.STORY_UNLOCK) {
+                unreadUnlockSegmentIds = storyRepository.getUnlockedUnreadSegments().map { it.id }
+            }
+
+            screen = when (previousScreen) {
+                Screen.STORYBOOK -> Screen.STORYBOOK
+                Screen.STORY_UNLOCK -> if (unreadUnlockSegmentIds.isNotEmpty()) Screen.STORY_UNLOCK else Screen.JOURNEY
+                else -> Screen.JOURNEY
+            }
         }
     }
 
+    fun openStoryDestinationFromNavigation() {
+        val currentContentScreen = if (screen == Screen.STORYBOOK) Screen.STORYBOOK else Screen.JOURNEY
+        scope.launch {
+            val unreadSegments = storyRepository.getUnlockedUnreadSegments()
+            hasStoryNotification = unreadSegments.isNotEmpty()
+
+            if (unreadSegments.isNotEmpty()) {
+                unreadUnlockSegmentIds = unreadSegments.map { it.id }
+                returnScreenAfterStoryUnlock = currentContentScreen
+                screen = Screen.STORY_UNLOCK
+            } else {
+                unreadUnlockSegmentIds = emptyList()
+                screen = Screen.STORYBOOK
+            }
+        }
+    }
 
     onBackgroundPermissionResult = {
         refreshRoute(afterBackgroundPermissionRequest = true)
@@ -148,17 +185,46 @@ fun AppRouter(innerPadding: PaddingValues) {
             if (segmentId != null) {
                 StoryUnlockScreen(
                     modifier = contentModifier,
-                    storySegmentId = segmentId,
+                    storySegmentIds = listOf(segmentId),
+                    onSegmentViewed = {},
+                    showForwardArrow = false,
                     onContinue = {
                         scope.launch {
                             storyRepository.markAsRead(segmentId)
                             screen = Screen.JOURNEY
-                            refreshRoute()
                         }
                     }
                 )
             } else {
-                LaunchedEffect(Unit) { refreshRoute() }
+                LaunchedEffect(Unit) {
+                    refreshRoute()
+                }
+            }
+        }
+
+        Screen.STORY_UNLOCK -> {
+            if (unreadUnlockSegmentIds.isNotEmpty()) {
+                StoryUnlockScreen(
+                    modifier = contentModifier,
+                    storySegmentIds = unreadUnlockSegmentIds,
+                    onSegmentViewed = { segmentId ->
+                        scope.launch {
+                            storyRepository.markAsRead(segmentId)
+                            hasStoryNotification = storyRepository.hasUnlockedUnreadSegments()
+                        }
+                    },
+                    showForwardArrow = true,
+                    onContinue = {
+                        scope.launch {
+                            hasStoryNotification = storyRepository.hasUnlockedUnreadSegments()
+                            screen = returnScreenAfterStoryUnlock
+                        }
+                    }
+                )
+            } else {
+                LaunchedEffect(Unit) {
+                    screen = returnScreenAfterStoryUnlock
+                }
             }
         }
 
@@ -189,7 +255,8 @@ fun AppRouter(innerPadding: PaddingValues) {
 
                 BottomNavigationBar(
                     onJourneyClick = { screen = Screen.JOURNEY },
-                    onStorybookClick = { screen = Screen.STORYBOOK },
+                    onStorybookClick = { openStoryDestinationFromNavigation() },
+                    hasStorybookNotification = hasStoryNotification,
                     modifier = Modifier.align(Alignment.BottomCenter)
                 )
             }

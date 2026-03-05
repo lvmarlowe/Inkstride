@@ -14,8 +14,8 @@ interface UnlockStateDao {
     @Query("SELECT * FROM unlock_state WHERE unlocked = 1 ORDER BY storySegmentId ASC")
     suspend fun getAllUnlocked(): List<UnlockState>
 
-    @Query("SELECT * FROM unlock_state WHERE unlocked = 1 AND read = 0 ORDER BY storySegmentId ASC")
-    suspend fun getAllUnlockedUnread(): List<UnlockState>
+    @Query("SELECT COUNT(*) > 0 FROM unlock_state WHERE unlocked = 1 AND read = 0")
+    suspend fun hasAnyUnlockedUnread(): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(unlockState: UnlockState)

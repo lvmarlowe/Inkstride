@@ -7,27 +7,30 @@ import com.inkstride.app.data.db.entities.StorySegment
 class StoryRepository(context: Context) {
 
     private val database = DatabaseProvider.getDatabase(context)
-    private val milestoneDao = database.milestoneDao()
     private val storySegmentDao = database.storySegmentDao()
     private val unlockStateDao = database.unlockStateDao()
 
     suspend fun getIntroSegmentIfUnreadUnlocked(): StorySegment? {
-        val milestones = milestoneDao.getAll()
+        val milestones = database.milestoneDao().getAll()
         if (milestones.isEmpty()) return null
+
         val introMilestone = milestones.firstOrNull { it.distanceMarker <= 0.0 } ?: milestones.first()
-        val segments = storySegmentDao.getByMilestoneId(introMilestone.id)
-        val introSegment = segments.firstOrNull() ?: return null
-        val state = unlockStateDao.getByStorySegmentId(introSegment.id) ?: return null
-        return if (state.unlocked && !state.read) introSegment else null
+        val introSegment = storySegmentDao.getByMilestoneId(introMilestone.id).firstOrNull() ?: return null
+        val introState = unlockStateDao.getByStorySegmentId(introSegment.id) ?: return null
+
+        return if (introState.unlocked && !introState.read) introSegment else null
     }
 
     suspend fun getReadUnlockedSegments(): List<StorySegment> {
-        val readUnlockedSegmentIds = unlockStateDao
-            .getAllUnlocked()
-            .filter { it.read }
-            .map { it.storySegmentId }
+        return storySegmentDao.getReadUnlockedOrderedByDistance()
+    }
 
-        return readUnlockedSegmentIds.mapNotNull { storySegmentDao.getById(it) }
+    suspend fun getUnlockedUnreadSegments(): List<StorySegment> {
+        return storySegmentDao.getUnlockedUnreadOrderedByDistance()
+    }
+
+    suspend fun hasUnlockedUnreadSegments(): Boolean {
+        return unlockStateDao.hasAnyUnlockedUnread()
     }
 
     suspend fun markAsRead(storySegmentId: Int) {

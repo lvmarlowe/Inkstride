@@ -11,6 +11,9 @@ interface MilestoneDao {
     @Query("SELECT * FROM milestone WHERE id = :id LIMIT 1")
     suspend fun getById(id: Int): Milestone?
 
+    @Query("SELECT * FROM milestone WHERE distanceMarker = :distanceMarker LIMIT 1")
+    suspend fun getByDistanceMarker(distanceMarker: Double): Milestone?
+
     @Query("SELECT * FROM milestone ORDER BY distanceMarker ASC")
     suspend fun getAll(): List<Milestone>
 
@@ -21,7 +24,7 @@ interface MilestoneDao {
     suspend fun getNextUnreached(currentDistance: Double): Milestone?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(milestone: Milestone)
+    suspend fun insert(milestone: Milestone): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(milestones: List<Milestone>)

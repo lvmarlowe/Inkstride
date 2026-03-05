@@ -47,35 +47,42 @@ object DatabaseProvider {
         val milestoneDao = database.milestoneDao()
         val storySegmentDao = database.storySegmentDao()
 
-        if (milestoneDao.countRows() > 0 && storySegmentDao.countRows() > 0) return
-
-        val milestones = listOf(
-            Milestone(id = 1, distanceMarker = 6.0, isMajor = true),
-            Milestone(id = 2, distanceMarker = 13.0, isMajor = true),
-            Milestone(id = 3, distanceMarker = 22.0, isMajor = true),
-            Milestone(id = 4, distanceMarker = 34.0, isMajor = true),
-            Milestone(id = 5, distanceMarker = 50.0, isMajor = true),
-            Milestone(id = 6, distanceMarker = 71.0, isMajor = true),
-            Milestone(id = 7, distanceMarker = 100.0, isMajor = true),
-            Milestone(id = 8, distanceMarker = 0.0, isMajor = true)
-        )
-
         val characterName = database.settingsDao().get()?.normalized()?.characterName
             ?: Settings.DEFAULT_CHARACTER_NAME
 
-        val segments = listOf(
-            StorySegment(id = 1, milestoneId = 1, text = "[main story segment 1]"),
-            StorySegment(id = 2, milestoneId = 2, text = "[main story segment 2]"),
-            StorySegment(id = 3, milestoneId = 3, text = "[main story segment 3]"),
-            StorySegment(id = 4, milestoneId = 4, text = "[main story segment 4]"),
-            StorySegment(id = 5, milestoneId = 5, text = "[main story segment 5]"),
-            StorySegment(id = 6, milestoneId = 6, text = "[main story segment 6]"),
-            StorySegment(id = 7, milestoneId = 7, text = "[act 1 complete]"),
-            StorySegment(id = 8, milestoneId = 8, text = "Hello, $characterName!")
+        val seededStoryData = listOf(
+            Triple(0.0, true, "Hello, $characterName!"),
+            Triple(6.0, true, "[main story segment 1]"),
+            Triple(13.0, true, "[main story segment 2]"),
+            Triple(22.0, true, "[main story segment 3]"),
+            Triple(34.0, true, "[main story segment 4]"),
+            Triple(50.0, true, "[main story segment 5]"),
+            Triple(71.0, true, "[main story segment 6]"),
+            Triple(100.0, true, "[act 1 complete]")
         )
 
-        if (milestoneDao.countRows() == 0) milestoneDao.insertAll(milestones)
-        if (storySegmentDao.countRows() == 0) storySegmentDao.insertAll(segments)
+        for ((distanceMarker, isMajor, text) in seededStoryData) {
+            val milestone = milestoneDao.getByDistanceMarker(distanceMarker)
+            val milestoneId = milestone?.id
+                ?: milestoneDao.insert(
+                    Milestone(
+                        distanceMarker = distanceMarker,
+                        isMajor = isMajor
+                    )
+                ).toInt()
+
+            val existingSegment = storySegmentDao.getByMilestoneId(milestoneId).firstOrNull()
+            if (existingSegment == null) {
+                storySegmentDao.insert(
+                    StorySegment(
+                        milestoneId = milestoneId,
+                        text = text
+                    )
+                )
+            } else if (existingSegment.text != text) {
+                storySegmentDao.insert(existingSegment.copy(text = text))
+            }
+        }
     }
 
     private suspend fun ensureSeededUnlockStates(context: Context) {
@@ -83,19 +90,24 @@ object DatabaseProvider {
         val unlockStateDao = database.unlockStateDao()
         val storySegmentDao = database.storySegmentDao()
 
-        if (unlockStateDao.countRows() > 0) return
-
         val segments = storySegmentDao.getAll()
         if (segments.isEmpty()) return
 
-        val states = segments.map { seg ->
-            UnlockState(
-                storySegmentId = seg.id,
-                unlocked = false,
-                read = false
-            )
+        val missingStates = segments.mapNotNull { seg ->
+            val existing = unlockStateDao.getByStorySegmentId(seg.id)
+            if (existing == null) {
+                UnlockState(
+                    storySegmentId = seg.id,
+                    unlocked = false,
+                    read = false
+                )
+            } else {
+                null
+            }
         }
 
-        unlockStateDao.upsertAll(states)
+        if (missingStates.isNotEmpty()) {
+            unlockStateDao.upsertAll(missingStates)
+        }
     }
 }
