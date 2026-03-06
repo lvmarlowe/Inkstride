@@ -164,11 +164,13 @@ fun AppRouter(innerPadding: PaddingValues) {
         AppRouteScreen.JOURNEY,
         AppRouteScreen.STORYBOOK -> {
             Box(modifier = contentModifier) {
+                val isJourneySelected = uiState.screen == AppRouteScreen.JOURNEY
+
                 when (uiState.screen) {
                     AppRouteScreen.JOURNEY -> JourneyScreen(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(bottom = 56.dp),
+                            .padding(bottom = 88.dp),
                         onPermissionsRevoked = {
                             appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
                         },
@@ -180,7 +182,7 @@ fun AppRouter(innerPadding: PaddingValues) {
                     AppRouteScreen.STORYBOOK -> StorybookScreen(
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(bottom = 56.dp)
+                            .padding(bottom = 88.dp)
                     )
 
                     else -> Unit
@@ -190,6 +192,7 @@ fun AppRouter(innerPadding: PaddingValues) {
                     onJourneyClick = { appRouterViewModel.onJourneySelected() },
                     onStorybookClick = { appRouterViewModel.openStoryDestinationFromNavigation() },
                     hasStorybookNotification = uiState.hasStoryNotification,
+                    isJourneySelected = isJourneySelected,
                     modifier = Modifier.align(Alignment.BottomCenter)
                 )
             }

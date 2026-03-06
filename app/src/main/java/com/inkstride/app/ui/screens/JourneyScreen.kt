@@ -3,11 +3,12 @@ package com.inkstride.app.ui.screens
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -34,6 +35,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
@@ -119,22 +122,11 @@ fun JourneyScreen(
             StepSyncResult.NoPermission -> {
                 hasPermission = false
                 onPermissionsRevoked()
-                if (showFeedback) {
-                    flash(false, "Permissions required")
-                }
             }
 
-            StepSyncResult.SkippedAlreadyRunning -> {
-                if (showFeedback) {
-                    flash(true, "Syncing")
-                }
-            }
+            StepSyncResult.SkippedAlreadyRunning -> { }
 
-            StepSyncResult.QueuedForRerun -> {
-                if (showFeedback) {
-                    flash(true, "Sync queued")
-                }
-            }
+            StepSyncResult.QueuedForRerun -> { }
 
             is StepSyncResult.Failure -> {
                 if (showFeedback) {
@@ -241,7 +233,7 @@ fun JourneyScreen(
         }
     }
 
-    if (loading || refreshing) {
+    if (loading) {
         NeutralLoadingScreen(modifier = modifier)
         return
     }
@@ -256,84 +248,72 @@ fun JourneyScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                    .padding(horizontal = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "Journey",
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-
-                if (hasPermission) {
-                    Spacer(modifier = Modifier.height(14.dp))
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 60.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     Text(
-                        text = "Day $dayNumber",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.White
+                        text = "Journey",
+                        color = Color.White,
+                        fontSize = 42.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "Day $dayNumber".uppercase(Locale.US),
+                        color = Color(0x8CFFFFFF),
+                        fontSize = 15.sp,
+                        letterSpacing = 0.1.em,
+                        modifier = Modifier.padding(top = 6.dp)
+                    )
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 12.dp)
+                            .height(1.dp)
+                            .background(Color(0x0DFFFFFF))
                     )
                 }
 
-                Spacer(modifier = Modifier.height(28.dp))
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    StatBlock(
+                        label = "TODAY'S DISTANCE",
+                        value = formatDistance(todayDistance),
+                        unit = distanceUnitLabelFormatter
+                            .unitLabel(todayDistance, distanceUnit)
+                            .uppercase(Locale.US)
+                    )
 
-                Text(
-                    "Today's distance",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White
-                )
-                Text(
-                    text = formatDistance(todayDistance),
-                    style = MaterialTheme.typography.displayLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-                Text(
-                    distanceUnitLabelFormatter.unitLabel(todayDistance, distanceUnit),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White
-                )
+                    DividerLine()
 
-                Spacer(modifier = Modifier.height(22.dp))
+                    StatBlock(
+                        label = "TOTAL DISTANCE",
+                        value = formatDistance(totalDistance),
+                        unit = distanceUnitLabelFormatter
+                            .unitLabel(totalDistance, distanceUnit)
+                            .uppercase(Locale.US)
+                    )
 
-                Text(
-                    "Total distance",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White
-                )
-                Text(
-                    text = formatDistance(totalDistance),
-                    style = MaterialTheme.typography.displayLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-                Text(
-                    distanceUnitLabelFormatter.unitLabel(totalDistance, distanceUnit),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White
-                )
+                    DividerLine()
 
-                Spacer(modifier = Modifier.height(22.dp))
-
-                Text(
-                    "Next milestone in",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White
-                )
-                Text(
-                    text = formatDistance(nextMilestoneDistance),
-                    style = MaterialTheme.typography.displayLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-                Text(
-                    distanceUnitLabelFormatter.unitLabel(nextMilestoneDistance, distanceUnit),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White
-                )
-
-                Spacer(modifier = Modifier.height(120.dp))
+                    StatBlock(
+                        label = "NEXT MILESTONE IN",
+                        value = formatDistance(nextMilestoneDistance),
+                        unit = distanceUnitLabelFormatter
+                            .unitLabel(nextMilestoneDistance, distanceUnit)
+                            .uppercase(Locale.US)
+                    )
+                }
             }
 
             AnimatedVisibility(
@@ -346,7 +326,7 @@ fun JourneyScreen(
                     color = Color(0xCC111111),
                     contentColor = if (msgOk) Color.White else Color(0xFFFF8080),
                     shape = MaterialTheme.shapes.large,
-                    modifier = Modifier.padding(top = 12.dp)
+                    modifier = Modifier.padding(top = 16.dp)
                 ) {
                     Text(
                         text = msgText,
@@ -366,6 +346,52 @@ fun JourneyScreen(
             )
         }
     }
+}
+
+@Composable
+private fun StatBlock(
+    label: String,
+    value: String,
+    unit: String
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 18.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = label,
+            color = Color(0x99FFFFFF),
+            fontSize = 14.sp,
+            letterSpacing = 0.1.em,
+            modifier = Modifier.padding(bottom = 4.dp)
+        )
+        Text(
+            text = value,
+            color = Color.White,
+            fontSize = 64.sp,
+            fontWeight = FontWeight.Normal,
+            lineHeight = (64 * 1.05).sp
+        )
+        Text(
+            text = unit,
+            color = Color(0x80FFFFFF),
+            fontSize = 14.sp,
+            letterSpacing = 0.08.em,
+            modifier = Modifier.padding(top = 0.dp)
+        )
+    }
+}
+
+@Composable
+private fun DividerLine() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(Color(0x0DFFFFFF))
+    )
 }
 
 private fun formatDistance(distance: Double): String {
