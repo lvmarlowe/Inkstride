@@ -31,7 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.inkstride.app.data.db.DatabaseProvider
+import com.inkstride.app.data.database.DatabaseProvider
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)

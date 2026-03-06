@@ -1,10 +1,10 @@
-package com.inkstride.app.data.db.dao
+package com.inkstride.app.data.database.daos
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.inkstride.app.data.db.entities.DailyStats
+import com.inkstride.app.data.database.entities.DailyStats
 
 @Dao
 interface DailyStatsDao {
@@ -16,7 +16,4 @@ interface DailyStatsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(dailyStats: DailyStats)
-
-    @Query("DELETE FROM daily_stats")
-    suspend fun deleteAll()
 }

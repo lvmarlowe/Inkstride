@@ -22,8 +22,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import com.inkstride.app.data.db.DatabaseProvider
-import com.inkstride.app.data.repository.StoryRepository
+import com.inkstride.app.data.database.DatabaseProvider
+import com.inkstride.app.data.repositories.StoryRepository
 import com.inkstride.app.health.HealthConnectManager
 import com.inkstride.app.ui.components.BottomNavigationBar
 import com.inkstride.app.ui.components.NeutralLoadingScreen

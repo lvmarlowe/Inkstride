@@ -39,8 +39,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import com.inkstride.app.data.db.DatabaseProvider
-import com.inkstride.app.data.db.entities.DistanceUnit
+import com.inkstride.app.data.database.DatabaseProvider
+import com.inkstride.app.data.DistanceUnit
 import com.inkstride.app.health.HealthConnectManager
 import com.inkstride.app.health.StepSyncCoordinator
 import com.inkstride.app.health.StepSyncResult
@@ -267,45 +267,34 @@ fun JourneyScreen(
         }
     }
 
-    if (loading || refreshing) {
+    if (loading) {
         NeutralLoadingScreen(modifier = modifier)
         return
     }
 
-    Surface(modifier = modifier.fillMaxSize(), color = Color.Black) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .pullRefresh(pullState)
-        ) {
+    val pullModifier = modifier.pullRefresh(pullState)
+
+    Surface(modifier = pullModifier.fillMaxSize(), color = Color.Black) {
+        Box(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                    .padding(horizontal = 24.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "Journey",
-                    style = MaterialTheme.typography.headlineLarge,
+                    text = "Day $dayNumber",
+                    style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
 
-                if (hasPermission) {
-                    Spacer(modifier = Modifier.height(14.dp))
-                    Text(
-                        text = "Day $dayNumber",
-                        style = MaterialTheme.typography.bodyLarge,
-                        color = Color.White
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(28.dp))
+                Spacer(modifier = Modifier.height(40.dp))
 
                 Text(
-                    "Today's distance",
+                    "Today",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White
                 )
@@ -324,7 +313,7 @@ fun JourneyScreen(
                 Spacer(modifier = Modifier.height(22.dp))
 
                 Text(
-                    "Total distance",
+                    "Total",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White
                 )

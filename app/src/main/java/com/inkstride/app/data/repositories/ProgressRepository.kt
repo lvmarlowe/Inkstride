@@ -1,10 +1,10 @@
-package com.inkstride.app.data.repository
+package com.inkstride.app.data.repositories
 
 import android.content.Context
-import com.inkstride.app.data.db.dao.DailyStatsDao
-import com.inkstride.app.data.db.dao.ProgressStateDao
-import com.inkstride.app.data.db.entities.DailyStats
-import com.inkstride.app.data.db.entities.ProgressState
+import com.inkstride.app.data.database.daos.DailyStatsDao
+import com.inkstride.app.data.database.daos.ProgressStateDao
+import com.inkstride.app.data.database.entities.DailyStats
+import com.inkstride.app.data.database.entities.ProgressState
 import com.inkstride.app.health.StepTotals
 import com.inkstride.app.services.ProgressCalculator
 import java.time.LocalDate

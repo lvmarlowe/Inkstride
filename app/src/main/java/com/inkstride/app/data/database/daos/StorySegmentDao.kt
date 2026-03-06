@@ -1,10 +1,10 @@
-package com.inkstride.app.data.db.dao
+package com.inkstride.app.data.database.daos
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.inkstride.app.data.db.entities.StorySegment
+import com.inkstride.app.data.database.entities.StorySegment
 
 @Dao
 interface StorySegmentDao {
@@ -46,7 +46,4 @@ interface StorySegmentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(storySegments: List<StorySegment>)
-
-    @Query("SELECT COUNT(*) FROM story_segment")
-    suspend fun countRows(): Int
 }

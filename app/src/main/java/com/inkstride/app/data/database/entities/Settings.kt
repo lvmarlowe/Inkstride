@@ -1,7 +1,8 @@
-package com.inkstride.app.data.db.entities
+package com.inkstride.app.data.database.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.inkstride.app.data.DistanceUnit
 
 @Entity(tableName = "settings")
 data class Settings(
@@ -17,16 +18,5 @@ data class Settings(
 
     companion object {
         const val DEFAULT_CHARACTER_NAME = "Inker"
-    }
-}
-
-enum class DistanceUnit(val storageValue: String) {
-    MILE(storageValue = "mile"),
-    KILOMETER(storageValue = "kilometer");
-
-    companion object {
-        fun fromStorageValue(value: String?): DistanceUnit {
-            return entries.firstOrNull { it.storageValue.equals(value, ignoreCase = true) } ?: MILE
-        }
     }
 }

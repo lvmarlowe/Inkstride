@@ -1,11 +1,11 @@
-package com.inkstride.app.data.db
+package com.inkstride.app.data.database
 
 import android.content.Context
 import androidx.room.Room
-import com.inkstride.app.data.db.entities.Milestone
-import com.inkstride.app.data.db.entities.Settings
-import com.inkstride.app.data.db.entities.StorySegment
-import com.inkstride.app.data.db.entities.UnlockState
+import com.inkstride.app.data.database.entities.Milestone
+import com.inkstride.app.data.database.entities.Settings
+import com.inkstride.app.data.database.entities.StorySegment
+import com.inkstride.app.data.database.entities.UnlockState
 
 object DatabaseProvider {
     @Volatile
@@ -26,13 +26,13 @@ object DatabaseProvider {
     }
 
     suspend fun ensureDefaults(context: Context) {
-        ensureDefaultSettings(context)
-        ensureSeededMilestonesAndStory(context)
-        ensureSeededUnlockStates(context)
+        val database = getDatabase(context)
+        ensureDefaultSettings(database)
+        ensureSeededMilestonesAndStory(database)
+        ensureSeededUnlockStates(database)
     }
 
-    private suspend fun ensureDefaultSettings(context: Context) {
-        val database = getDatabase(context)
+    private suspend fun ensureDefaultSettings(database: InkstrideDatabase) {
         val settingsDao = database.settingsDao()
         val currentSettings = settingsDao.get()
         val normalizedSettings = (currentSettings ?: Settings()).normalized()
@@ -42,8 +42,7 @@ object DatabaseProvider {
         }
     }
 
-    private suspend fun ensureSeededMilestonesAndStory(context: Context) {
-        val database = getDatabase(context)
+    private suspend fun ensureSeededMilestonesAndStory(database: InkstrideDatabase) {
         val milestoneDao = database.milestoneDao()
         val storySegmentDao = database.storySegmentDao()
 
@@ -85,8 +84,7 @@ object DatabaseProvider {
         }
     }
 
-    private suspend fun ensureSeededUnlockStates(context: Context) {
-        val database = getDatabase(context)
+    private suspend fun ensureSeededUnlockStates(database: InkstrideDatabase) {
         val unlockStateDao = database.unlockStateDao()
         val storySegmentDao = database.storySegmentDao()
 

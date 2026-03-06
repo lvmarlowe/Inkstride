@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.inkstride.app.data.repository.StoryRepository
+import com.inkstride.app.data.repositories.StoryRepository
 import com.inkstride.app.ui.components.NeutralLoadingScreen
 
 @Composable
@@ -38,7 +38,8 @@ fun StorybookScreen(
             .joinToString(separator = "\n\n") { it.text.trim() }
     }
 
-    if (storybookText == null) {
+    val text = storybookText
+    if (text == null) {
         NeutralLoadingScreen(modifier = modifier)
         return
     }
@@ -60,8 +61,8 @@ fun StorybookScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = if (storybookText.orEmpty().isNotBlank()) {
-                    storybookText.orEmpty()
+                text = if (text.isNotBlank()) {
+                    text
                 } else {
                     "No story segments read yet."
                 },

@@ -1,4 +1,4 @@
-package com.inkstride.app.data.db.entities
+package com.inkstride.app.data.database.entities
 
 import androidx.room.Entity
 import androidx.room.Index

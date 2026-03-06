@@ -1,10 +1,10 @@
-package com.inkstride.app.data.db.dao
+package com.inkstride.app.data.database.daos
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.inkstride.app.data.db.entities.Milestone
+import com.inkstride.app.data.database.entities.Milestone
 
 @Dao
 interface MilestoneDao {
@@ -28,7 +28,4 @@ interface MilestoneDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(milestones: List<Milestone>)
-
-    @Query("SELECT COUNT(*) FROM milestone")
-    suspend fun countRows(): Int
 }

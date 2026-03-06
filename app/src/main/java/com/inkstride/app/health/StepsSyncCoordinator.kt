@@ -1,17 +1,19 @@
 package com.inkstride.app.health
 
 import android.content.Context
-import com.inkstride.app.data.db.DatabaseProvider
-import com.inkstride.app.data.db.entities.DistanceUnit
-import com.inkstride.app.data.repository.ProgressRepository
-import com.inkstride.app.data.repository.StoryRepository
+import com.inkstride.app.data.database.DatabaseProvider
+import com.inkstride.app.data.DistanceUnit
+import com.inkstride.app.data.repositories.ProgressRepository
+import com.inkstride.app.data.repositories.StoryRepository
 import com.inkstride.app.services.AppErrorHandler
 import com.inkstride.app.services.MilestoneEngine
 import com.inkstride.app.services.ProgressCalculator
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 object StepSyncCoordinator {
 
-    private val stateLock = Any()
+    private val stateMutex = Mutex()
     private var isSyncRunning = false
     private var pendingManualRerun = false
 
@@ -21,9 +23,9 @@ object StepSyncCoordinator {
         context: Context,
         trigger: StepSyncTrigger = StepSyncTrigger.AUTOMATIC
     ): StepSyncResult {
-        synchronized(stateLock) {
+        val immediateResult = stateMutex.withLock {
             if (isSyncRunning) {
-                return when (trigger) {
+                when (trigger) {
                     StepSyncTrigger.MANUAL -> {
                         pendingManualRerun = true
                         StepSyncResult.QueuedForRerun
@@ -32,16 +34,21 @@ object StepSyncCoordinator {
                     StepSyncTrigger.AUTOMATIC,
                     StepSyncTrigger.BACKGROUND -> StepSyncResult.SkippedAlreadyRunning
                 }
+            } else {
+                isSyncRunning = true
+                null
             }
+        }
 
-            isSyncRunning = true
+        if (immediateResult != null) {
+            return immediateResult
         }
 
         var latestResult: StepSyncResult
         while (true) {
             latestResult = runSingleSync(context)
 
-            val shouldRunAgain = synchronized(stateLock) {
+            val shouldRunAgain = stateMutex.withLock {
                 if (pendingManualRerun) {
                     pendingManualRerun = false
                     true

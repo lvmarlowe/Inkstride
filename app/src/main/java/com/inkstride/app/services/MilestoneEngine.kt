@@ -1,8 +1,8 @@
 package com.inkstride.app.services
 
 import android.content.Context
-import com.inkstride.app.data.db.DatabaseProvider
-import com.inkstride.app.data.db.entities.UnlockState
+import com.inkstride.app.data.database.DatabaseProvider
+import com.inkstride.app.data.database.entities.UnlockState
 
 class MilestoneEngine(context: Context) {
 

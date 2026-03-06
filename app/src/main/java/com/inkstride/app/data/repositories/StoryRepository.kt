@@ -1,8 +1,8 @@
-package com.inkstride.app.data.repository
+package com.inkstride.app.data.repositories
 
 import android.content.Context
-import com.inkstride.app.data.db.DatabaseProvider
-import com.inkstride.app.data.db.entities.StorySegment
+import com.inkstride.app.data.database.DatabaseProvider
+import com.inkstride.app.data.database.entities.StorySegment
 
 class StoryRepository(context: Context) {
 

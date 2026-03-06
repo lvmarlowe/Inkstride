@@ -1,5 +1,7 @@
 package com.inkstride.app.services
 
+import android.util.Log
+
 class AppErrorHandler {
 
     sealed class Outcome<out T> {
@@ -13,7 +15,8 @@ class AppErrorHandler {
     ): Outcome<T> {
         return try {
             Outcome.Success(block())
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            Log.e("AppErrorHandler", "Unexpected error", e)
             Outcome.Failure(shouldRetry = shouldRetry)
         }
     }
