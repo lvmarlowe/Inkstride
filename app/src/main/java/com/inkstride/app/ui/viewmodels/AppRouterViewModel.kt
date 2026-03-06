@@ -47,12 +47,15 @@ class AppRouterViewModel(
     private val _effects = MutableSharedFlow<AppRouterEffect>()
     val effects: SharedFlow<AppRouterEffect> = _effects.asSharedFlow()
 
+    private val _viewedSegmentIds = mutableSetOf<Int>()
+
     fun refreshRoute(
         hasBackgroundPermission: Boolean,
         afterPermissionRequest: Boolean = false,
         afterBackgroundPermissionRequest: Boolean = false
     ) {
         val previousScreen = _uiState.value.screen
+        val activeUnlockSessionIds = _uiState.value.unreadUnlockSegmentIds
         _uiState.update { it.copy(screen = null) }
 
         viewModelScope.launch {
@@ -66,6 +69,7 @@ class AppRouterViewModel(
             }
 
             if (!hasPermission) {
+                _viewedSegmentIds.clear()
                 _uiState.update {
                     it.copy(
                         screen = AppRouteScreen.PERMISSIONS,
@@ -95,16 +99,34 @@ class AppRouterViewModel(
                 return@launch
             }
 
-            val unreadUnlockedSegments = storyRepository.getUnlockedUnreadSegments()
-            val hasStoryNotification = unreadUnlockedSegments.isNotEmpty()
-            val unreadUnlockSegmentIds = unreadUnlockedSegments.map { segment -> segment.id }
+            val unreadUnlockSegmentIdsFromDb = storyRepository
+                .getUnlockedUnreadSegments()
+                .map { segment -> segment.id }
+
+            val unreadUnlockSegmentIds = if (
+                previousScreen == AppRouteScreen.STORY_UNLOCK &&
+                activeUnlockSessionIds.isNotEmpty()
+            ) {
+                activeUnlockSessionIds
+            } else {
+                unreadUnlockSegmentIdsFromDb
+            }
+
+            val hasStoryNotification = if (
+                previousScreen == AppRouteScreen.STORY_UNLOCK &&
+                activeUnlockSessionIds.isNotEmpty()
+            ) {
+                unreadUnlockSegmentIds.isNotEmpty()
+            } else {
+                unreadUnlockSegmentIdsFromDb.isNotEmpty()
+            }
 
             val destination = when (previousScreen) {
                 AppRouteScreen.STORYBOOK -> AppRouteScreen.STORYBOOK
                 AppRouteScreen.STORY_UNLOCK -> {
-                    if (unreadUnlockSegmentIds.isNotEmpty()) AppRouteScreen.STORY_UNLOCK else AppRouteScreen.JOURNEY
+                    if (unreadUnlockSegmentIds.isNotEmpty()) AppRouteScreen.STORY_UNLOCK
+                    else AppRouteScreen.JOURNEY
                 }
-
                 else -> AppRouteScreen.JOURNEY
             }
 
@@ -143,6 +165,7 @@ class AppRouterViewModel(
         viewModelScope.launch {
             val unreadSegments = storyRepository.getUnlockedUnreadSegments()
             if (unreadSegments.isNotEmpty()) {
+                _viewedSegmentIds.clear()
                 _uiState.update {
                     it.copy(
                         hasStoryNotification = true,
@@ -176,19 +199,13 @@ class AppRouterViewModel(
     }
 
     fun onStoryUnlockSegmentViewed(segmentId: Int) {
-        viewModelScope.launch {
-            storyRepository.markAsRead(segmentId)
-            val hasUnreadSegments = storyRepository.hasUnlockedUnreadSegments()
-            _uiState.update {
-                it.copy(
-                    hasStoryNotification = hasUnreadSegments
-                )
-            }
-        }
+        _viewedSegmentIds.add(segmentId)
     }
 
     fun onStoryUnlockContinue() {
         viewModelScope.launch {
+            _viewedSegmentIds.forEach { storyRepository.markAsRead(it) }
+            _viewedSegmentIds.clear()
             val hasUnreadSegments = storyRepository.hasUnlockedUnreadSegments()
             _uiState.update {
                 it.copy(
