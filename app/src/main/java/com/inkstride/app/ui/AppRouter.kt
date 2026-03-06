@@ -9,19 +9,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
+import com.inkstride.app.MainActivity
 import com.inkstride.app.data.database.DatabaseProvider
 import com.inkstride.app.data.repositories.StoryRepository
 import com.inkstride.app.health.HealthConnectManager
@@ -31,136 +32,77 @@ import com.inkstride.app.ui.screens.JourneyScreen
 import com.inkstride.app.ui.screens.PermissionsScreen
 import com.inkstride.app.ui.screens.StoryUnlockScreen
 import com.inkstride.app.ui.screens.StorybookScreen
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.inkstride.app.ui.viewmodels.AppRouteScreen
+import com.inkstride.app.ui.viewmodels.AppRouterEffect
+import com.inkstride.app.ui.viewmodels.AppRouterViewModel
 
 private const val BACKGROUND_PERMISSION = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
-private const val PERMISSION_RECHECK_COUNT = 3
-private const val PERMISSION_RECHECK_DELAY_MS = 220L
-
-private enum class Screen {
-    PERMISSIONS,
-    JOURNEY,
-    STORYBOOK,
-    INTRO,
-    STORY_UNLOCK
-}
 
 @Composable
 fun AppRouter(innerPadding: PaddingValues) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
     val lifecycleOwner = LocalLifecycleOwner.current
 
     val healthConnectManager = remember { HealthConnectManager(context) }
     val storyRepository = remember { StoryRepository(context) }
 
-    var screen by remember { mutableStateOf<Screen?>(null) }
-    var introSegmentId by remember { mutableStateOf<Int?>(null) }
-    var unreadUnlockSegmentIds by remember { mutableStateOf<List<Int>>(emptyList()) }
-    var hasStoryNotification by remember { mutableStateOf(false) }
-    var returnScreenAfterStoryUnlock by remember { mutableStateOf(Screen.JOURNEY) }
+    val activity = context as MainActivity
+    val appRouterViewModel = remember(activity, healthConnectManager, storyRepository) {
+        ViewModelProvider(
+            activity,
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    @Suppress("UNCHECKED_CAST")
+                    return AppRouterViewModel(
+                        healthConnectManager = healthConnectManager,
+                        storyRepository = storyRepository
+                    ) as T
+                }
+            }
+        )[AppRouterViewModel::class.java]
+    }
+
+    val uiState by appRouterViewModel.uiState.collectAsState()
 
     fun hasBackgroundPermission(): Boolean {
         return ContextCompat.checkSelfPermission(context, BACKGROUND_PERMISSION) ==
                 PackageManager.PERMISSION_GRANTED
     }
 
-    var onBackgroundPermissionResult: (() -> Unit)? = null
-
     val bgLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) {
-        onBackgroundPermissionResult?.invoke()
-    }
-
-    fun refreshRoute(
-        afterPermissionRequest: Boolean = false,
-        afterBackgroundPermissionRequest: Boolean = false
-    ) {
-        val previousScreen = screen
-        screen = null
-        scope.launch {
-            var hasPermission = healthConnectManager.hasAllPermissions()
-            if (afterPermissionRequest && !hasPermission) {
-                repeat(PERMISSION_RECHECK_COUNT) {
-                    delay(PERMISSION_RECHECK_DELAY_MS)
-                    hasPermission = healthConnectManager.hasAllPermissions()
-                    if (hasPermission) return@repeat
-                }
-            }
-
-            if (!hasPermission) {
-                introSegmentId = null
-                unreadUnlockSegmentIds = emptyList()
-                hasStoryNotification = false
-                screen = Screen.PERMISSIONS
-                return@launch
-            }
-
-            healthConnectManager.onPermissionsGranted()
-            val hasBackgroundPermission = hasBackgroundPermission()
-            if (!hasBackgroundPermission && !afterBackgroundPermissionRequest) {
-                bgLauncher.launch(BACKGROUND_PERMISSION)
-                return@launch
-            }
-
-            val intro = storyRepository.getIntroSegmentIfUnreadUnlocked()
-            introSegmentId = intro?.id
-            if (intro != null) {
-                hasStoryNotification = true
-                screen = Screen.INTRO
-                return@launch
-            }
-
-            hasStoryNotification = storyRepository.hasUnlockedUnreadSegments()
-            if (previousScreen == Screen.STORY_UNLOCK) {
-                unreadUnlockSegmentIds = storyRepository.getUnlockedUnreadSegments().map { it.id }
-            }
-
-            screen = when (previousScreen) {
-                Screen.STORYBOOK -> Screen.STORYBOOK
-                Screen.STORY_UNLOCK -> if (unreadUnlockSegmentIds.isNotEmpty()) Screen.STORY_UNLOCK else Screen.JOURNEY
-                else -> Screen.JOURNEY
-            }
-        }
-    }
-
-    fun openStoryDestinationFromNavigation() {
-        val currentContentScreen = if (screen == Screen.STORYBOOK) Screen.STORYBOOK else Screen.JOURNEY
-        scope.launch {
-            val unreadSegments = storyRepository.getUnlockedUnreadSegments()
-            hasStoryNotification = unreadSegments.isNotEmpty()
-
-            if (unreadSegments.isNotEmpty()) {
-                unreadUnlockSegmentIds = unreadSegments.map { it.id }
-                returnScreenAfterStoryUnlock = currentContentScreen
-                screen = Screen.STORY_UNLOCK
-            } else {
-                unreadUnlockSegmentIds = emptyList()
-                screen = Screen.STORYBOOK
-            }
-        }
-    }
-
-    onBackgroundPermissionResult = {
-        refreshRoute(afterBackgroundPermissionRequest = true)
+        appRouterViewModel.onBackgroundPermissionResult(
+            hasBackgroundPermission = hasBackgroundPermission()
+        )
     }
 
     val permLauncher = rememberLauncherForActivityResult(
         healthConnectManager.requestPermissionsActivityContract()
     ) {
-        refreshRoute(afterPermissionRequest = true)
+        appRouterViewModel.onPermissionsResult(
+            hasBackgroundPermission = hasBackgroundPermission()
+        )
+    }
+
+    LaunchedEffect(appRouterViewModel) {
+        appRouterViewModel.effects.collect { effect ->
+            when (effect) {
+                AppRouterEffect.RequestBackgroundPermission -> {
+                    bgLauncher.launch(BACKGROUND_PERMISSION)
+                }
+            }
+        }
     }
 
     LaunchedEffect(Unit) {
         DatabaseProvider.ensureDefaults(context)
-        refreshRoute()
+        appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
     }
 
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            refreshRoute()
+            appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
         }
     }
 
@@ -168,20 +110,20 @@ fun AppRouter(innerPadding: PaddingValues) {
         .fillMaxSize()
         .padding(innerPadding)
 
-    when (screen) {
+    when (uiState.screen) {
         null -> NeutralLoadingScreen(
             modifier = contentModifier
         )
 
-        Screen.PERMISSIONS -> PermissionsScreen(
+        AppRouteScreen.PERMISSIONS -> PermissionsScreen(
             modifier = contentModifier,
             onGrantPermissions = {
                 permLauncher.launch(healthConnectManager.requiredPermissions())
             }
         )
 
-        Screen.INTRO -> {
-            val segmentId = introSegmentId
+        AppRouteScreen.INTRO -> {
+            val segmentId = uiState.introSegmentId
             if (segmentId != null) {
                 StoryUnlockScreen(
                     modifier = contentModifier,
@@ -189,62 +131,53 @@ fun AppRouter(innerPadding: PaddingValues) {
                     onSegmentViewed = {},
                     showForwardArrow = false,
                     onContinue = {
-                        scope.launch {
-                            storyRepository.markAsRead(segmentId)
-                            screen = Screen.JOURNEY
-                        }
+                        appRouterViewModel.onIntroContinue()
                     }
                 )
             } else {
                 LaunchedEffect(Unit) {
-                    refreshRoute()
+                    appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
                 }
             }
         }
 
-        Screen.STORY_UNLOCK -> {
-            if (unreadUnlockSegmentIds.isNotEmpty()) {
+        AppRouteScreen.STORY_UNLOCK -> {
+            if (uiState.unreadUnlockSegmentIds.isNotEmpty()) {
                 StoryUnlockScreen(
                     modifier = contentModifier,
-                    storySegmentIds = unreadUnlockSegmentIds,
+                    storySegmentIds = uiState.unreadUnlockSegmentIds,
                     onSegmentViewed = { segmentId ->
-                        scope.launch {
-                            storyRepository.markAsRead(segmentId)
-                            hasStoryNotification = storyRepository.hasUnlockedUnreadSegments()
-                        }
+                        appRouterViewModel.onStoryUnlockSegmentViewed(segmentId)
                     },
                     showForwardArrow = true,
                     onContinue = {
-                        scope.launch {
-                            hasStoryNotification = storyRepository.hasUnlockedUnreadSegments()
-                            screen = returnScreenAfterStoryUnlock
-                        }
+                        appRouterViewModel.onStoryUnlockContinue()
                     }
                 )
             } else {
                 LaunchedEffect(Unit) {
-                    screen = returnScreenAfterStoryUnlock
+                    appRouterViewModel.onStoryUnlockContinue()
                 }
             }
         }
 
-        Screen.JOURNEY,
-        Screen.STORYBOOK -> {
+        AppRouteScreen.JOURNEY,
+        AppRouteScreen.STORYBOOK -> {
             Box(modifier = contentModifier) {
-                when (screen) {
-                    Screen.JOURNEY -> JourneyScreen(
+                when (uiState.screen) {
+                    AppRouteScreen.JOURNEY -> JourneyScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(bottom = 56.dp),
                         onPermissionsRevoked = {
-                            refreshRoute()
+                            appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
                         },
                         onPotentialIntroUnlocked = {
-                            refreshRoute()
+                            appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
                         }
                     )
 
-                    Screen.STORYBOOK -> StorybookScreen(
+                    AppRouteScreen.STORYBOOK -> StorybookScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(bottom = 56.dp)
@@ -254,9 +187,9 @@ fun AppRouter(innerPadding: PaddingValues) {
                 }
 
                 BottomNavigationBar(
-                    onJourneyClick = { screen = Screen.JOURNEY },
-                    onStorybookClick = { openStoryDestinationFromNavigation() },
-                    hasStorybookNotification = hasStoryNotification,
+                    onJourneyClick = { appRouterViewModel.onJourneySelected() },
+                    onStorybookClick = { appRouterViewModel.openStoryDestinationFromNavigation() },
+                    hasStorybookNotification = uiState.hasStoryNotification,
                     modifier = Modifier.align(Alignment.BottomCenter)
                 )
             }
