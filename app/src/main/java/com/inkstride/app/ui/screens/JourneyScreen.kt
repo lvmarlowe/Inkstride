@@ -20,7 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
@@ -36,7 +35,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.inkstride.app.data.database.DatabaseProvider
@@ -94,20 +92,24 @@ fun JourneyScreen(
         }
     }
 
+    fun applySnapshot(result: StepSyncResult.Success) {
+        hasPermission = true
+        dayNumber = result.snapshot.dayNumber
+        todayDistance = result.snapshot.todayDistance
+        totalDistance = result.snapshot.totalDistance
+        nextMilestoneDistance = result.snapshot.nextMilestoneDistance
+        distanceUnit = result.snapshot.distanceUnit
+
+        if (result.snapshot.introUnlocked) {
+            onPotentialIntroUnlocked()
+        }
+    }
+
     suspend fun sync(showFeedback: Boolean, trigger: StepSyncTrigger) {
         val result = StepSyncCoordinator.syncNow(context, trigger)
         when (result) {
             is StepSyncResult.Success -> {
-                hasPermission = true
-                dayNumber = result.snapshot.dayNumber
-                todayDistance = result.snapshot.todayDistance
-                totalDistance = result.snapshot.totalDistance
-                nextMilestoneDistance = result.snapshot.nextMilestoneDistance
-                distanceUnit = result.snapshot.distanceUnit
-
-                if (result.snapshot.introUnlocked) {
-                    onPotentialIntroUnlocked()
-                }
+                applySnapshot(result)
 
                 if (showFeedback) {
                     flash(true, "Synced")
@@ -118,19 +120,19 @@ fun JourneyScreen(
                 hasPermission = false
                 onPermissionsRevoked()
                 if (showFeedback) {
-                    flash(false, "Permission required")
+                    flash(false, "Permissions required")
                 }
             }
 
             StepSyncResult.SkippedAlreadyRunning -> {
                 if (showFeedback) {
-                    flash(true, "Sync already running")
+                    flash(true, "Syncing")
                 }
             }
 
             StepSyncResult.QueuedForRerun -> {
                 if (showFeedback) {
-                    flash(true, "Refresh queued")
+                    flash(true, "Sync queued")
                 }
             }
 
@@ -148,16 +150,7 @@ fun JourneyScreen(
             val result = StepSyncCoordinator.syncNow(context, StepSyncTrigger.AUTOMATIC)
             when (result) {
                 is StepSyncResult.Success -> {
-                    hasPermission = true
-                    dayNumber = result.snapshot.dayNumber
-                    todayDistance = result.snapshot.todayDistance
-                    totalDistance = result.snapshot.totalDistance
-                    nextMilestoneDistance = result.snapshot.nextMilestoneDistance
-                    distanceUnit = result.snapshot.distanceUnit
-
-                    if (result.snapshot.introUnlocked) {
-                        onPotentialIntroUnlocked()
-                    }
+                    applySnapshot(result)
                     return
                 }
 
@@ -221,8 +214,6 @@ fun JourneyScreen(
     )
 
     LaunchedEffect(Unit) {
-        DatabaseProvider.ensureDefaults(context)
-
         hasPermission = healthConnectManager.hasAllPermissions()
         if (hasPermission) {
             healthConnectManager.onPermissionsGranted()
@@ -250,51 +241,45 @@ fun JourneyScreen(
         }
     }
 
-    DisposableEffect(hasPermission, lifecycleOwner) {
-        if (!hasPermission) return@DisposableEffect onDispose { }
-
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                scope.launch {
-                    sync(showFeedback = false, trigger = StepSyncTrigger.AUTOMATIC)
-                }
-            }
-        }
-
-        lifecycleOwner.lifecycle.addObserver(observer)
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(observer)
-        }
-    }
-
-    if (loading) {
+    if (loading || refreshing) {
         NeutralLoadingScreen(modifier = modifier)
         return
     }
 
-    val pullModifier = modifier.pullRefresh(pullState)
-
-    Surface(modifier = pullModifier.fillMaxSize(), color = Color.Black) {
-        Box(modifier = Modifier.fillMaxSize()) {
+    Surface(modifier = modifier.fillMaxSize(), color = Color.Black) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pullRefresh(pullState)
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 24.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.Start
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Day $dayNumber",
-                    style = MaterialTheme.typography.headlineMedium,
+                    text = "Journey",
+                    style = MaterialTheme.typography.headlineLarge,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
 
-                Spacer(modifier = Modifier.height(40.dp))
+                if (hasPermission) {
+                    Spacer(modifier = Modifier.height(14.dp))
+                    Text(
+                        text = "Day $dayNumber",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = Color.White
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(28.dp))
 
                 Text(
-                    "Today",
+                    "Today's distance",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White
                 )
@@ -313,7 +298,7 @@ fun JourneyScreen(
                 Spacer(modifier = Modifier.height(22.dp))
 
                 Text(
-                    "Total",
+                    "Total distance",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White
                 )
@@ -348,7 +333,7 @@ fun JourneyScreen(
                     color = Color.White
                 )
 
-                Spacer(modifier = Modifier.height(240.dp))
+                Spacer(modifier = Modifier.height(120.dp))
             }
 
             AnimatedVisibility(
