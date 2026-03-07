@@ -90,7 +90,9 @@ object StepSyncCoordinator {
                 val milestoneEngine = MilestoneEngine(context)
                 milestoneEngine.checkAndUnlockForDistance(totalDistance)
 
-                val nextMilestone = database.milestoneDao().getNextUnreached(totalDistance)
+                val milestoneDao = database.milestoneDao()
+                val nextMilestone = milestoneDao.getNextUnreached(totalDistance)
+                val latestReachedMilestone = milestoneDao.getLatestReached(totalDistance)
                 val nextMilestoneDistance = progressCalculator.roundDistance(
                     progressCalculator.getRemainingDistance(
                         currentDistance = totalDistance,
@@ -113,7 +115,8 @@ object StepSyncCoordinator {
                         totalDistance = totalDistance,
                         nextMilestoneDistance = nextMilestoneDistance,
                         distanceUnit = distanceUnit,
-                        introUnlocked = introUnlocked
+                        introUnlocked = introUnlocked,
+                        currentAreaName = latestReachedMilestone?.areaName.orEmpty()
                     )
                 )
             }
@@ -138,7 +141,8 @@ data class StepSyncSnapshot(
     val totalDistance: Double,
     val nextMilestoneDistance: Double,
     val distanceUnit: DistanceUnit,
-    val introUnlocked: Boolean
+    val introUnlocked: Boolean,
+    val currentAreaName: String
 )
 
 sealed interface StepSyncResult {

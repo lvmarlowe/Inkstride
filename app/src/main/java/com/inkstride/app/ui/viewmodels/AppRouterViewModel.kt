@@ -29,6 +29,7 @@ data class AppRouterUiState(
     val introSegmentId: Int? = null,
     val unreadUnlockSegmentIds: List<Int> = emptyList(),
     val hasStoryNotification: Boolean = false,
+    val unlockAreaName: String = "",
     val returnScreenAfterStoryUnlock: AppRouteScreen = AppRouteScreen.JOURNEY
 )
 
@@ -75,7 +76,8 @@ class AppRouterViewModel(
                         screen = AppRouteScreen.PERMISSIONS,
                         introSegmentId = null,
                         unreadUnlockSegmentIds = emptyList(),
-                        hasStoryNotification = false
+                        hasStoryNotification = false,
+                        unlockAreaName = ""
                     )
                 }
                 return@launch
@@ -121,6 +123,10 @@ class AppRouterViewModel(
                 unreadUnlockSegmentIdsFromDb.isNotEmpty()
             }
 
+            val unlockAreaName = unreadUnlockSegmentIds.firstOrNull()?.let { segmentId ->
+                storyRepository.getAreaNameForStorySegment(segmentId)
+            }.orEmpty()
+
             val destination = when (previousScreen) {
                 AppRouteScreen.STORYBOOK -> AppRouteScreen.STORYBOOK
                 AppRouteScreen.STORY_UNLOCK -> {
@@ -135,6 +141,7 @@ class AppRouterViewModel(
                     introSegmentId = null,
                     unreadUnlockSegmentIds = unreadUnlockSegmentIds,
                     hasStoryNotification = hasStoryNotification,
+                    unlockAreaName = unlockAreaName,
                     screen = destination
                 )
             }
@@ -171,6 +178,7 @@ class AppRouterViewModel(
                         hasStoryNotification = true,
                         unreadUnlockSegmentIds = unreadSegments.map { segment -> segment.id },
                         returnScreenAfterStoryUnlock = currentContentScreen,
+                        unlockAreaName = storyRepository.getAreaNameForStorySegment(unreadSegments.first().id),
                         screen = AppRouteScreen.STORY_UNLOCK
                     )
                 }
@@ -179,6 +187,7 @@ class AppRouterViewModel(
                     it.copy(
                         hasStoryNotification = false,
                         unreadUnlockSegmentIds = emptyList(),
+                        unlockAreaName = "",
                         screen = AppRouteScreen.STORYBOOK
                     )
                 }
@@ -211,6 +220,7 @@ class AppRouterViewModel(
                 it.copy(
                     hasStoryNotification = hasUnreadSegments,
                     unreadUnlockSegmentIds = emptyList(),
+                    unlockAreaName = "",
                     screen = it.returnScreenAfterStoryUnlock
                 )
             }

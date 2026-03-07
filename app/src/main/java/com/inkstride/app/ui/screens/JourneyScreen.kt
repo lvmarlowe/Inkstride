@@ -80,6 +80,7 @@ fun JourneyScreen(
     var todayDistance by remember { mutableDoubleStateOf(0.0) }
     var nextMilestoneDistance by remember { mutableDoubleStateOf(0.0) }
     var distanceUnit by remember { mutableStateOf(DistanceUnit.MILE) }
+    var journeyAreaName by remember { mutableStateOf("") }
 
     var showMsg by remember { mutableStateOf(false) }
     var msgOk by remember { mutableStateOf(true) }
@@ -102,6 +103,7 @@ fun JourneyScreen(
         totalDistance = result.snapshot.totalDistance
         nextMilestoneDistance = result.snapshot.nextMilestoneDistance
         distanceUnit = result.snapshot.distanceUnit
+        journeyAreaName = result.snapshot.currentAreaName
 
         if (result.snapshot.introUnlocked) {
             onPotentialIntroUnlocked()
@@ -181,7 +183,9 @@ fun JourneyScreen(
         val todayKey = LocalDate.now().toString()
         todayDistance = database.dailyStatsDao().getByDate(todayKey)?.distanceToday ?: 0.0
 
-        val nextMilestone = database.milestoneDao().getNextUnreached(totalDistance)
+        val milestoneDao = database.milestoneDao()
+        val nextMilestone = milestoneDao.getNextUnreached(totalDistance)
+        journeyAreaName = milestoneDao.getLatestReached(totalDistance)?.areaName.orEmpty()
         val progressCalculator = ProgressCalculator()
         nextMilestoneDistance = progressCalculator.roundDistance(
             progressCalculator.getRemainingDistance(
@@ -270,11 +274,20 @@ fun JourneyScreen(
                         letterSpacing = 0.1.em,
                         modifier = Modifier.padding(top = 6.dp)
                     )
+                    if (journeyAreaName.isNotBlank()) {
+                        Text(
+                            text = journeyAreaName,
+                            color = Color(0x8CFFFFFF),
+                            fontSize = 15.sp,
+                            letterSpacing = 0.1.em,
+                            modifier = Modifier.padding(top = 2.dp)
+                        )
+                    }
 
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 12.dp)
+                            .padding(top = 10.dp)
                             .height(1.dp)
                             .background(Color(0x0DFFFFFF))
                     )
@@ -357,7 +370,7 @@ private fun StatBlock(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 18.dp),
+            .padding(vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -370,9 +383,9 @@ private fun StatBlock(
         Text(
             text = value,
             color = Color.White,
-            fontSize = 64.sp,
+            fontSize = 60.sp,
             fontWeight = FontWeight.Normal,
-            lineHeight = (64 * 1.05).sp
+            lineHeight = (60 * 1.05).sp
         )
         Text(
             text = unit,

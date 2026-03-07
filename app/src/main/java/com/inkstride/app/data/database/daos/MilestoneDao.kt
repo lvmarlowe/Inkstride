@@ -17,6 +17,17 @@ interface MilestoneDao {
     @Query("SELECT * FROM milestone ORDER BY distanceMarker ASC")
     suspend fun getAll(): List<Milestone>
 
+    @Query(
+        """
+        SELECT m.area_name
+        FROM milestone m
+        INNER JOIN story_segment s ON s.milestoneId = m.id
+        WHERE s.id = :storySegmentId
+        LIMIT 1
+        """
+    )
+    suspend fun getAreaNameByStorySegmentId(storySegmentId: Int): String?
+
     @Query("SELECT * FROM milestone WHERE distanceMarker <= :currentDistance ORDER BY distanceMarker DESC LIMIT 1")
     suspend fun getLatestReached(currentDistance: Double): Milestone?
 

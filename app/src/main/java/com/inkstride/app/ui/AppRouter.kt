@@ -150,6 +150,7 @@ fun AppRouter(innerPadding: PaddingValues) {
                         appRouterViewModel.onStoryUnlockSegmentViewed(segmentId)
                     },
                     showForwardArrow = true,
+                    title = "A New Memory Made",
                     onContinue = {
                         appRouterViewModel.onStoryUnlockContinue()
                     }

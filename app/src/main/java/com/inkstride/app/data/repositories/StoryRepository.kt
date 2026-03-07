@@ -9,6 +9,7 @@ class StoryRepository(context: Context) {
     private val database = DatabaseProvider.getDatabase(context)
     private val storySegmentDao = database.storySegmentDao()
     private val unlockStateDao = database.unlockStateDao()
+    private val milestoneDao = database.milestoneDao()
 
     suspend fun getIntroSegmentIfUnreadUnlocked(): StorySegment? {
         val milestones = database.milestoneDao().getAll()
@@ -31,6 +32,10 @@ class StoryRepository(context: Context) {
 
     suspend fun hasUnlockedUnreadSegments(): Boolean {
         return unlockStateDao.hasAnyUnlockedUnread()
+    }
+
+    suspend fun getAreaNameForStorySegment(storySegmentId: Int): String {
+        return milestoneDao.getAreaNameByStorySegmentId(storySegmentId).orEmpty()
     }
 
     suspend fun markAsRead(storySegmentId: Int) {

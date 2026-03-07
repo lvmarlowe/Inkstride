@@ -50,25 +50,30 @@ object DatabaseProvider {
             ?: Settings.DEFAULT_CHARACTER_NAME
 
         val seededStoryData = listOf(
-            Triple(0.0, true, "Hello, $characterName!"),
-            Triple(6.0, true, "[main story segment 1]"),
-            Triple(13.0, true, "[main story segment 2]"),
-            Triple(22.0, true, "[main story segment 3]"),
-            Triple(34.0, true, "[main story segment 4]"),
-            Triple(50.0, true, "[main story segment 5]"),
-            Triple(71.0, true, "[main story segment 6]"),
-            Triple(100.0, true, "[act 1 complete]")
+            StorySeed(0.0, true, "The Colorless Clearing", "Hello, $characterName!"),
+            StorySeed(6.0, true, "Thistlewick Grove", "[main story segment 1]"),
+            StorySeed(13.0, true, "The Wandering River", "[main story segment 2]"),
+            StorySeed(22.0, true, "Glowcap Marsh", "[main story segment 3]"),
+            StorySeed(34.0, true, "Crystal Caverns", "[main story segment 4]"),
+            StorySeed(50.0, true, "Buttercup Meadow", "[main story segment 5]"),
+            StorySeed(71.0, true, "Dappleleaf Canopy", "[main story segment 6]"),
+            StorySeed(100.0, true, "", "[act 1 complete]")
         )
 
-        for ((distanceMarker, isMajor, text) in seededStoryData) {
+        for ((distanceMarker, isMajor, areaName, text) in seededStoryData) {
             val milestone = milestoneDao.getByDistanceMarker(distanceMarker)
             val milestoneId = milestone?.id
                 ?: milestoneDao.insert(
                     Milestone(
                         distanceMarker = distanceMarker,
-                        isMajor = isMajor
+                        isMajor = isMajor,
+                        areaName = areaName
                     )
                 ).toInt()
+
+            if (milestone != null && milestone.areaName != areaName) {
+                milestoneDao.insert(milestone.copy(areaName = areaName))
+            }
 
             val existingSegment = storySegmentDao.getByMilestoneId(milestoneId).firstOrNull()
             if (existingSegment == null) {
@@ -83,6 +88,13 @@ object DatabaseProvider {
             }
         }
     }
+
+    private data class StorySeed(
+        val distanceMarker: Double,
+        val isMajor: Boolean,
+        val areaName: String,
+        val text: String
+    )
 
     private suspend fun ensureSeededUnlockStates(database: InkstrideDatabase) {
         val unlockStateDao = database.unlockStateDao()
