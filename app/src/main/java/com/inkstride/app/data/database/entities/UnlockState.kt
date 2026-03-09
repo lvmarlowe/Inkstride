@@ -16,7 +16,8 @@ import androidx.room.PrimaryKey
         )
     ],
     indices = [
-        Index(value = ["storySegmentId"], unique = true)
+        Index(value = ["storySegmentId"], unique = true),
+        Index(value = ["unlocked", "read", "storySegmentId"])
     ]
 )
 data class UnlockState(

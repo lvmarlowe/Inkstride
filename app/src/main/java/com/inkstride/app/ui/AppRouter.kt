@@ -130,6 +130,7 @@ fun AppRouter(innerPadding: PaddingValues) {
                     storySegmentIds = listOf(segmentId),
                     onSegmentViewed = {},
                     showForwardArrow = false,
+                    title = "A New Memory Made",
                     onContinue = {
                         appRouterViewModel.onIntroContinue()
                     }

@@ -18,7 +18,7 @@ object DatabaseProvider {
                 InkstrideDatabase::class.java,
                 "inkstride_database"
             )
-                .fallbackToDestructiveMigration(true)
+                .addMigrations(DatabaseMigrator.MIGRATION_6_7)
                 .build()
             instance = newInstance
             newInstance

@@ -43,6 +43,12 @@ android {
     }
 }
 
+ksp {
+    arg("room.schemaLocation", "$buildDir/generated/room/schemas")
+    arg("room.incremental", "true")
+    arg("room.expandProjection", "true")
+}
+
 dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.androidx.core.ktx)
