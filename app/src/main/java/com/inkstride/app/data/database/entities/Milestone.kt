@@ -14,5 +14,7 @@ data class Milestone(
     val distanceMarker: Double,
     val isMajor: Boolean = false,
     @ColumnInfo(name = "area_name")
-    val areaName: String = ""
+    val areaName: String = "",
+    @ColumnInfo(name = "is_persistent")
+    val isPersistent: Boolean = true
 )

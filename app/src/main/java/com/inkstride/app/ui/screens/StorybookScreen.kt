@@ -26,7 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.inkstride.app.data.repositories.StoryRepository
+import com.inkstride.app.data.repositories.StorybookSegment
 import com.inkstride.app.ui.components.NeutralLoadingScreen
+import com.inkstride.app.ui.text.StoryTextFormatter
 import java.util.Locale
 
 @Composable
@@ -34,14 +36,14 @@ fun StorybookScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    var readSegments by remember { mutableStateOf<List<String>?>(null) }
+    var readSegments by remember { mutableStateOf<List<StorybookSegment>?>(null) }
 
     LaunchedEffect(Unit) {
         val storyRepository = StoryRepository(context)
         readSegments = storyRepository
-            .getReadUnlockedSegments()
-            .map { it.text.trim() }
-            .filter { it.isNotBlank() }
+            .getReadUnlockedStorybookSegments()
+            .map { it.copy(text = it.text.trim()) }
+            .filter { it.text.isNotBlank() }
     }
 
     val segments = readSegments
@@ -70,8 +72,7 @@ fun StorybookScreen(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = ("MEMORIES MADE" +
-                            "").uppercase(Locale.US),
+                    text = "MEMORIES MADE",
                     color = Color(0x8CFFFFFF),
                     fontSize = 15.sp,
                     letterSpacing = 0.1.em,
@@ -105,8 +106,20 @@ fun StorybookScreen(
                     )
                 } else {
                     segments.forEachIndexed { index, segment ->
+                        segment.persistentAreaName
+                            ?.takeIf { it.isNotBlank() }
+                            ?.let { areaName ->
+                                Text(
+                                    text = areaName.uppercase(Locale.US),
+                                    color = Color(0x8CFFFFFF),
+                                    fontSize = 13.sp,
+                                    letterSpacing = 0.08.em,
+                                    modifier = Modifier.padding(bottom = 6.dp)
+                                )
+                            }
+
                         Text(
-                            text = segment,
+                            text = StoryTextFormatter.parseItalicMarkup(segment.text),
                             color = Color(0xB3FFFFFF),
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Normal,

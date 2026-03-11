@@ -2,6 +2,7 @@ package com.inkstride.app.data.database
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.withTransaction
 import com.inkstride.app.data.database.entities.Milestone
 import com.inkstride.app.data.database.entities.Settings
 import com.inkstride.app.data.database.entities.StorySegment
@@ -18,7 +19,10 @@ object DatabaseProvider {
                 InkstrideDatabase::class.java,
                 "inkstride_database"
             )
-                .addMigrations(DatabaseMigrator.MIGRATION_6_7)
+                .addMigrations(
+                    DatabaseMigrator.MIGRATION_6_7,
+                    DatabaseMigrator.MIGRATION_7_8
+                )
                 .build()
             instance = newInstance
             newInstance
@@ -28,8 +32,13 @@ object DatabaseProvider {
     suspend fun ensureDefaults(context: Context) {
         val database = getDatabase(context)
         ensureDefaultSettings(database)
-        ensureSeededMilestonesAndStory(database)
-        ensureSeededUnlockStates(database)
+
+        val characterName = database.settingsDao().get()?.normalized()?.characterName
+            ?: Settings.DEFAULT_CHARACTER_NAME
+        val seededStoryData = StorySeedDataSource.load(context, characterName)
+
+        ensureSeededMilestonesAndStory(database, seededStoryData)
+        ensureSeededUnlockStates(database, seededStoryData)
     }
 
     private suspend fun ensureDefaultSettings(database: InkstrideDatabase) {
@@ -42,77 +51,93 @@ object DatabaseProvider {
         }
     }
 
-    private suspend fun ensureSeededMilestonesAndStory(database: InkstrideDatabase) {
-        val milestoneDao = database.milestoneDao()
-        val storySegmentDao = database.storySegmentDao()
+    private suspend fun ensureSeededMilestonesAndStory(
+        database: InkstrideDatabase,
+        seededStoryData: List<StorySeedEntry>
+    ) {
+        database.withTransaction {
+            val milestoneDao = database.milestoneDao()
+            val storySegmentDao = database.storySegmentDao()
 
-        val characterName = database.settingsDao().get()?.normalized()?.characterName
-            ?: Settings.DEFAULT_CHARACTER_NAME
-
-        val seededStoryData = listOf(
-            StorySeed(0.0, true, "The Colorless Clearing", "Hello, $characterName!"),
-            StorySeed(6.0, true, "Thistlewick Grove", "[main story segment 1]"),
-            StorySeed(13.0, true, "The Wandering River", "[main story segment 2]"),
-            StorySeed(22.0, true, "Glowcap Marsh", "[main story segment 3]"),
-            StorySeed(34.0, true, "Crystal Caverns", "[main story segment 4]"),
-            StorySeed(50.0, true, "Buttercup Meadow", "[main story segment 5]"),
-            StorySeed(71.0, true, "Dappleleaf Canopy", "[main story segment 6]"),
-            StorySeed(100.0, true, "", "[act 1 complete]")
-        )
-
-        for ((distanceMarker, isMajor, areaName, text) in seededStoryData) {
-            val milestone = milestoneDao.getByDistanceMarker(distanceMarker)
-            val milestoneId = milestone?.id
-                ?: milestoneDao.insert(
-                    Milestone(
-                        distanceMarker = distanceMarker,
-                        isMajor = isMajor,
-                        areaName = areaName
-                    )
-                ).toInt()
-
-            if (milestone != null && milestone.areaName != areaName) {
-                milestoneDao.insert(milestone.copy(areaName = areaName))
+            if (seededStoryData.isNotEmpty()) {
+                milestoneDao.deleteByDistanceMarkerNotIn(
+                    seededStoryData.map { it.distanceMarker }
+                )
             }
 
-            val existingSegment = storySegmentDao.getByMilestoneId(milestoneId).firstOrNull()
-            if (existingSegment == null) {
-                storySegmentDao.insert(
-                    StorySegment(
-                        milestoneId = milestoneId,
-                        text = text
+            for ((distanceMarker, isPersistent, isMajor, areaName, text, _, _) in seededStoryData) {
+                val milestone = milestoneDao.getByDistanceMarker(distanceMarker)
+                val milestoneId = milestone?.id
+                    ?: milestoneDao.insert(
+                        Milestone(
+                            distanceMarker = distanceMarker,
+                            isPersistent = isPersistent,
+                            isMajor = isMajor,
+                            areaName = areaName
+                        )
+                    ).toInt()
+
+                if (
+                    milestone != null && (
+                            milestone.areaName != areaName ||
+                                    milestone.isMajor != isMajor ||
+                                    milestone.isPersistent != isPersistent
+                            )
+                ) {
+                    milestoneDao.insert(
+                        milestone.copy(
+                            areaName = areaName,
+                            isMajor = isMajor,
+                            isPersistent = isPersistent
+                        )
                     )
-                )
-            } else if (existingSegment.text != text) {
-                storySegmentDao.insert(existingSegment.copy(text = text))
+                }
+
+                val existingSegment = storySegmentDao.getByMilestoneId(milestoneId).firstOrNull()
+                if (existingSegment == null) {
+                    storySegmentDao.insert(
+                        StorySegment(
+                            milestoneId = milestoneId,
+                            text = text
+                        )
+                    )
+                } else if (existingSegment.text != text) {
+                    storySegmentDao.insert(existingSegment.copy(text = text))
+                }
             }
         }
     }
 
-    private data class StorySeed(
-        val distanceMarker: Double,
-        val isMajor: Boolean,
-        val areaName: String,
-        val text: String
-    )
-
-    private suspend fun ensureSeededUnlockStates(database: InkstrideDatabase) {
+    private suspend fun ensureSeededUnlockStates(
+        database: InkstrideDatabase,
+        seededStoryData: List<StorySeedEntry>
+    ) {
         val unlockStateDao = database.unlockStateDao()
         val storySegmentDao = database.storySegmentDao()
+        val milestoneDao = database.milestoneDao()
+
+        val defaultsBySegmentId = mutableMapOf<Int, Pair<Boolean, Boolean>>()
+        for (seed in seededStoryData) {
+            val milestone = milestoneDao.getByDistanceMarker(seed.distanceMarker) ?: continue
+            val segmentId = storySegmentDao.getByMilestoneId(milestone.id).firstOrNull()?.id ?: continue
+            val normalizedReadDefault = if (seed.unlockedDefault) seed.readDefault else false
+            defaultsBySegmentId[segmentId] = seed.unlockedDefault to normalizedReadDefault
+        }
 
         val segments = storySegmentDao.getAll()
         if (segments.isEmpty()) return
 
         val missingStates = segments.mapNotNull { seg ->
             val existing = unlockStateDao.getByStorySegmentId(seg.id)
-            if (existing == null) {
+            if (existing != null) {
+                null
+            } else {
+                val defaults = defaultsBySegmentId[seg.id] ?: (false to false)
                 UnlockState(
                     storySegmentId = seg.id,
-                    unlocked = false,
-                    read = false
+                    unlocked = defaults.first,
+                    read = defaults.second
                 )
-            } else {
-                null
             }
         }
 

@@ -222,4 +222,13 @@ object DatabaseMigrator {
             )
         }
     }
+
+
+    val MIGRATION_7_8 = object : Migration(7, 8) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL(
+                "ALTER TABLE `milestone` ADD COLUMN `is_persistent` INTEGER NOT NULL DEFAULT 1"
+            )
+        }
+    }
 }

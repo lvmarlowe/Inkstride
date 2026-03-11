@@ -26,6 +26,20 @@ class StoryRepository(context: Context) {
         return storySegmentDao.getReadUnlockedOrderedByDistance()
     }
 
+    suspend fun getReadUnlockedStorybookSegments(): List<StorybookSegment> {
+        return storySegmentDao.getReadUnlockedOrderedByDistance().map { segment ->
+            val milestone = milestoneDao.getById(segment.milestoneId)
+            StorybookSegment(
+                text = segment.text,
+                persistentAreaName = if (milestone?.isPersistent == true) {
+                    milestone.areaName.trim().ifBlank { null }
+                } else {
+                    null
+                }
+            )
+        }
+    }
+
     suspend fun getUnlockedUnreadSegments(): List<StorySegment> {
         return storySegmentDao.getUnlockedUnreadOrderedByDistance()
     }
@@ -42,3 +56,8 @@ class StoryRepository(context: Context) {
         unlockStateDao.markAsRead(storySegmentId)
     }
 }
+
+data class StorybookSegment(
+    val text: String,
+    val persistentAreaName: String?
+)

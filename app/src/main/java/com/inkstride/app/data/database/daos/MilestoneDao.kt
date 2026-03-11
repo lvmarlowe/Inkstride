@@ -28,6 +28,20 @@ interface MilestoneDao {
     )
     suspend fun getAreaNameByStorySegmentId(storySegmentId: Int): String?
 
+    @Query(
+        """
+        SELECT m.area_name
+        FROM milestone m
+        INNER JOIN story_segment s ON s.milestoneId = m.id
+        INNER JOIN unlock_state u ON u.storySegmentId = s.id
+        WHERE u.unlocked = 1
+          AND m.is_persistent = 1
+        ORDER BY m.distanceMarker DESC
+        LIMIT 1
+        """
+    )
+    suspend fun getLatestPersistentUnlockedAreaName(): String?
+
     @Query("SELECT * FROM milestone WHERE distanceMarker <= :currentDistance ORDER BY distanceMarker DESC LIMIT 1")
     suspend fun getLatestReached(currentDistance: Double): Milestone?
 
@@ -39,4 +53,7 @@ interface MilestoneDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(milestones: List<Milestone>)
+
+    @Query("DELETE FROM milestone WHERE distanceMarker NOT IN (:distanceMarkers)")
+    suspend fun deleteByDistanceMarkerNotIn(distanceMarkers: List<Double>)
 }

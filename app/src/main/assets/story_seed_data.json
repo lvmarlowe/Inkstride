@@ -1,0 +1,245 @@
+[
+  {
+    "distanceMarker": 0,
+    "isPersistent": true,
+    "isMajor": true,
+    "areaName": "The Forest's Edge",
+    "text": "You wake at the edge of a forest.\n\nThe bark of the trees is a black so inky it’s like staring into a void. They are bare, stripped of leaves, their branches like cracks in the world. Above, the sky is bleached pale—a faded photograph lost to time.\n\nIt's strangely silent. No birds call. No leaves rustle. No insects buzz. The air is unnaturally still, as if the forest is holding its breath.\n\n<i>You search for a memory. Who am I? Where am I? What happened here?</i>\n\nBut you find nothing.\n\nInstead, a heavy weight settles in your chest. And you feel a pull deep in your bones. A pull towards the forest, like it’s calling to you.\n\nYou have the sudden certainty that the world will stay this way until you fix it. That somewhere in these colorless woods, the silence is waiting for you to break it.\n\nA path cuts through the earth like a jagged scar. Yet under the thick layer of ash, it feels well-worn and familiar.\n\nYou start walking.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 0.73,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "A Shell of the Past",
+    "text": "Pale grey ash coats everything. It clings to your skin. When you touch the trees, the bark lacks the grain and weight of real wood. Instead, it’s brittle and paper-thin. It feels like the memory of wood.\n\nYou continue through the trees.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 1.42,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Pierced Leaf",
+    "text": "You find a dry, gray leaf pinned to a tree trunk by a long, jagged thorn. The thorn is driven through the very center with enough force to splinter the bark.\n\nYou picture someone standing here, driven by a sharp, sudden rage, needing to strike something that couldn't strike back. You imagine them with nowhere else for their anger to go.\n\nYou pull the thorn from the wood and tuck the leaf into your pack, feeling a strange, phantom heat in your palm.\n\nYou continue down the path.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 2.38,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Empty Echo",
+    "text": "You kick up a stone that hits a massive tree trunk, and a hollow echo rings out. It is a low, thin chime, as if from an empty glass. You wonder if the inside of the tree is gone and only the shape remains. If the world is this empty, you wonder what ever filled the space where your memories used to be.\n\nYou press on into the greyness.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 3.51,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Pull of the Mountain",
+    "text": "The trees finally part, revealing the first clear view of the horizon. Far in the distance, a jagged peak looms over the forest. It sits at the very heart of the woods—a towering crown of rock against the blanched sky. A ghostly haze surrounds the summit.\n\nYou continue toward the mountain.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 4.46,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Constricting Canopy",
+    "text": "The path dives back into the deep woods. Here, the skeletal trees grow closer together, their bone-white branches knitting into a dense, sunless ceiling. The air feels colder as the shadows of the woods reclaim the path.\n\nYou walk deeper into the darkness.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 5.58,
+    "isPersistent": true,
+    "isMajor": false,
+    "areaName": "Thistlewick Thicket",
+    "text": "The forest floor vanishes beneath a tangle of grey briars and jagged thorns. Everything here is sharp and interlocking, covered in a frost-like coating of grey dust. Brittle thorned thistles crunch like broken glass under your boots. Every movement creates a dry, cracking sound.\n\nYou push through the thorns.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 6.14,
+    "isPersistent": false,
+    "isMajor": true,
+    "areaName": "Flicker: The Ember in the Ash",
+    "text": "A rustle breaks the silence. Something blurs through the grey thicket—the first movement you’ve seen in these dead woods.\n\nA creature bursts into view, his four sweeping tails kicking up clouds of ash. He has a long, slender snout that twitches as he catches your scent and large, pointed ears that stand tall, flicking at every sound. His face is sharp, lit by eyes that glow like embers. His grin is wide and toothy.\n\n“{{characterName}}! You’re back! You’re finally back!” He circles you wildly, his tails whipping through the air like banners. “I knew you’d come back! I’ve been waiting and waiting!”\n\nYou stagger, the weight in your chest tightening. “I…I’m sorry. I don’t remember.”\n\nThe creature freezes. He tilts his head, his face falling, and then he grins again. “That’s okay! You always were a little spacy.” But as you stare at him blankly, he senses your panic growing. “You don’t remember anything?”\n\nYou shake your head.\n\nFlicker bolts down the path, and you follow.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 7.52,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Hide-and-Seek",
+    "text": "Flicker paces around you as you walk, a blur of restless energy. “Wow, The Unmaking must’ve hit you hard. I’m Flicker! You’re my best friend! We used to play hide-and-seek in these woods every morning. You’d hide in the shadows and hold your breath until I bumped right into you. We’d laugh so hard our sides ached!”\n\nFlicker snorts, a warm sound in the freezing air. “Sometimes you’d worry that I’d give up finding you. I never did.”\n\nFlicker trots ahead, his tails swishing behind him. You match his stride.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 8.61,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Cold Flames",
+    "text": "You look at Flicker, puzzled. “The Unmaking?”\n\nFlicker’s eyes dart toward the jagged mountain on the horizon. “Something terrible happened,” he says, his joy fading for a second. “I was out hunting when I saw grey flames coming from the peak. Not hot flames. Cold ones. They swept through, consuming all the color.”\n\nYou look at the distant peak. The pull in your bones is stronger now, anchored to that gloomy haze. “Do you know what caused it?”\n\nFlicker shakes his head. “Nope! But we’ll figure it out together!”\n\nFlicker bounds over a fallen log, and you follow his lead.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 9.48,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Promise",
+    "text": "Flicker stops at a fork in the path. He grins, his sharp teeth gleaming. “I’ll keep searching for clues while you explore. If I find anything, I’ll remember it for when we meet again!”\n\n“I’ll help,” you promise. “I’ll figure out what happened.”\n\nFlicker’s tails wag excitedly, brushing the ash into small cyclones. “I know you will! You always kept your promises. It’s so good to have you back, {{characterName}}. I missed our morning games so much!”\n\nWith one last yip, Flicker vanishes into the gnarled undergrowth, leaving only a swirl of ash behind.\n\nYou continue, alone once again.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 10.25,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "A Fuller Silence",
+    "text": "The silence returns, but it feels different now. Less empty. The weight in your chest is still there, but your heart feels fuller. You have a name. You have a friend. And somewhere in that hollow forest, there are answers.\n\nYou trudge deeper into the woods.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 11.13,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Inkers’s Smudge",
+    "text": "You stop to catch your breath and look down at your hands. Beneath the layer of grey ash, a dark smudge of ink spreads across your skin. You try to rub it away, but the smudge stays—deep, iridescent, and shimmering with a vitality the forest is lacking.\n\nYou remember Flicker’s stories of the ink trails you used to leave. This ink isn’t something you carry—it’s part of you. It is a rich and vibrant life force in a world of ghosts.\n\nYou pick your way through the skeletal pines.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 11.87,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Twisted Pines",
+    "text": "The trees change as you walk. They are no longer standing straight; they are bent and gnarled, frozen mid-contortion. Their branches reach toward the mountain in tangled spirals, as if pleading. They look like they froze in the middle of a struggle. When you pass them, you hear a faint, high-pitched creak, like the groan of a sinking ship.\n\nYou navigate through the wreckage.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 12.44,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Collapsing Ground",
+    "text": "The ground has thickened into a heavy grey mire. The ash under your feet is now a viscous, oily sludge that clings to your boots. Every step requires more effort, more intent. The Unmaking feels different here, as if the land is collapsing under its own weight.\n\nYou pull yourself through the muck.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 13.12,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Mournful Hum",
+    "text": "A low, vibrating hum rises from the earth. You feel it in your teeth and your chest. It is a dense, stagnant frequency that stops you in your tracks. The air is thick and difficult to breathe. The mountain looms larger now, casting a shadowy gloom over the path ahead.\n\nYou force yourself onward.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 13.89,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Weighted Root",
+    "text": "You find a heavy root segment half-buried in the riverbank's mire. It has grown around a dull, metallic nugget, trapping the heavy weight inside.\n\nYou picture someone letting this sink into the mud, watching as the heaviness pulled it under. You imagine them feeling as if they were drowning under the weight of their own despair. You pull the leaden root from the muck and drop it into your bag. It thuds heavily, and you feel slower under the new weight.\n\nYou walk toward a clearing.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 14.21,
+    "isPersistent": true,
+    "isMajor": false,
+    "areaName": "The Wandering River",
+    "text": "The tree line thins, revealing a wide, sunken valley. Below, the riverbed is filled with a stagnant leaden grey. It sits heavy and unmoving in the valley. You can see the ripples frozen in the thick, still sludge. The pull in your bones points directly toward the bank, where something is moving.\n\nYou descend into the valley.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 14.53,
+    "isPersistent": false,
+    "isMajor": true,
+    "areaName": "[otter area placeholder]",
+    "text": "[otter encounter story placeholder]",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 22.26,
+    "isPersistent": true,
+    "isMajor": false,
+    "areaName": "Glowcap Marsh",
+    "text": "[glowcap marsh story placeholder]",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 22.98,
+    "isPersistent": false,
+    "isMajor": true,
+    "areaName": "[frog area placeholder]",
+    "text": "[frog encounter story placeholder]",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 35.8,
+    "isPersistent": true,
+    "isMajor": false,
+    "areaName": "Crystal Caverns",
+    "text": "[crystal caverns story placeholder]",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 36.37,
+    "isPersistent": false,
+    "isMajor": true,
+    "areaName": "[bat area placeholder]",
+    "text": "[bat encounter story placeholder]",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 50.55,
+    "isPersistent": true,
+    "isMajor": false,
+    "areaName": "Buttercup Meadow",
+    "text": "[buttercup meadow story placeholder]",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 51.66,
+    "isPersistent": false,
+    "isMajor": true,
+    "areaName": "[deer area placeholder]",
+    "text": "[deer encounter story placeholder]",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 71.29,
+    "isPersistent": true,
+    "isMajor": false,
+    "areaName": "Dappleleaf Grove",
+    "text": "[owl encounter story placeholder]",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 100,
+    "isPersistent": true,
+    "isMajor": true,
+    "areaName": "[complete area placeholder]",
+    "text": "[complete story placeholder]",
+    "unlockedDefault": false,
+    "readDefault": false
+  }
+]

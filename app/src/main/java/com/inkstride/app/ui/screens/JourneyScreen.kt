@@ -185,7 +185,7 @@ fun JourneyScreen(
 
         val milestoneDao = database.milestoneDao()
         val nextMilestone = milestoneDao.getNextUnreached(totalDistance)
-        journeyAreaName = milestoneDao.getLatestReached(totalDistance)?.areaName.orEmpty()
+        journeyAreaName = milestoneDao.getLatestPersistentUnlockedAreaName().orEmpty()
         val progressCalculator = ProgressCalculator()
         nextMilestoneDistance = progressCalculator.roundDistance(
             progressCalculator.getRemainingDistance(

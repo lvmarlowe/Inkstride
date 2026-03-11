@@ -92,7 +92,8 @@ object StepSyncCoordinator {
 
                 val milestoneDao = database.milestoneDao()
                 val nextMilestone = milestoneDao.getNextUnreached(totalDistance)
-                val latestReachedMilestone = milestoneDao.getLatestReached(totalDistance)
+                val latestPersistentUnlockedAreaName =
+                    milestoneDao.getLatestPersistentUnlockedAreaName().orEmpty()
                 val nextMilestoneDistance = progressCalculator.roundDistance(
                     progressCalculator.getRemainingDistance(
                         currentDistance = totalDistance,
@@ -116,7 +117,7 @@ object StepSyncCoordinator {
                         nextMilestoneDistance = nextMilestoneDistance,
                         distanceUnit = distanceUnit,
                         introUnlocked = introUnlocked,
-                        currentAreaName = latestReachedMilestone?.areaName.orEmpty()
+                        currentAreaName = latestPersistentUnlockedAreaName
                     )
                 )
             }

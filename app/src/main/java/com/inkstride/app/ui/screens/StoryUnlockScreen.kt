@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material3.Button
@@ -23,10 +25,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.inkstride.app.data.database.DatabaseProvider
+import com.inkstride.app.ui.text.StoryTextFormatter
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -89,6 +92,7 @@ fun StoryUnlockScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .weight(1f)
                     .padding(top = 60.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -172,15 +176,19 @@ fun StoryUnlockScreen(
                     state = pagerState,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f, fill = false),
+                        .weight(1f, fill = true),
                     userScrollEnabled = showForwardArrow && storySegmentIds.size > 1
                 ) { page ->
                     val segmentId = storySegmentIds[page]
                     Text(
-                        text = storyById[segmentId].orEmpty(),
+                        text = StoryTextFormatter.parseItalicMarkup(storyById[segmentId].orEmpty()),
                         color = Color.White,
                         fontSize = 20.sp,
-                        lineHeight = 30.sp
+                        lineHeight = 30.sp,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                            .padding(bottom = 12.dp)
                     )
                 }
             }
@@ -188,7 +196,7 @@ fun StoryUnlockScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 24.dp),
+                    .padding(bottom = 24.dp, top = 12.dp),
                 horizontalArrangement = Arrangement.End
             ) {
                 Button(
