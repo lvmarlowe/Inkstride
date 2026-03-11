@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowForward
+import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -23,6 +23,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -44,8 +45,8 @@ import java.util.Locale
 fun StoryUnlockScreen(
     modifier: Modifier = Modifier,
     storySegmentIds: List<Int>,
-    onSegmentViewed: (Int) -> Unit,
-    onContinue: () -> Unit,
+    onSegmentNavigatedAway: (Int) -> Unit,
+    onContinue: (Int) -> Unit,
     showForwardArrow: Boolean = true,
     title: String = "A New Memory Made",
     subtitle: String? = null
@@ -54,7 +55,6 @@ fun StoryUnlockScreen(
     val scope = rememberCoroutineScope()
     val storyById = remember { mutableStateMapOf<Int, String>() }
     val areaById = remember { mutableStateMapOf<Int, String>() }
-    val viewedSegmentIds = remember { mutableSetOf<Int>() }
     val pagerState = rememberPagerState(pageCount = { storySegmentIds.size })
 
     LaunchedEffect(storySegmentIds) {
@@ -68,10 +68,13 @@ fun StoryUnlockScreen(
         }
     }
 
-    LaunchedEffect(pagerState.currentPage, storySegmentIds) {
-        val currentSegmentId = storySegmentIds.getOrNull(pagerState.currentPage) ?: return@LaunchedEffect
-        if (viewedSegmentIds.add(currentSegmentId)) {
-            onSegmentViewed(currentSegmentId)
+    LaunchedEffect(pagerState, storySegmentIds) {
+        var previousPage = pagerState.settledPage
+        snapshotFlow { pagerState.settledPage }.collect { currentPage ->
+            if (currentPage != previousPage) {
+                storySegmentIds.getOrNull(previousPage)?.let(onSegmentNavigatedAway)
+                previousPage = currentPage
+            }
         }
     }
 
@@ -155,7 +158,7 @@ fun StoryUnlockScreen(
                             }
                         ) {
                             Icon(
-                                imageVector = Icons.Rounded.ArrowForward,
+                                imageVector = Icons.Rounded.KeyboardArrowRight,
                                 contentDescription = "Next story segment",
                                 tint = Color.White
                             )
@@ -189,7 +192,9 @@ fun StoryUnlockScreen(
                 horizontalArrangement = Arrangement.End
             ) {
                 Button(
-                    onClick = onContinue,
+                    onClick = {
+                        storySegmentIds.getOrNull(pagerState.currentPage)?.let(onContinue)
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.White,
                         contentColor = Color.Black

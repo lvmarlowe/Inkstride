@@ -48,8 +48,6 @@ class AppRouterViewModel(
     private val _effects = MutableSharedFlow<AppRouterEffect>()
     val effects: SharedFlow<AppRouterEffect> = _effects.asSharedFlow()
 
-    private val _viewedSegmentIds = mutableSetOf<Int>()
-
     fun refreshRoute(
         hasBackgroundPermission: Boolean,
         afterPermissionRequest: Boolean = false,
@@ -70,7 +68,6 @@ class AppRouterViewModel(
             }
 
             if (!hasPermission) {
-                _viewedSegmentIds.clear()
                 _uiState.update {
                     it.copy(
                         screen = AppRouteScreen.PERMISSIONS,
@@ -172,7 +169,6 @@ class AppRouterViewModel(
         viewModelScope.launch {
             val unreadSegments = storyRepository.getUnlockedUnreadSegments()
             if (unreadSegments.isNotEmpty()) {
-                _viewedSegmentIds.clear()
                 _uiState.update {
                     it.copy(
                         hasStoryNotification = true,
@@ -207,14 +203,29 @@ class AppRouterViewModel(
         }
     }
 
-    fun onStoryUnlockSegmentViewed(segmentId: Int) {
-        _viewedSegmentIds.add(segmentId)
+    fun onStoryUnlockSegmentNavigatedAway(segmentId: Int) {
+        viewModelScope.launch {
+            storyRepository.markAsRead(segmentId)
+        }
+    }
+
+    fun onStoryUnlockContinue(currentSegmentId: Int) {
+        viewModelScope.launch {
+            storyRepository.markAsRead(currentSegmentId)
+            val hasUnreadSegments = storyRepository.hasUnlockedUnreadSegments()
+            _uiState.update {
+                it.copy(
+                    hasStoryNotification = hasUnreadSegments,
+                    unreadUnlockSegmentIds = emptyList(),
+                    unlockAreaName = "",
+                    screen = it.returnScreenAfterStoryUnlock
+                )
+            }
+        }
     }
 
     fun onStoryUnlockContinue() {
         viewModelScope.launch {
-            _viewedSegmentIds.forEach { storyRepository.markAsRead(it) }
-            _viewedSegmentIds.clear()
             val hasUnreadSegments = storyRepository.hasUnlockedUnreadSegments()
             _uiState.update {
                 it.copy(

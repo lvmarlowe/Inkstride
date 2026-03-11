@@ -128,9 +128,8 @@ fun AppRouter(innerPadding: PaddingValues) {
                 StoryUnlockScreen(
                     modifier = contentModifier,
                     storySegmentIds = listOf(segmentId),
-                    onSegmentViewed = {},
+                    onSegmentNavigatedAway = {},
                     showForwardArrow = false,
-                    title = "A New Memory Made",
                     onContinue = {
                         appRouterViewModel.onIntroContinue()
                     }
@@ -147,13 +146,13 @@ fun AppRouter(innerPadding: PaddingValues) {
                 StoryUnlockScreen(
                     modifier = contentModifier,
                     storySegmentIds = uiState.unreadUnlockSegmentIds,
-                    onSegmentViewed = { segmentId ->
-                        appRouterViewModel.onStoryUnlockSegmentViewed(segmentId)
+                    onSegmentNavigatedAway = { segmentId ->
+                        appRouterViewModel.onStoryUnlockSegmentNavigatedAway(segmentId)
                     },
                     showForwardArrow = true,
                     title = "A New Memory Made",
-                    onContinue = {
-                        appRouterViewModel.onStoryUnlockContinue()
+                    onContinue = { currentSegmentId ->
+                        appRouterViewModel.onStoryUnlockContinue(currentSegmentId)
                     }
                 )
             } else {
