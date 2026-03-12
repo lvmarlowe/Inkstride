@@ -4,7 +4,7 @@
     "isPersistent": true,
     "isMajor": true,
     "areaName": "The Forest's Edge",
-    "text": "You wake at the edge of a forest.\n\nThe bark of the trees is a black so inky it’s like staring into a void. They are bare, stripped of leaves, their branches like cracks in the world. Above, the sky is bleached pale—a faded photograph lost to time.\n\nIt's strangely silent. No birds call. No leaves rustle. No insects buzz. The air is unnaturally still, as if the forest is holding its breath.\n\n<i>You search for a memory. Who am I? Where am I? What happened here?</i>\n\nBut you find nothing.\n\nInstead, a heavy weight settles in your chest. And you feel a pull deep in your bones. A pull towards the forest, like it’s calling to you.\n\nYou have the sudden certainty that the world will stay this way until you fix it. That somewhere in these colorless woods, the silence is waiting for you to break it.\n\nA path cuts through the earth like a jagged scar. Yet under the thick layer of ash, it feels well-worn and familiar.\n\nYou start walking.",
+    "text": "You wake at the edge of a forest.\n\nThe bark of the trees is a black so inky it’s like staring into a void. They are bare, stripped of leaves, their branches jut out like cracks in the world. Above, the sky is bleached pale—a faded photograph lost to time.\n\nIt's strangely silent. No birds call. No leaves rustle. No insects buzz. The air is unnaturally still, as if the forest is holding its breath.\n\nYou search for a memory. <i>Who am I? Where am I? What happened here?</i> But you find nothing.\n\nInstead, a heavy weight settles in your chest, and you feel a pull deep in your bones. A pull toward the forest, like it’s calling to you. You have the sudden, inexplicable certainty that the world will stay this way until you fix it. That somewhere in these colorless woods, the silence is waiting for you to break it.\n\nA path cuts through the earth like a jagged scar. Under the thick layer of ash, it feels well-worn and familiar.\n\nYou start walking.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -22,7 +22,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Pierced Leaf",
-    "text": "You find a dry, gray leaf pinned to a tree trunk by a long, jagged thorn. The thorn is driven through the very center with enough force to splinter the bark.\n\nYou picture someone standing here, driven by a sharp, sudden rage, needing to strike something that couldn't strike back. You imagine them with nowhere else for their anger to go.\n\nYou pull the thorn from the wood and tuck the leaf into your pack, feeling a strange, phantom heat in your palm.\n\nYou continue down the path.",
+    "text": "You find a dry, gray leaf pinned to a tree trunk by a long, jagged thorn. The thorn is driven through the center with enough force to splinter the bark.\n\nYou picture someone standing here, driven by a sharp, sudden rage, needing to strike at something that couldn't strike back. You imagine them with nowhere else for their anger to go.\n\nYou pull the thorn from the wood and tuck the leaf into your pack, feeling a strange, phantom heat in your palm.\n\nYou continue down the path.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -31,7 +31,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Empty Echo",
-    "text": "You kick up a stone that hits a massive tree trunk, and a hollow echo rings out. It is a low, thin chime, as if from an empty glass. You wonder if the inside of the tree is gone and only the shape remains. If the world is this empty, you wonder what ever filled the space where your memories used to be.\n\nYou press on into the greyness.",
+    "text": "You kick up a stone that hits a massive tree trunk, and a hollow echo rings out. It is a low, thin chime, as if from an empty jar. You wonder if the inside of the tree is gone and only the shape remains. If the world is this empty, you wonder what ever filled the space where your memories used to be.\n\nYou press on into the greyness.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -49,7 +49,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Constricting Canopy",
-    "text": "The path dives back into the deep woods. Here, the skeletal trees grow closer together, their bone-white branches knitting into a dense, sunless ceiling. The air feels colder as the shadows of the woods reclaim the path.\n\nYou walk deeper into the darkness.",
+    "text": "The path dives back into the deep woods. Here, the skeletal trees grow closer together, their bone-white branches knitting into a dense, sunless ceiling. The air feels colder as the shadows of the woods obscure the path.\n\nYou walk deeper into the darkness.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -58,7 +58,7 @@
     "isPersistent": true,
     "isMajor": false,
     "areaName": "Thistlewick Thicket",
-    "text": "The forest floor vanishes beneath a tangle of grey briars and jagged thorns. Everything here is sharp and interlocking, covered in a frost-like coating of grey dust. Brittle thorned thistles crunch like broken glass under your boots. Every movement creates a dry, cracking sound.\n\nYou push through the thorns.",
+    "text": "The forest floor vanishes beneath a tangle of grey briars and jagged thorns. Everything here is sharp and interlocking, covered in a frost-like coating of grey dust. Brittle thistles crunch like broken glass under your feet. Every movement creates a dry, splintering sound.\n\nYou push through the thorns.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -67,43 +67,70 @@
     "isPersistent": false,
     "isMajor": true,
     "areaName": "Flicker: The Ember in the Ash",
-    "text": "A rustle breaks the silence. Something blurs through the grey thicket—the first movement you’ve seen in these dead woods.\n\nA creature bursts into view, his four sweeping tails kicking up clouds of ash. He has a long, slender snout that twitches as he catches your scent and large, pointed ears that stand tall, flicking at every sound. His face is sharp, lit by eyes that glow like embers. His grin is wide and toothy.\n\n“{{characterName}}! You’re back! You’re finally back!” He circles you wildly, his tails whipping through the air like banners. “I knew you’d come back! I’ve been waiting and waiting!”\n\nYou stagger, the weight in your chest tightening. “I…I’m sorry. I don’t remember.”\n\nThe creature freezes. He tilts his head, his face falling, and then he grins again. “That’s okay! You always were a little spacy.” But as you stare at him blankly, he senses your panic growing. “You don’t remember anything?”\n\nYou shake your head.\n\nFlicker bolts down the path, and you follow.",
+    "text": "A rustle breaks the silence. Something blurs through the grey thicket—the first movement you’ve seen in these dead woods. A creature bursts into view, his four sweeping tails kicking up clouds of ash. He has a long, slender snout that twitches as he catches your scent and large, pointed ears that stand tall, flicking at every sound. His face is sharp, lit by eyes that glow like embers. His grin is wide and toothy.\n\n“{{characterName}}! You’re back! You’re finally back!” He circles you wildly, his tails whipping through the air like banners. “I knew you’d come back! I’ve been waiting and waiting!”\n\nYou stagger, the weight in your chest tightening. “I…I’m sorry. I don’t remember.”\n\nThe creature freezes. He tilts his head, his face falling, and then he grins again. “That’s okay! You always were a little spacy.” But as you stare at him blankly, he senses your panic growing. “You don’t remember anything?”\n\nYou shake your head.\n\nHe bolts down the path, and you follow.",
     "unlockedDefault": false,
     "readDefault": false
   },
   {
-    "distanceMarker": 7.52,
+    "distanceMarker": 6.4,
     "isPersistent": false,
     "isMajor": false,
     "areaName": "Hide-and-Seek",
-    "text": "Flicker paces around you as you walk, a blur of restless energy. “Wow, The Unmaking must’ve hit you hard. I’m Flicker! You’re my best friend! We used to play hide-and-seek in these woods every morning. You’d hide in the shadows and hold your breath until I bumped right into you. We’d laugh so hard our sides ached!”\n\nFlicker snorts, a warm sound in the freezing air. “Sometimes you’d worry that I’d give up finding you. I never did.”\n\nFlicker trots ahead, his tails swishing behind him. You match his stride.",
+    "text": "The multitailed creature paces around you as you walk, a blur of restless energy. “Wow, The Unmaking must’ve hit you hard. I’m Flicker! You’re my best friend! We used to play hide-and-seek in these woods every morning. You’d hide in the shadows and hold your breath until I bumped right into you. We’d laugh so hard our sides ached!”\n\nFlicker snorts, a warm sound in the freezing air. “Sometimes you’d worry that I’d give up finding you. I never did.”\n\nHe trots ahead, his tails swishing behind him. You match his stride.",
     "unlockedDefault": false,
     "readDefault": false
   },
   {
-    "distanceMarker": 8.61,
+    "distanceMarker": 6.84,
     "isPersistent": false,
     "isMajor": false,
     "areaName": "Cold Flames",
-    "text": "You look at Flicker, puzzled. “The Unmaking?”\n\nFlicker’s eyes dart toward the jagged mountain on the horizon. “Something terrible happened,” he says, his joy fading for a second. “I was out hunting when I saw grey flames coming from the peak. Not hot flames. Cold ones. They swept through, consuming all the color.”\n\nYou look at the distant peak. The pull in your bones is stronger now, anchored to that gloomy haze. “Do you know what caused it?”\n\nFlicker shakes his head. “Nope! But we’ll figure it out together!”\n\nFlicker bounds over a fallen log, and you follow his lead.",
+    "text": "You look at Flicker, puzzled. “The Unmaking?”\n\nHis eyes dart toward the jagged mountain on the horizon. “Something terrible happened,” he says, his joy fading for a second. “I was out hunting when I saw grey flames coming from the peak. Not hot flames. Cold ones. They swept through, consuming all the color. The creatures of the Forest call it the Unmaking.”\n\nYou look at the distant peak. The pull in your bones is stronger now, anchored to that gloomy haze. “Do you know what caused it?”\n\nFlicker shakes his head. “Nope! But we’ll figure it out together!”\n\nHe bounds over a fallen log, and you follow his lead.",
     "unlockedDefault": false,
     "readDefault": false
   },
   {
-    "distanceMarker": 9.48,
+    "distanceMarker": 7.34,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Scouting Dash",
+    "text": "Flicker is a blur of energy. He bolts fifty yards ahead, disappears into a thorny patch, and then rushes back to your side with a bright, curious yip. “I’m just making sure the way is clear! Everything’s gotten so tangled up. I don’t want to lose you again.”\n\nHe loops back to nudge your hand with his cold nose before darting ahead once more.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 8.18,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Back to Old Games",
+    "text": "Flicker suddenly vanishes. You stop, looking around the skeletal trees, until a sharp yip comes from behind a massive, ash-covered boulder. He pokes his head out, eyes glowing with mischief. “I finally tricked you!”\n\nHe bounds into the grey brush, his fur a streak of orange against the gloom.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 9.03,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Voice in the Void",
+    "text": "Flicker stays close to your heels now. “It’s been so quiet,” he whispers. He lets out a sharp, happy bark, then another. “I have to keep making noise, you know? Otherwise, the silence is too uncomfortable. Like the forest is up to something it shouldn’t be. But that’s my job!”\n\nHe yips again, a short, rhythmic sound.\n\nThe two of you press on through the tall, ashen grass.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 9.81,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Loyal Guard",
+    "text": "Flicker prances in a tight circle, clearing a space in the ash for you to walk. “I’ve been guarding this thicket for a long time,” he says, his tails held high and proud. “I knew that if I just stayed put, you’d eventually find your way back to the start. I’m glad I was right. It would have been a very long wait for nothing.”\n\nHe leads you toward a fork in the trail, his eyes constantly scanning the shadows.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 10.55,
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Promise",
-    "text": "Flicker stops at a fork in the path. He grins, his sharp teeth gleaming. “I’ll keep searching for clues while you explore. If I find anything, I’ll remember it for when we meet again!”\n\n“I’ll help,” you promise. “I’ll figure out what happened.”\n\nFlicker’s tails wag excitedly, brushing the ash into small cyclones. “I know you will! You always kept your promises. It’s so good to have you back, {{characterName}}. I missed our morning games so much!”\n\nWith one last yip, Flicker vanishes into the gnarled undergrowth, leaving only a swirl of ash behind.\n\nYou continue, alone once again.",
-    "unlockedDefault": false,
-    "readDefault": false
-  },
-  {
-    "distanceMarker": 10.25,
-    "isPersistent": false,
-    "isMajor": false,
-    "areaName": "A Fuller Silence",
-    "text": "The silence returns, but it feels different now. Less empty. The weight in your chest is still there, but your heart feels fuller. You have a name. You have a friend. And somewhere in that hollow forest, there are answers.\n\nYou trudge deeper into the woods.",
+    "text": "Flicker stops at the fork in the path. He grins, his sharp teeth gleaming. “I’ll keep searching for clues while you explore. If I find anything, I’ll remember it for when we meet again!”\n\n“I’ll help,” you promise. “I’ll figure out what happened.”\n\nHis tails wag excitedly, brushing the ash into small cyclones. “I know you will! You always kept your promises. It’s so good to have you back, {{characterName}}. I missed our morning games so much!”\n\nWith one last yip, Flicker vanishes into the gnarled undergrowth, leaving only a swirl of ash behind.\n\nYou continue, alone once again.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -111,8 +138,8 @@
     "distanceMarker": 11.13,
     "isPersistent": false,
     "isMajor": false,
-    "areaName": "The Inkers’s Smudge",
-    "text": "You stop to catch your breath and look down at your hands. Beneath the layer of grey ash, a dark smudge of ink spreads across your skin. You try to rub it away, but the smudge stays—deep, iridescent, and shimmering with a vitality the forest is lacking.\n\nYou remember Flicker’s stories of the ink trails you used to leave. This ink isn’t something you carry—it’s part of you. It is a rich and vibrant life force in a world of ghosts.\n\nYou pick your way through the skeletal pines.",
+    "areaName": "A Fuller Silence",
+    "text": "The silence returns, but it feels different now. Less empty. The weight in your chest is still there, but your heart feels fuller. You have a name—{{characterName}}. You have a friend. And somewhere in this hollow forest, there are answers.\n\nYou trudge deeper into the woods.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -120,17 +147,26 @@
     "distanceMarker": 11.87,
     "isPersistent": false,
     "isMajor": false,
-    "areaName": "The Twisted Pines",
-    "text": "The trees change as you walk. They are no longer standing straight; they are bent and gnarled, frozen mid-contortion. Their branches reach toward the mountain in tangled spirals, as if pleading. They look like they froze in the middle of a struggle. When you pass them, you hear a faint, high-pitched creak, like the groan of a sinking ship.\n\nYou navigate through the wreckage.",
+    "areaName": "The Inker's Smudge",
+    "text": "You stop to catch your breath and look down at your hands. Beneath the accumulating layer of grey ash, a dark smudge of ink spreads across your skin. You try to rub it away, but the smudge stays—deep, iridescent, and shimmering with a vitality the forest is lacking.\n\nYou remember Flicker’s stories of the ink trails you used to leave. This ink isn’t something you carry—it’s part of you. It is a rich and vibrant life force in a world of ghosts.\n\nYou pick your way through the skeletal pines.",
     "unlockedDefault": false,
     "readDefault": false
   },
   {
-    "distanceMarker": 12.44,
+    "distanceMarker": 12.38,
     "isPersistent": false,
     "isMajor": false,
-    "areaName": "The Collapsing Ground",
-    "text": "The ground has thickened into a heavy grey mire. The ash under your feet is now a viscous, oily sludge that clings to your boots. Every step requires more effort, more intent. The Unmaking feels different here, as if the land is collapsing under its own weight.\n\nYou pull yourself through the muck.",
+    "areaName": "The Waterlogged Wood",
+    "text": "The trees change as you walk. The ash underfoot is no longer dry and powdery; it has become damp and heavy. The bark of the pines is soft to the touch, as if the wood has been soaking in a cold, dark lake for years. When you lean against a trunk, it gives slightly under your hand, releasing a slow, silent weep of thick grey liquid. The air is dense and smells like wet stone.\n\nYou navigate through the waterlogged trees.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 12.87,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Rising Tide",
+    "text": "The path is beginning to flood. A slow, leaden liquid wells up from the cracks in the ground, pooling around your feet. It doesn’t splash or flow—it simply rises, swallowing the roots of the pines. It moves with a heavy, agonizing slowness, almost imperceptibly. You feel as if the forest is being submerged under a tide of liquid stone, drowning in an unchangeable stagnancy.\n\nYou wade through the shallow pools with great difficulty.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -139,7 +175,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Mournful Hum",
-    "text": "A low, vibrating hum rises from the earth. You feel it in your teeth and your chest. It is a dense, stagnant frequency that stops you in your tracks. The air is thick and difficult to breathe. The mountain looms larger now, casting a shadowy gloom over the path ahead.\n\nYou force yourself onward.",
+    "text": "A low, vibrating hum rises from the earth, sending vibrations through the otherwise stagnant pools. You feel it in your teeth and your chest. It is a dense, crushing frequency that stops you in your tracks. As you look down, you see that the hum is so intense that it creates slow ripples on the surface of the heavy water. Nothing else causes ripples—not even your feet as they step through—only the sound of the forest’s grief.\n\nYou force yourself onward.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -148,7 +184,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Weighted Root",
-    "text": "You find a heavy root segment half-buried in the riverbank's mire. It has grown around a dull, metallic nugget, trapping the heavy weight inside.\n\nYou picture someone letting this sink into the mud, watching as the heaviness pulled it under. You imagine them feeling as if they were drowning under the weight of their own despair. You pull the leaden root from the muck and drop it into your bag. It thuds heavily, and you feel slower under the new weight.\n\nYou walk toward a clearing.",
+    "text": "You find a heavy root segment half-buried in the riverbank's mire. It has grown around a dull, metallic nugget, trapping the weight inside.\n\nYou picture someone letting this sink into the mud, watching as the heaviness pulled it under. You imagine them feeling as if they were drowning under the weight of their own despair. You pull the leaden root from the muck and drop it into your bag. It thuds heavily, and you feel slower under the new weight.\n\nYou walk toward a clearing, where the trees finally end.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -157,7 +193,7 @@
     "isPersistent": true,
     "isMajor": false,
     "areaName": "The Wandering River",
-    "text": "The tree line thins, revealing a wide, sunken valley. Below, the riverbed is filled with a stagnant leaden grey. It sits heavy and unmoving in the valley. You can see the ripples frozen in the thick, still sludge. The pull in your bones points directly toward the bank, where something is moving.\n\nYou descend into the valley.",
+    "text": "The tree line thins, revealing a wide, sunken valley. Below, the riverbed is filled with a stagnant leaden grey. It sits swollen and unmoving in the valley. There is no current, only an unmoving weight that fills the area from bank to bank. You can see the ripples frozen in the thick, still sludge. The pull in your bones points directly toward the water, where something is moving.\n\nYou descend into the valley.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -165,17 +201,116 @@
     "distanceMarker": 14.53,
     "isPersistent": false,
     "isMajor": true,
-    "areaName": "[otter area placeholder]",
-    "text": "[otter encounter story placeholder]",
+    "areaName": "Pebble: A Splash in the Sludge",
+    "text": "A splash breaks the surface of the river with a heavy, sluggish plop. A creature scrambles onto the bank, her short, powerful legs moving with frantic speed. She has a broad, flat tail and a blunt snout, and she shakes thick droplets from her whiskers. Her face is round, and her slick fur is matted with grey sludge.\n\n“Oh, thank goodness you’ve returned!”\n\nShe bustles up to you, her dark eyes wide with relief. “{{characterName}}, you had me worried. I’m so grateful you’ve come back!” She paces in loops. “I’ve missed our afternoon swims in the river. We had so much fun together!”\n\nYou hesitate. “I don’t remember anything. I’m sorry.” The creature blinks. Then, as if trying not to worry you, she beams. “Oh! Well, that’s okay! We’ll make new memories—and maybe the old ones will come back! I'm Pebble.”\n\nPebble slides back into the sludge and paddles alongside you as you walk.",
     "unlockedDefault": false,
     "readDefault": false
   },
   {
-    "distanceMarker": 22.26,
+    "distanceMarker": 15.2,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Getting Your Feet Wet",
+    "text": "Pebble notices you hesitating at the water’s edge. She nudges your feet with her blunt snout. “It’s different for you, I know. You’ve got those long, land-creature legs. But the water is friendly, even if it’s sleeping right now. Just put one toe in. It won't bite!” You step into the heavy grey soup, and she circles your ankles with a joyful whistle.\n\nYou trudge along the shallows, the grey liquid dragging at your skin.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 15.8,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Floating Lesson",
+    "text": "Pebble’s head bobs in the heavy river. “At first, you thought floating was so hard. I said you just didn’t trust the water yet.” She rolls onto her back, drifting effortlessly in the grey soup. “You’d stiffen right up and sink like a stone! I'd support you until you finally let go and just... floated. We’d lay there smiling for hours, just watching the clouds move.”\n\nYou look at the stagnant current and press on.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 16.4,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Water Dance",
+    "text": "Suddenly, Pebble twirls. She spins in the sludge, her flat tail whipping up heavy grey arcs. “See? Like this! You used to copy me. You’d try to spin on one leg and get all dizzy and fall over, and we’d both just splash until we couldn't breathe from laughing.” She does a clumsy, joyful somersault. “You were a very good water dancer for someone with so many toes.”\n\nYou laugh quietly at her spirit and keep moving down the bank.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 17.1,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Rushing Rapids",
+    "text": "Pebble halts in the unmoving water. “We used to spend whole summers dancing together in the rapids. We’d wade in until you could barely touch the bottom and spin through the spray like leaves. You said the water was the only thing that moved as fast as your thoughts.” She touches the surface wistfully, and her paw leaves a deep, waxen indentation. “Now the water just sits here, like it just…gave up.”\n\nYou continue down the riverbank, the image of your \"fast thoughts\" staying with you.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 17.8,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Compassionate Observer",
+    "text": "Pebble listens to the low hum from the earth. She doesn't look afraid; she looks empathetic. “The river is just tired, {{characterName}}. It’s holding so much stillness right now. It isn't a bad thing. We all need to rest sometimes. I just hope it decides to wake up again. It’s been so long, now.”\n\nYou walk through the heavy silence, encouraged by her perspective.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 18.5,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Mountain's Breath",
+    "text": "You glance down at Pebble quietly, “Do you know what caused all this?”\n\nPebble nods toward the mountain peak. “Something from that direction. It felt like the mountain took a deep breath and sucked all the movement out of the world.” She sighs and looks up at you hopefully. “But we’ll fix it! You were always the clever one. You looked at a problem like it was a puzzle, and you never stopped trying to solve it until all the pieces fit.”\n\nYou and Pebble carry on in silence, the air growing colder.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 19.2,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "A Shared Horizon",
+    "text": "The river begins to narrow as the bank becomes steeper. Pebble stops and looks up at the pale sky. “The clouds are gone today,” she says softly. “But I remember the ones we saw last time. One looked like a big, sleeping bear. You said it was the guardian of the valley.” She smiles at you. “I think the bear is still there, even if we can't see the shapes right now.”\n\nYou stand with her for a moment in the quiet, then continue onward.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 19.9,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Pebble’s Mission",
+    "text": "The river disappears into a forest of massive, bloated mushrooms. Pebble stops. “I have to stay here and help. Some of the smaller fish are trapped near the reeds. I want to make sure they’re okay until the flow of the river is restored.”\n\nAn optimistic look comes over her face, and she clasps her paws. “I'm so happy we’re reunited again. Go on, {{characterName}}. I know you’ll find the answer! Stop on by when you do.” With a determined whistle, she twirls and dives back into the sludge.\n\nYou continue alone.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 20.68,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Scent of Decay",
+    "text": "The air is changing. The metallic scent of the river is being replaced by something sweet and cloying, like rotten earth and ancient decay. The air becomes sticky, the river widens, and the ground changes into a viscous muck.\n\nWith great effort, you keep moving.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 21.29,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Knotted Vine",
+    "text": "In the shadow of a bloated mushroom, you find a thick vine tied into a ball of impossible, tight knots. Someone pulled these so hard that the vine has cut into itself repeatedly.\n\nYou picture someone yanking on these in a fit of frantic energy, feeling paralyzed by their own frustration. You imagine them wanting so desperately to move forward but only binding themselves tighter with every attempt to break free. You tuck the gnarled ball into your pack. It is an unyielding knot that no amount of patience can undo.\n\nThe muck rises to your ankles, and you struggle to continue.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 21.97,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Unstoppable Current",
+    "text": "You stop in the middle of the sticky mire, your breath coming in ragged gasps as the humidity of the marsh settles over you. You look at the dark smudge on your skin and remember Pebble’s words—how you once said the water was the only thing that moved as fast as your thoughts. Here, in a world that has completely stalled, you realize that your mind hasn't stopped. Even without your memories, your thoughts are still surging, still trying to find a way through The Unmaking. You feel like the only current left in a world that has come to a halt.\n\nYou wipe the sweat and ash from your brow and trudge toward a line of massive, pale shapes on the horizon.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 22.49,
     "isPersistent": true,
     "isMajor": false,
     "areaName": "Glowcap Marsh",
-    "text": "[glowcap marsh story placeholder]",
+    "text": "The valley has fully surrendered to the marshland. Massive mushrooms tower over the path, their colors bled dry into shades of bone and ash, their caps weeping black ooze. A sickly scent of rot hangs in the muggy air. The cycles of life here seem to have jammed halfway through—nothing grows, and nothing fully disappears. Everything is stuck in a state of eternal, frustrated decay.\n\nYou trudge into the heart of the rot.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -183,8 +318,107 @@
     "distanceMarker": 22.98,
     "isPersistent": false,
     "isMajor": true,
-    "areaName": "[frog area placeholder]",
-    "text": "[frog encounter story placeholder]",
+    "areaName": "Gully: The Chorus of the Marsh",
+    "text": "A deep, resonant croak vibrates through the grey stalks, sounding less like a creature and more like a heavy stone settling into mud. A large toad with pale, bulbous, mushroom-like spots across his back sits atop a shelf fungus. He has wide, heavy-lidded eyes and a broad mouth that seems permanently curled into a relaxed grin.\n\n“Oooooooh, look at that. The rhythm has returned.”\n\nHe doesn't hop so much as he tip-toes with a strange, rhythmic grace. “{{characterName}}! You’re back! I’ve been practicing the songs we used to sing together, though the acoustics in this rot are... well, a bit muffled.” You explain that your memory is gone and the name \"Inker\" feels like a title you haven't earned. The toad lets out a wet, musical chuckle. “That’s okay. I’m Gully. You’re an Inker, friend. You aren't just in the world—the world is of you. You’re the one who gives the forest its substance. Its weight. Without the Inker, all of this is just a sketch waiting for someone to turn it into a work of art.”\n\nYou step back onto the sticky path, and Gully follows with a slow, heavy-lidded grace, his spots pulsing in the dim light.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 24.4,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Jammed Gears",
+    "text": "Gully stops to look at a cluster of tadpoles suspended in a stagnant pool. They aren't swimming; they are frozen mid-flick, their tails translucent and grey. Nearby, a dead leaf hangs halfway between a branch and the mud, caught in a web of thick, unmoving mist.\n\n“Everything got stuck,” Gully says, his voice a melodic rumble. “The Unmaking didn't just take the color—it took the next. Tadpoles can’t grow. Leaves can’t become soil. It’s like the marsh just stopped midsentence.”\n\nYou push past a weeping mushroom, the air growing thicker and more stagnant.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 25.1,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "A Song Interrupted",
+    "text": "He nudges a mushroom cap with his toe, and instead of releasing spores, it simply weeps a single, thick drop of black ink. “The cycles are jammed. It’s quite a frustrating tune to listen to, honestly. A song that someone just... stopped singing.”\n\nYou pull your feet from the grasping mud, the toad’s rhythmic croaking acting as a metronome for your struggle.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 25.8,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Shared Song",
+    "text": "As you walk, Gully begins to hum a low, vibrating note. “We used to search for the mushrooms that hummed the loudest,” he says, his eyes reflecting the pale sky. “You’d touch the caps and they’d resonate—a deep, full sound that filled the whole bog.”\n\nThe hum vibrates in your chest as you navigate between the giant, silent stalks.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 26.5,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Perfect Harmony",
+    "text": "He looks at you with unblinking eyes. “I provided the beat; you provided the depth. We were a perfect harmony, you and me. I don't know why the song ended, {{characterName}}, but I'm glad you're here to hear the silence with me. It’s much less lonely with two.”\n\nYou push through a curtain of weeping moss, Gully’s steady, unhurried hopping keeping pace beside you.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 27.2,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Stalled Decay",
+    "text": "Gully pauses and looks toward the jagged mountain peak, his throat pulsing in a slow, heavy rhythm. “It came from there,” he says softly. “Instantly, everything started to turn. All the mushrooms began turning to goo, dripping into the peat. The wood started decaying, going soft and black. Everything started rotting.”\n\nYou look at the distant haze, the cold weight of the story settling over you.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 27.85,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Too Dead to Live",
+    "text": "He sighs, a sound of wet gravel. “But then... it just didn't finish. The transformation broke. The rot started its work but couldn't complete the cycle. Now everything is stuck between states—too dead to live, but not dead enough to become something new. It’s like the forest is holding its breath, waiting for a permission that never comes.”\n\nThe air grows colder as you approach the edge of the wetlands.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 28.5,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Low Frequency",
+    "text": "The ground is becoming firmer, the cloying smell of decay starting to thin. The giant mushrooms are still tall, but they are fewer and further between.\n\nGully stops at the edge of a cluster of weeping caps. “The mycelium—the network under the dirt—it's feeling a little cold here. I’m gonna hang back for a bit and feed the roots a little frequency. Keep the network from going totally quiet.” He looks at you peacefully. “Go on, {{characterName}}. Our grooves are locked in now. You find the mountain’s lungs; I’ll keep the low end steady in the mud. I’ll be right here if the rhythm starts to slip.”\n\nWith one final, deep croak, Gully settles onto a stone. You continue alone, the damp silence of the marsh settling over you once more.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 29.85,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Receding Rot",
+    "text": "As you leave Gully behind, the cloying, sweet smell of the marsh begins to fade. The air loses its humid weight, replaced by a sharp, thin breeze that smells of minerals and ozone. The massive mushrooms are no longer weeping; they have begun to shrink and wither, their caps curling inward like dried fruit as they sink back into the darkening mud. The path is still grey, but the muck is starting to thin, revealing the jagged bones of the earth beneath.\n\nYou walk toward the rising shadow of the mountain's base.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 31.2,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Hardening Ground",
+    "text": "The ground under your feet is changing. The viscous, grasping peat is drying out, turning into a cracked and thirsty clay. Every step no longer produces a wet suction, but a dry, hollow crunch. The trees here are different—stunted, grey pines with needles as sharp as needles, their roots clawing into the stone like desperate fingers.\n\nYou pick your way across the parched earth as the slope begins to tilt upward.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 32.5,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Worry Stone",
+    "text": "You find a smooth stone in the dirt with a deep groove worn into its center. Someone held it often, rubbing their thumb against the surface until the rock gave way.\n\nYou picture someone carrying a weight of terror they couldn't name, seeking comfort in the repetitive motion of their hand. You imagine them fearing that they were truly, fundamentally alone.\n\nThe stone is heavy in your hand, yet it feels light compared to the leaden weight in your chest. You take it with you.\n\nYou continue toward the looming rock wall, the air growing colder.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 33.8,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Silent Medium",
+    "text": "You stop for a moment, looking back at the distant, grey blur of the wetlands. You think about what Gully said—that the world is just a sketch waiting for someone to turn it into a work of art. You look at your hands, at the ink that shimmers beneath the ash, and realize that you aren't just a visitor here. If the forest is the canvas, you are the medium. The stillness around you is a vast, empty space, and the urge to fill it—to make something substantial out of this void—pulses in your blood like a second heartbeat.\n\nYou turn away from the lowlands and approach the dark, yawning entrance at the foot of the mountain.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -193,7 +427,7 @@
     "isPersistent": true,
     "isMajor": false,
     "areaName": "Crystal Caverns",
-    "text": "[crystal caverns story placeholder]",
+    "text": "The path leads directly into the base of the mountain, where the parched earth gives way to cold, jagged stone. You step into a vast network of caves. Great purple crystal formations jut from the walls like frozen lightning, but they are cracked and dim, their light long since extinguished. An unbearable pressure seems to press down from the ceiling, making it difficult to breathe. It feels as if the mountain itself is leaning in to listen to your footsteps.\n\nYou step into the darkness of the caverns.",
     "unlockedDefault": false,
     "readDefault": false
   },
