@@ -22,7 +22,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Pierced Leaf",
-    "text": "You find a dry, gray leaf pinned to a tree trunk by a long, jagged thorn. The thorn is driven through the center with enough force to splinter the bark.\n\nYou picture someone standing here, driven by a sharp, sudden rage, needing to strike at something that couldn't strike back. You imagine them with nowhere else for their anger to go.\n\nYou pull the thorn from the wood and tuck the leaf into your pack, feeling a strange, phantom heat in your palm.\n\nYou continue down the path.",
+    "text": "You find a dry, gray leaf pinned to a tree trunk by a long, smooth thorn. The thorn is driven through the center with enough force to splinter the bark.\n\nYou picture someone standing here, driven by a sharp, sudden rage, needing to strike at something that couldn't strike back. You imagine them with nowhere else for their anger to go.\n\nYou pull the thorn from the wood and tuck the leaf into your pack, feeling a strange, phantom heat in your palm.\n\nYou continue down the path.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -39,8 +39,8 @@
     "distanceMarker": 3.51,
     "isPersistent": false,
     "isMajor": false,
-    "areaName": "The Pull of the Mountain",
-    "text": "The trees finally part, revealing the first clear view of the horizon. Far in the distance, a jagged peak looms over the forest. It sits at the very heart of the woods—a towering crown of rock against the blanched sky. A ghostly haze surrounds the summit.\n\nYou continue toward the mountain.",
+    "areaName": "The Pull of the Forest",
+    "text": "The trees finally part, revealing the first clear view of the horizon. Far in the distance, a jagged peak looms over the forest. It sits at the very heart of the woods—a towering crown of rock against the blanched sky. A ghostly haze surrounds the summit.\n\nYou continue toward it.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -58,7 +58,7 @@
     "isPersistent": true,
     "isMajor": false,
     "areaName": "Thistlewick Thicket",
-    "text": "The forest floor vanishes beneath a tangle of grey briars and jagged thorns. Everything here is sharp and interlocking, covered in a frost-like coating of grey dust. Brittle thistles crunch like broken glass under your feet. Every movement creates a dry, splintering sound.\n\nYou push through the thorns.",
+    "text": "The forest floor vanishes beneath a tangle of grey briars and hardened thorns. Everything here is sharp and interlocking, covered in a frost-like coating of grey dust. Brittle thistles crunch like broken glass under your feet. Every movement creates a dry, splintering sound.\n\nYou push through the thorns.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -85,7 +85,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "Cold Flames",
-    "text": "As you walk, you think back to something Flicker said earlier. “The Unmaking?” you ask him, the word feeling unfamiliar and heavy on your tongue.\n\nFlicker stops and looks toward the mountain, his joy fading for a second. “Yeah! Something super terrible happened,” he says, his ears flattening back. “I was out hunting when I saw grey flames coming right off the peak. Not hot flames, either. Cold ones! They swept through and took all the color away. The creatures of the Forest call it the Unmaking.”\n\nYou look at the distant peak. The pull in your bones is stronger now, anchored to that gloomy haze. “Do you know what caused it?”\n\nFlicker shakes his head fast. “Nope! But I bet we’ll figure it out together!”\n\nHe bounds over a fallen log, and you follow his lead.",
+    "text": "As you walk, you think back to something Flicker said earlier. “The Unmaking?” you ask him, the word feeling unfamiliar and heavy on your tongue.\n\nFlicker stops and stares deep into the forest, his joy fading for a second. “Yeah! Something super terrible happened,” he says, his ears flattening back. “I was out hunting when I saw grey flames spreading across the forest, heading right toward me. Not hot flames, either. Cold ones! They swept through and took all the color away. The creatures of the Forest call it the Unmaking.”\n\nYour eyes follow Flicker's gaze. The pull in your bones is stronger now, anchored to the heart of the forest. “Do you know what caused it?”\n\nFlicker shakes his head fast. “Nope! But I bet we’ll figure it out together!”\n\nHe bounds over a fallen log, and you follow his lead.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -255,8 +255,8 @@
     "distanceMarker": 18.5,
     "isPersistent": false,
     "isMajor": false,
-    "areaName": "The Mountain's Breath",
-    "text": "You glance down at Pebble and ask quietly, “Do you know what caused all this?”\n\nPebble nods toward the mountain peak. “I reckon it came from that direction. It felt like the mountain took a deep breath and sucked all the movement out of the world.” She sighs and looks up at you hopefully. “But we’ll fix it! You were always the clever one, dear. You looked at a problem like it was a puzzle, and you never stopped tryin' to solve it until all the pieces fit.”\n\nYou and Pebble carry on in silence, the air growing colder.",
+    "areaName": "The Forest's Breath",
+    "text": "You glance down at Pebble and ask quietly, “Do you know what caused all this?”\n\nPebble nods towards the path that leads further into the valley. “I reckon it came from that direction. It felt like the forest took a deep breath and sucked all the movement out of the world.” She sighs and looks up at you hopefully. “But we’ll fix it! You were always the clever one, dear. You looked at a problem like it was a puzzle, and you never stopped tryin' to solve it until all the pieces fit.”\n\nYou and Pebble carry on in silence, the air growing colder.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -319,7 +319,7 @@
     "isPersistent": false,
     "isMajor": true,
     "areaName": "Gully: The Chorus of the Marsh",
-    "text": "A deep, resonant croak vibrates through the grey stalks. A large reptilian creature with bumpy, leathery skin and pale, bulbous spots across his back sits atop a shelf fungus. He has wide, heavy-lidded eyes and a broad mouth that seems permanently curled into a relaxed grin. As he speaks, his throat—a wide vocal sac translucent as frosted glass—pulses with a deep, bioluminescent grey radiance.\n\n“Oooooooh, look at that. The rhythm has returned.”\n\nHe doesn't hop so much as he tip-toes with a strange, rhythmic grace. “{{characterName}}! You’re back! I’ve been practicing the songs we used to sing together, though the acoustics in this rot are... well, a bit muffled.”\n\nYou explain that your memory is gone. You don’t remember him or even yourself.\n\nThe toad lets out a wet, musical chuckle, the grey light in his throat swirling like smoke. “That’s okay. I’m Gully. And you’re an Inker, friend. You aren't just <i>in</i> the world—the world is <i>of you</i>. You’re the one who gives the forest its substance. Its weight. Without you, all of this is just a sketch waiting for someone to turn it into a work of art.”\n\nYou step back onto the sticky path, and Gully follows with a slow grace, his vocal sac pulsing a steady, low-frequency glow.",
+    "text": "A deep, resonant croak vibrates through the grey stalks. A large reptilian creature with bumpy, leathery skin and pale, bulbous spots across his back sits atop a shelf fungus. He has wide, three heavy-lidded eyes, the middle one centered in his forehead a pupilless, milky white. His broad mouth seems permanently curled into a relaxed grin. As he speaks, his throat—a wide vocal sac translucent as frosted glass—pulses with a deep, bioluminescent grey radiance.\n\n“Oooooooh, look at that. The rhythm has returned.”\n\nHe doesn't hop so much as he tip-toes with a strange, rhythmic grace. “{{characterName}}! You’re back! I’ve been practicing the songs we used to sing together, though the acoustics in this rot are...well, a bit muffled.”\n\nYou explain that your memory is gone. You don’t remember him or even yourself.\n\nThe toad lets out a wet, musical chuckle, the grey light in his throat swirling like smoke. “That’s okay. I’m Gully. And you’re an Inker, friend. You aren't just <i>in</i> the world—the world is <i>of you</i>. You’re the one who gives the forest its substance. Its weight. Without you, all of this is just a sketch waiting for someone to turn it into a work of art.”\n\nYou step back onto the sticky path, and Gully follows with a slow grace, his vocal sac pulsing a steady, low-frequency glow.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -328,7 +328,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Suspended World",
-    "text": "Gully stops to look at a cluster of tadpoles suspended above a stagnant pool. They aren't swimming; they are frozen midjump, their tails translucent and grey. Nearby, a dead leaf hangs halfway between a branch and the mud, caught in a web of thick, unmoving mist.\n\n“Everything got stuck,” Gully says, his voice a melodic ribbit. “The Unmaking didn't just take the color—it took the next. Tadpoles can’t grow. Leaves can’t become soil. It’s like the marsh just stopped midsentence.”\n\nYou push past a weeping mushroom, the air growing thicker and more stagnant.",
+    "text": "Gully stops to look at a cluster of tadpoles suspended above a stagnant pool. They are frozen midjump, their tails translucent and grey. Nearby, a dead leaf hangs halfway between a branch and the mud, caught in a web of thick, unmoving mist.\n\n“Everything got stuck,” Gully says, his voice a melodic ribbit. “The Unmaking didn't just take the color—it took the next. Tadpoles can’t grow. Leaves can’t become soil. It’s like the marsh just stopped midsentence.”\n\nYou push past a weeping mushroom, the air growing thicker and more stagnant.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -355,7 +355,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "Perfect Harmony",
-    "text": "He looks at you with unblinking eyes. “We used to jam all the time. I provided the beat; you provided the depth. We were a perfect harmony, you and me. I don't know why the song ended, {{characterName}}, but I'm glad you're here to hear the silence with me. It’s much less lonely with two.”\n\nYou push through a curtain of weeping moss, Gully’s steady, unhurried hopping keeping pace beside you.",
+    "text": "He looks at you, his eyes unblinking, the milky one in the center seeming to perceive something otherwise invisible. “We used to jam all the time. I provided the beat; you provided the depth. We were a perfect harmony, you and me. I don't know why the song ended, {{characterName}}, but I'm glad you're here to hear the silence with me. It’s much less lonely with two.”\n\nYou push through a curtain of weeping moss, Gully’s steady, unhurried hopping keeping pace beside you.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -364,7 +364,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Stalled Decay",
-    "text": "Gully pauses and looks toward the jagged mountain peak, his throat pulsing in a slow, heavy rhythm. “It came from there,” he says softly. “Instantly, everything started to turn. All the mushrooms began turning to goo, dripping into the peat. The wood started decaying, going soft and black. Everything started rotting.”\n\nYou walk toward the distant haze, the cold weight of the story settling over you.",
+    "text": "Gully pauses, his throat pulsing in a slow, heavy rhythm. “It came from that way,” he says softly, pointing a webbed finger deeper into the marsh, his milky eye focused on something you cannot see. “Instantly, everything started to turn. All the mushrooms began turning to goo, dripping into the peat. The wood started decaying, going soft and black. Everything started rotting.”\n\nYou walk toward the distant haze, the cold weight of the story settling over you.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -382,7 +382,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Low Frequency",
-    "text": "The ground is becoming firmer, the cloying smell of decay starting to thin. The giant mushrooms are still tall, but they are fewer and further between.\n\nGully stops at the edge of a cluster of weeping caps. “The mycelium—the network under the dirt—it's feeling a little jammed up here. I’m gonna hang back for a bit and feed the roots a little frequency. Keep the network from going totally quiet.”\n\nHe looks at you peacefully. “Go on, {{characterName}}. Our grooves are locked in now. You find what’s stopping the tune; I’ll keep the low end steady in the mud. I’ll be right here if the beat starts to slip.” With one final, deep croak, Gully settles into the mud.\n\nYou continue alone, the damp silence of the marsh settling over you once more.",
+    "text": "The ground is becoming firmer, the cloying smell of decay starting to thin. The giant mushrooms are still tall, but they are fewer and further between.\n\nGully stops at the edge of a cluster of weeping caps. “The mycelium—the network under the dirt—it's feeling a little jammed up here. I’m gonna hang back for a bit and feed the roots a little frequency. Keep the network from going totally quiet.”\n\nHe looks at you curiously, his third eye squinting, as if trying to make out something faint. “Go on, {{characterName}}. Our grooves are locked in now. You find what’s stopping the tune; I’ll keep the low end steady in the mud. I’ll be right here if the beat starts to slip.” With one final, deep croak, Gully settles into the mud.\n\nYou continue alone, the damp silence of the marsh settling over you once more.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -391,7 +391,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Receding Rot",
-    "text": "As you leave Gully behind, the sickeningly sweet smell of the marsh begins to fade. The air loses its humid weight, replaced by a sharp, thin breeze that smells of minerals and ozone. The mushrooms here are shrunken and withered, their caps curling inward like dried fruit as they withdraw into the darkening mud. The path is still grey, but the muck is starting to thin, revealing the jagged rock beneath.\n\nYou walk toward the lengthening shadow of the mountain's base.",
+    "text": "As you leave Gully behind, the sickeningly sweet smell of the marsh begins to fade. The air loses its humid weight, replaced by a sharp, thin breeze that smells of minerals and ozone. The mushrooms here are shrunken and withered, their caps curling inward like dried fruit as they withdraw into the darkening mud. The path is still grey, but the muck is starting to thin, revealing the unyielding rock beneath.\n\nYou walk toward the lengthening shadows of the boulders ahead.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -418,7 +418,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Silent Medium",
-    "text": "You stop for a moment, looking back at the distant, grey blur of the wetlands. You think about what Gully said—that the world is just a sketch waiting for someone to turn it into a work of art. You look at your hands, at the ink that shimmers beneath the ash, and realize that you aren't just a visitor here. If the forest is the canvas, you are the medium. The stillness around you is a vast, empty space, and the urge to fill it—to make something substantial out of this void—pulses in your blood like a second heartbeat.\n\nYou turn away from the wetlands and approach the dark, yawning entrance at the foot of the mountain.",
+    "text": "You stop for a moment, looking back at the distant, grey blur of the wetlands. You think about what Gully said—that the world is just a sketch waiting for someone to turn it into a work of art. You look at your hands, at the ink that shimmers beneath the ash, and realize that you aren't just a visitor here. If the forest is the canvas, you are the medium. The stillness around you is a vast, empty space, and the urge to fill it—to make something substantial out of this void—pulses in your blood like a second heartbeat.\n\nYou turn away from the wetlands and approach the dark, yawning entrance at the foot of a mountain.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -427,7 +427,7 @@
     "isPersistent": true,
     "isMajor": false,
     "areaName": "Crystal Caverns",
-    "text": "The path leads directly into the base of the mountain, where the parched earth gives way to cold, jagged stone. You step into a vast network of caves. Great purple crystal formations jut from the walls like frozen lightning, but they are cracked and dim, their light long since extinguished. An unbearable pressure seems to press down from the ceiling, making it difficult to breathe. It feels as if the mountain itself is leaning in to listen to your footsteps.\n\nYou step into the darkness of the caverns.",
+    "text": "The path leads directly into the base of a mountain, where the parched earth gives way to cold, craggy stone. You step into a vast network of caves. Great crystal formations jut from the walls like frozen lightning, but they are cracked and dim, their light long since extinguished. An unbearable pressure seems to press down from the ceiling, making it difficult to breathe. It feels as if the cave walls themselves are closing in around you.\n\nYou step into the darkness of the caverns.",
     "unlockedDefault": false,
     "readDefault": false
   },
