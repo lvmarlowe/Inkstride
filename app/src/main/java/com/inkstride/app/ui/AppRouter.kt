@@ -177,6 +177,9 @@ fun AppRouter(innerPadding: PaddingValues) {
                         },
                         onPotentialIntroUnlocked = {
                             appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
+                        },
+                        onNewStoryUnlocksFound = {
+                            appRouterViewModel.onPotentialNewUnlocks()
                         }
                     )
 

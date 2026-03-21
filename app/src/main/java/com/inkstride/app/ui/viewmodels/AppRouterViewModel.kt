@@ -191,6 +191,21 @@ class AppRouterViewModel(
         }
     }
 
+    fun onPotentialNewUnlocks() {
+        viewModelScope.launch {
+            val unreadSegments = storyRepository.getUnlockedUnreadSegments()
+            if (unreadSegments.isNotEmpty()) {
+                _uiState.update {
+                    it.copy(
+                        hasStoryNotification = true,
+                        unreadUnlockSegmentIds = unreadSegments.map { segment -> segment.id },
+                        unlockAreaName = storyRepository.getAreaNameForStorySegment(unreadSegments.first().id)
+                    )
+                }
+            }
+        }
+    }
+
     fun onJourneySelected() {
         _uiState.update { it.copy(screen = AppRouteScreen.JOURNEY) }
     }

@@ -63,7 +63,8 @@ private const val FOREGROUND_SYNC_MINUTES = 5L
 fun JourneyScreen(
     modifier: Modifier = Modifier,
     onPermissionsRevoked: () -> Unit,
-    onPotentialIntroUnlocked: () -> Unit
+    onPotentialIntroUnlocked: () -> Unit,
+    onNewStoryUnlocksFound: () -> Unit
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -107,6 +108,9 @@ fun JourneyScreen(
 
         if (result.snapshot.introUnlocked) {
             onPotentialIntroUnlocked()
+        }
+        if (result.snapshot.newUnlocksFound) {
+            onNewStoryUnlocksFound()
         }
     }
 

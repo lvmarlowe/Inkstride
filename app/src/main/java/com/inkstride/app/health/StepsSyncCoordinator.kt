@@ -106,6 +106,7 @@ object StepSyncCoordinator {
 
                 val storyRepository = StoryRepository(context)
                 val introUnlocked = storyRepository.getIntroSegmentIfUnreadUnlocked() != null
+                val newUnlocksFound = storyRepository.hasUnlockedUnreadSegments()
 
                 StepSyncResult.Success(
                     snapshot = StepSyncSnapshot(
@@ -117,6 +118,7 @@ object StepSyncCoordinator {
                         nextMilestoneDistance = nextMilestoneDistance,
                         distanceUnit = distanceUnit,
                         introUnlocked = introUnlocked,
+                        newUnlocksFound = newUnlocksFound,
                         currentAreaName = latestPersistentUnlockedAreaName
                     )
                 )
@@ -143,6 +145,7 @@ data class StepSyncSnapshot(
     val nextMilestoneDistance: Double,
     val distanceUnit: DistanceUnit,
     val introUnlocked: Boolean,
+    val newUnlocksFound: Boolean,
     val currentAreaName: String
 )
 

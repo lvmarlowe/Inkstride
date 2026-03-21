@@ -274,7 +274,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "Pebble’s Mission",
-    "text": "The river disappears into a forest of massive, bloated mushrooms. Pebble stops. “I have to stay here and help, dear. Some of the smaller fish are trapped near the reeds. I want to make sure they’re okay until the flow of the river is restored.”\n\nAn optimistic look comes over her face, and she clasps her paws. “I'm ever so happy you stopped by. Go on now, {{characterName}}. I know you’ll find the answer! Stop on by when you do.” With a determined whistle, she twirls and dives back into the sludge.\n\n The sound of her whistle lingers longer than it should. The pull in your bones is overshadowed by your desire to restore the river your friend taught you to love.\n\nYou continue alone down the path.",
+    "text": "The river disappears into a forest of massive, bloated mushrooms. Pebble stops. “I have to stay here and help, dear. Some of the smaller fish are trapped near the reeds. I want to make sure they’re okay until the flow of the river is restored.”\n\nAn optimistic look comes over her face, and she clasps her paws. “I'm ever so happy you stopped by. Go on now, {{characterName}}. I know you’ll find the answer! Stop on by when you do.” With a determined whistle, she twirls and dives back into the sludge.\n\nThe sound of her whistle lingers longer than it should. The pull in your bones is overshadowed by your desire to restore the river your friend taught you to love.\n\nYou continue alone down the path.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -417,7 +417,7 @@
     "distanceMarker": 33.8,
     "isPersistent": false,
     "isMajor": false,
-    "areaName": "The Silent Medium",
+    "areaName": "The Inspired Medium",
     "text": "You stop for a moment, looking back at the distant, grey blur of the wetlands. You think about what Gully said—that the world is just a sketch waiting for someone to turn it into a work of art. You look at your hands, at the ink that shimmers beneath the ash, and realize that you aren't just a visitor here. If the forest is the canvas, you are the medium. The stillness around you is a vast, empty space, and the urge to fill it—to make something substantial out of this void—pulses in your blood like a second heartbeat.\n\nYou turn away from the wetlands and approach the dark, yawning entrance at the foot of a mountain.",
     "unlockedDefault": false,
     "readDefault": false
@@ -435,8 +435,170 @@
     "distanceMarker": 36.37,
     "isPersistent": false,
     "isMajor": true,
-    "areaName": "[bat area placeholder]",
-    "text": "[bat encounter story placeholder]",
+    "areaName": "Mica: The Meticulous Observer",
+    "text": "A wet sniffle cuts through the silence. A tiny figure hangs by their feet from a high, jagged outcropping, two dark eyes absorbing what little light remains. Their wings are wrapped tightly around them like a cocoon of thin, translucent silk, shrouding their small, fragile body in a close, silvery sheath. Their fur is a fine, silver-grey, their nose broad and blunt and pressed flat against their face like a thumbprint. Their ears are exceptionally large and delicate, twitching with a mechanical precision as they catch the sound of your footsteps.\n\n“S-s-subject is thirty-four days late,” the creature says, their voice small but clipped. “The error margin is grotesque.”\n\nYou stop beneath the outcropping and look up at the shrouded form. “I'm sorry. I forgot,” you say. “I forgot everything.”\n\nThe figure releases their grip and begins to drift in a wide circle around you, their wings unfurling and rippling behind them in long, slow arcs like a scholar's robes suspended in water as they study you. Mica sniffs quietly, their nose twitching as they record the scent—ink, faded but unmistakable.\n\n“Anomalous,” the creature says, sharply and clinically, banking around a dim crystal. “The Unmaking has rendered the world's data unreliable. I am Mica. I have spent eons documenting the magnetic and acoustic properties of this s-s-strata. To understand the world's s-s-structure is the only way to be truly free. Your amnesia is a catastrophic loss of data. We must proceed. Maintain a three-meter buffer to prevent proximity interference.” Mica drifts ahead, a silvery shape dissolving into the dark.\n\nYou move to keep them in sight.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 37.12,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Crushing Weight",
+    "text": "The air here is thick and heavy, pressing against your chest with a crushing force that makes every breath feel labored. Mica glides through the dense atmosphere, their ears independently rotating to track the smallest vibrations in the stone. A soft sneeze shakes their small frame, and they twitch their ears in annoyance at the interruption.\n\n“Archive data indicates a s-s-systemic overwrite,” Mica says, their eyes scanning the deep, jagged cracks that splinter across the cavern walls like lightning. “The Unmaking applied a crushing pressure that has compromised the integrity of these s-s-structures. It is a faulty environment. The world requires a s-s-stable anchor to resist the weight. In simpler terms—when everything around you is changing, you need certainty and stability, or you lose track of what is real.”\n\nYou press forward, following the steady beat of Mica's wings.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 37.88,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Proximity Distortion",
+    "text": "The path tightens, and the pressure intensifies until the silence feels like a physical weight on your eardrums. You move to step alongside Mica, but the creature flinches, their large ears pinning back against their skull as they swerve sharply away. They shudder, their breath momentarily shaky and their wings rippling in a tight, agitated pulse until the three-meter gap is restored.\n\n“Maintain the buffer,” Mica commands, their voice strained. “Your presence creates a localized distortion in the s-s-spatial data. If you move too close, your acoustic signature is too intense for close-range monitoring. The proximity is inefficient.” Mica pulls ahead without looking back.\n\nYou match their pace through the dark.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 38.65,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Acoustic Resonance",
+    "text": "The cavern opens into a series of rounded chambers where the walls are pockmarked with shallow, jagged holes. Mica circles the room, their ears twitching at the sound of the rock groaning under the pressure. They pause, looking at the ceiling where the stone bows inward.\n\n“Chronological logs identify this chamber as the site of Experiment 1: Acoustic Resonance Mapping,” Mica says, their voice muffled and clipped in the dense air. “In the past, you provided an acoustic trigger, and I utilized the return to construct a s-s-spatial map. The air density was lower then. Currently, the particulate saturation is absorbing the acoustic return before it can travel. Try to replicate the hum.”\n\nMica drifts to the far edge of the chamber. You move deeper into the dark after them.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 39.42,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Stifled Hum",
+    "text": "Per Mica’s instruction, you let out a low, steady note, but the sound feels like it is being choked as soon as it leaves your throat. It does not travel; it simply hangs in the thick air for a moment before dropping away.\n\nMica's ears twitch, catching the lack of return. “S-s-signal is absent. This does not match the archival data from our previous s-s-sessions. In the past, the transformation of the stone was instantaneous. In other words, you could shape the world with your voice. Currently, however, your output is below the required s-s-structural threshold. The resonance is inconclusive.” Mica sniffles and records the failure. Mica turns and glides onward, wings barely rippling.\n\nYou fall into step beneath them.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 40.21,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Knowledge is Liberation",
+    "text": "Mica suddenly lets out a wet, high-pitched sneeze that causes them to wobble in the air. Their wings churn in a brief, frantic surge to regain their hover, and they look physically drained by the effort of maintaining their flight in the heavy air. With a quick shake, they settle their ruffled fur.\n\n“The particulate matter from the crumbling stone is a persistent allergen,” Mica mutters, eyes watery and narrowed. “Physically, this environment is taxing for a vessel of my s-s-size. However, my mental faculties remain s-s-stable. Knowledge is the only liberation from the s-s-suffering of the flesh.” Mica steadies, soars higher, and presses on.\n\nYou walk beneath them through the settling dust.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 41.02,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Anomalous Shadows",
+    "text": "You continue through the gallery of fractured chambers, where the crushing weight seems to grow heavier with every step. You ask Mica if anything else changed when you disappeared. Mica circles a stalactite, their movements clinical and precise.\n\n“Affirmative,” Mica replies, their ears rotating back toward you. “The previous recordings include an observation outside the formal experimental parameters. In the past, the s-s-shadows in this chamber behaved anomalously in your presence. Their angles did not correspond to any fixed light s-s-source. I have no satisfactory explanation for the data. I recorded it regardless.” Mica glides silently into the next passage.\n\nYou follow the faint shimmer of their wings.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 41.85,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Discarded Compass",
+    "text": "The path drops into a shallow depression filled with silver dust and fragments of crushed rock. As you walk, your foot strikes something hard and metallic under crumbled stone. You reach down and pull a tarnished metal compass from the debris. It is heavy and cold, the glass cracked from the weight of the stone, and the needle spins in frantic, meaningless circles. Mica drifts closer, their eyes glowing with a faint, shifting light.\n\n“Ah,” Mica says, their voice dropping lower, as if describing a precious artifact. “That is the property of the s-s-strata. I had recorded it as lost during the inventory following the Unmaking. It is a precision instrument, designed to track the subsurface field lines when the atmosphere is too thick for sensory mapping.”\n\nYou continue through the silver dust, turning the tarnished metal over in your hands.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 42.68,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Magnetic Mapping",
+    "text": "The air begins to thrum with a low, electric tension as you enter a massive vault. Mica glides toward the center, their wings shimmering as they sense the magnetic lines. They sniffle once as they bank.\n\n“Observe Experiment 2: Magnetic Field Line Mapping,” Mica says. “In the past, you borrowed that device to verify the accuracy of my magnetoreceptive readings. We recorded the coordinates of the subsurface field lines while I traced their paths through the rock. When you went missing, the lines became fractured. They drifted through the stone without a guide. Now, analyze the needle.”\n\nYou look down at the compass. It has stopped spinning. It points directly at your chest. Mica circles the vault in a slow, wide arc.\n\nYou walk beneath them, the compass heavy in your hand.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 43.43,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Personal North",
+    "text": "As you move across the chamber, the needle follows you with mechanical precision. Every step you take realigns the magnetic orientation of the entire vault, the invisible field lines bending toward you despite the crushing weight of the atmosphere.\n\n“S-s-statistically impossible. Magnetic North has always tracked your position—I recorded it myself. When you disappeared, it had nothing to follow, and the needle simply spun. But you have returned, and it is recalibrating to you again. You are the only s-s-stable point in a world under pressure. That means the world is rewriting its own compass to point at you.” Mica ascends toward the passage above.\n\nYou trudge upward after them.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 44.18,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Sensory Intensity",
+    "text": "Mica doesn't fly ahead this time. They stay exactly three meters away, maintaining a steady hover that keeps them in your peripheral vision. Whenever you turn your head toward them, Mica's ears flick backward, and they drift a few inches further away, as if your direct attention is physically loud.\n\n“Close-range monitoring is required to observe the way the field lines react to your gait,” Mica says. “It is a s-s-substantial amount of data. It would be inefficient for me to be elsewhere when the s-s-subject is so active. The electromagnetic overlap is manageable.” Mica keeps pace exactly three meters to your left.\n\nYou move together toward the final cluster of crystals.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 45.02,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Crystalline Lattice",
+    "text": "The path is lined with massive, clouded crystals. They are dull and grey, their surfaces covered in a thick layer of ash and deep cracks. Mica hovers near a jagged crack in a central pillar and sniffles.\n\n“Experiment 3: Crystalline Lattice Alignment,” Mica says. “In the past, you touched the crystals to test their s-s-structural integrity. They would realign under your touch. Now, they are crumbling under the weight of the Unmaking. The light is trapped inside. Contact is necessary for calibration.”\n\nYou approach the clouded stones.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 45.92,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Fractured Light",
+    "text": "You reach out and press your palm against the largest crystal, hoping to feel the stone smooth out as Mica described. A deep, iridescent shimmer pulses from your hand, and for a moment, the internal lattice of the crystal clicks. A single crack begins to seal itself, and a spark of sharp light flares in the center. But as quickly as it began, the shimmer fades. The light flickers and dies, leaving the crystal as grey and clouded as before.\n\nMica's head twitches as they record the failure. “The internal lattice remains fractured. S-s-stability is not restored. The ink is failing to act as a binder, unlike our previous s-s-sessions. You used to be able to heal the world with your touch. The capacity is not absent—it is dormant. The data is inconclusive as to why.” Mica drifts away from the crystals.\n\nYou leave the dim stones behind.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 46.73,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Unstable Records",
+    "text": "The cavern remains dark, the grey ash on the ground swallowing the little light you have left. Mica hovers nearby, their fur flattened by the heavy air. They look at you, their head tilting at a sharp angle.\n\n“The s-s-stability has not returned,” Mica observes. “The Unmaking continues to unbind the laws of physics here, though your presence prevents total collapse. You are the reason this place hasn't collapsed into a single point, even if you cannot yet repair the damage. Knowledge of this fact is a s-s-step toward freedom.” Mica turns toward the faint light above.\n\nYou follow, your feet stirring ash with every step.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 47.51,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Atmospheric Shift",
+    "text": "As you climb, the air becomes thinner and the crushing pressure begins to lift. The jagged floor turns back into dark, damp loam covered in thick mats of spongy moss and powdery lichen. You can see the light of the pale full moon through the narrow exit above.\n\nMica glides ahead, their wings undulating slowly in the night air. They sniffle again, the sound louder, less muffled than before. “The s-s-surface conditions are within acceptable parameters,” Mica reports. “Prepare for the change in density. The s-s-space ahead is much less confined. It will be a s-s-significant s-s-shift in your sensory input, but my recordings suggest you handle the transition well.”\n\nMica ripples upward through the thinning air. You climb the final incline.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 48.33,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Mapping the Baseline",
+    "text": "The path reaches the exit, looking out over a distant, moonlit grove. The crescent moon hangs low in the sky, barely brushing the tops of the trees.\n\nBefore you can turn away, Mica reaches out a small, silver-grey claw and plucks the tarnished metal compass from your hand. “That belongs to me,” Mica says, their voice small. “I must remain here. The new data requires s-s-sorting. I must map the new baseline of this forest. You have provided a s-s-substantial s-s-sample of your influence, {{characterName}}. It matches my prior records of your identity, although it is s-s-significantly diminished.”\n\nMica tilts their head, their dark eyes fixed on your silhouette against the bright exit. “You are distinct from the other creatures of this s-s-strata. Such a difference brings with it great power, and with that power comes great responsibility. It is your duty to help the world understand itself once more, even if you do not yet feel you are s-s-suited for the role.”\n\nYou look at the creature. “Will you be okay here?”\n\n“I have my observations,” Mica says, settling their ears against the stone. “Go. The s-s-subject must continue to move if the data is to remain relevant to the world's s-s-salvation.”\n\nMica stops at the mouth of the cave, hanging upside-down once again from a low rock. They wrap their silk-like wings back around their small frame, becoming a still, silvery shroud once more.\n\nAs the cave entrance shrinks behind you, the pull in your bones finds a new gravity. It is no longer just an instinctual drift, but a determination to restore the order of the world for the friend who dedicated their days to learning everything about you and the world you helped shape.\n\nYou step out of the cave and into the night air.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 49.12,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Twisted Pines",
+    "text": "The trees change as you walk. They are no longer standing straight; they are bent and gnarled, frozen mid-contortion. Their branches reach deeper into the forest in tangled spirals, as if desperate. They look like they froze in the middle of a struggle, trying to grab hold of something they can no longer reach. As you navigate through the wreckage, you feel the brittle branches brushing against your shoulders and arms, as if the trees are still trying to pull you toward them. When you pass them, you hear a faint, high-pitched creak, like the groan of a sinking ship.\n\nYou move quickly to clear the reach of the wood.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 49.75,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Scratched Bark",
+    "text": "You find a piece of white bark from a fallen tree. Two figures are drawn in charcoal, their arms linked in camaraderie. But then someone used a piece of coal to grind one of the figures into a black scribble, scratching them out completely. You picture someone watching from the shadows, unable to bear seeing others have what they lacked—desperately trying to erase a happiness they coveted. You pick up the bark and the fragment of coal, feeling the soot stain your fingers like lingering jealousy.\n\nYou continue through the dark woods.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 50.15,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Burden of Clarity",
+    "text": "Mica’s clinical parting words carry a weight that persists even as the cave air thins. They spent their days recording a world that was falling apart, but they saw you as the only coordinate that remained fixed. Now that you have seen how the laws of the forest behave—how the very logic of the world shifts to track your presence—the ignorance you woke with feels like a luxury you’ve lost. This knowledge is a duty. You are the only one who understands the structure of the world you’ve returned to, and the only one who can repair it. It is your responsibility to help the creatures and undo the damage of the Unmaking.\n\nYou walk toward the sound of rustling leaves ahead.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -444,26 +606,116 @@
     "distanceMarker": 50.55,
     "isPersistent": true,
     "isMajor": false,
-    "areaName": "Buttercup Meadow",
-    "text": "[buttercup meadow story placeholder]",
+    "areaName": "Dappleleaf Grove",
+    "text": "The stone path finally softens, disappearing into a wide, silent cathedral of ancient oaks. These are not the spindly, broken trees from the forest's edge; they are massive and imposing, their wide trunks wrapped in bark so thick and deeply furrowed it looks like weathered iron. High above, the canopy is a dense, interlocking weave of branches, though the leaves themselves are brittle—mere silhouettes against the hollow sky. The sky is a vast, starless expanse. Every star has been plucked from the dark, leaving the space between the clouds dark and empty. The moon has climbed higher since you left the caverns, but its light is thin and diminished. It hangs like a fading ember in the blackness, casting a dim, silvery shadow that barely reaches the forest floor. The darkness here feels like a hole in the world where something used to be. The only sound is the dry, rhythmic rasp of oak limbs shifting in the high-altitude air. You stand at the center of the grove, a solitary figure in a landscape defined by what is missing.",
     "unlockedDefault": false,
     "readDefault": false
   },
   {
-    "distanceMarker": 51.66,
+    "distanceMarker": 51.09,
     "isPersistent": false,
     "isMajor": true,
-    "areaName": "[deer area placeholder]",
-    "text": "[deer encounter story placeholder]",
+    "areaName": "Luna: The Shepherd of the Grove",
+    "text": "Luna is perched on a low-hanging limb of a massive oak. She has four wings of equal size, arranged in two tiers along her back. The first pair sits high at her shoulders, with the second pair tucked neatly just beneath them. The feathers are thick and soft grey, layered for silent flight. Her eyes are deep pools of dark, metallic-grey mercury. She has fluffy tufts of feathers near her ears and thin mothlike antennae that flick in the night. On the tip of a wing, she cradles a single firefly that has gone cold and dark.\n\nShe doesn't turn her head as you approach, but her voice is steady and clear. \"You have returned to the grove, Inker. Your stride is firm. I can hear the weight of the deep earth in your steps.\"\n\nYou look up at her, but there is no recognition. \"I don't remember you,\" you say. \"I don't remember being here before.\"\n\nShe finally turns her head to look down at you, the mercurial pools of her eyes reflecting nothing. A resolved stillness settles over her. \"Then the Unmaking has reached deeper than I feared. It is an unfortunate thing to lose one's own story. I am Luna. I am the shepherd of these oaks and the creatures within them. I have spent my life learning their needs so I could meet them.\"\n\nShe looks back toward the empty expanse above the trees. \"The sky has gone dark. I have called to the stars every hour since the Unmaking took the light, but there is no answer. They have stopped their part of the conversation. I cannot fix a dark this deep on my own.\"\n\nShe swoops down from the branch, landing silently on the path. She extends her wing toward you, offering the firefly resting in her feathers. It looks as dull as piece of charcoal. \"This one is fading. Its light is gone. Take it into your hands so it can feel your warmth. I will speak to it until the spark returns. Come, we have work to do.\"\n\nAs you accept the small, cold weight, she steps into line beside you. Her movement is fluid and soundless, her four wings shifting slightly to adjust to your pace as the two of you begin to walk deeper into the ancient oaks.",
     "unlockedDefault": false,
     "readDefault": false
   },
   {
-    "distanceMarker": 71.29,
-    "isPersistent": true,
+    "distanceMarker": 51.94,
+    "isPersistent": false,
+    "isMajor": true,
+    "areaName": "The Fading Spark",
+    "text": "You cup your hands together, holding the cold, lifeless firefly into your palms. It weighs almost nothing, like a dried leaf. As your skin touches the small, dark form, you feel the deep chill that has settled into it.\n\nLuna leans in. The sound she makes is a sequence of low, melodic clicks and soft, sustained hums that vibrate through your fingers. It is a deep resonance, a sound urging the tiny insect to find the heat and the light within.\n\nFor a long moment, there is only the gentle swaying of the oak branches above and the rhythmic vibration of Luna’s voice. You watch the dark insect. A single leg twitches against your palm—a small sign of life. But the firefly stays dark.\n\nLuna stops the sound. She looks at the insect, her mercurial eyes darkening even more. \"The Unmaking has reached the center of its spark,\" she says. \"It is cold, and it has forgotten how to glow. It will take more than a moment of warmth to remind it of its light.\"\n\nShe reaches out and takes the firefly back, settling it carefully into the feathers of her wing. \"We will keep it close. The work is difficult, but the warmth must still be out there. We just have to be patient enough to find it.\" She gestures forward with a slight tilt of her head, her moth antennae flicking as she scans the path ahead.\n\nLuna beats her wings and takes flight. You walk beside her, the soft crunch of the lichen under your feet the only sound under the starless sky.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 52.71,
+    "isPersistent": false,
+    "isMajor": true,
+    "areaName": "The Unnamed Dark",
+    "text": "Luna circles slowly overhead, her wings barely disturbing the cold air. The silver-grey bark of the oaks below looks like pillars against the featureless black of the sky. Mid-circle, she angles her wing to glance at the firefly nestled in her feathers, then looks back up into the void.\n\n\"I cannot be everywhere at once,\" she says. \"No shepherd can. So, I found other eyes.\" She nods toward the empty sky. \"We named them together—the stars. Not by the names on the old maps. We gave them our own. And once they had names, I gave each constellation a post. A part of the forest to watch over. When something was wrong, they told me.\"\n\nShe glides into a slow turn above the canopy. You follow below, stepping carefully.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 53.05,
+    "isPersistent": false,
     "isMajor": false,
-    "areaName": "Dappleleaf Grove",
-    "text": "[owl encounter story placeholder]",
+    "areaName": "The Guardian of the Thicket",
+    "text": "Luna is still above you, her wings tracing slow arcs between the reaching oaks.\n\n\"We found Flicker first,\" she says, nodding towards the sky above Thistlewick Thicket, where Flicker reminded you of your name. \"An oblong shape with four bright lines trailing behind it, like his tails when he runs. Quick to notice. Quick to react. It suited him.\" She tilts her wing briefly, checking the firefly, then levels out. \"I asked that constellation to watch over the thicket when I could not.\"\n\nYou and Luna look up toward the sky, searching for even a faint flicker of light between the leaves, as you continue through the gnarled oaks.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 53.28,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Guardian of the Valley",
+    "text": "Luna drifts lower as a draft of cold air moves through the canopy, rustling the paper-thin leaves. She gestures with her wing towards the empty sky hanging over the Wandering River, where Pebble reminded you of who you were.\n\n\"Pebble came next,\" she says. \"A round shape sitting low on a long stream of stars, like she was floating on her back down the river. I asked that constellation to watch over the valley.\" She turns in a slow arc and bends her head toward the wing holding the firefly. A look of concern flashes across her face, and she picks up speed, beating her wings more urgently.\n\nYou stay close behind as the path curves gently through the trees.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 53.51,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Guardian of Marsh",
+    "text": "The oaks press closer together here, their contorted limbs reaching overhead in tangled arcs. Luna moves through them without slowing, dodging branches with practiced ease.\n\n\"Gully came next,\" she says, looking at the deep void over the Glowcap Marsh, where Gully reminded you of your place in the world. \"We found a wide, low shape with three stars set side by side at the center. The middle one sat where his third eye would be.\" She swirls around a large trunk, and the motion brings her wing close enough that she steals a glance at the firefly before heading on. \"That constellation watched over the marsh.\"\n\nYou continue forward, the shadows of the trees pressing close around the path.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 53.74,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Guardian of the Caverns",
+    "text": "Luna has climbed higher again, her silhouette just visible against the dark canopy. The grove is quieter here, the reaching limbs of the oaks so dense overhead that the sky is barely visible between them.\n\n\"Mica was the last one we found,\" she says, and you look back the way you had just come, toward the deep nothingness above the Crystal Caverns, where Mica reminded you of your potential. \"An even shape with two long arcs opening from it like wings in motion. Precise. Symmetrical. It could not have belonged to anyone else.\"\n\nShe descends slightly, her lower wings slowing as she passes close overhead, and glances at the firefly with a growing urgency. \"That constellation watched over the caverns. Every shift in the stone, every change in the atmosphere—it recorded all of it. The most thorough watcher I had.\"\n\nThe path softens beneath your feet, the ancient lichen muffling your steps. Luna rises again, resuming her wide arc through the dark.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 53.97,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Unfinished Map",
+    "text": "Luna has grown quieter as you walk, her speed steadily increasing, her glances at the firefly tucked safely in her wing more frequent, her antennae flicking more frantically. Though her face remains calm, the beat of her wings steady.\n\n\"We never finished,\" she says solemnly, her antennae drooping. \"There were still parts of the forest without eyes. We kept looking but had not yet found them when the Unmaking came.\"\n\nA shiver runs through you. She continues, \"Now I cannot find any of the guardians. I have searched the dark over and over, looking for even the slightest trace of their light. Called to them in the night and listened for even the faintest whisper of a response. But they are gone. Completely gone.\"\n\nYou feel their absence now, as Luna does. It’s almost as if you have lost the creatures themselves, the friends who gave back what you had forgotten, who guided you when you were lost. You and Luna continue forward into the dark, your heart heavy and aching.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 54.21,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Last Conversation",
+    "text": "Between the reaching oaks, you watch Luna tend to the firefly—occasionally whispering something you cannot hear, and could not understand even so.\n\n\"The stars screamed when it happened,\" she says, her voice steady, but with a rising tension beneath the surface. \"All of them, at once. Every constellation I had ever spoken to. I heard them cry out across the whole sky. And then silence. The dark came down—the Unmaking. They have not answered since.\"\n\nShe flies on, her rhythm unbroken. \"I will keep calling to them. It is the only thing I know how to do.\"\n\nYou walk beneath her in silence, the weight of what she carries settling over you like the cold.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 54.88,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Speaking Wood",
+    "text": "Luna drifts down toward the canopy and hovers at the level of the highest branches, one wing resting lightly against the bark of a massive oak. The tree is so large its top is lost in the darkness, its surface cold and rough.\n\n“The roots are quieter than they used to be,” she says. “But they are still speaking.” She lifts her wing and looks down at you, her mercury eyes reflecting nothing but the path ahead. “I taught you to listen once. You pressed your palms to the bark and stood so still. After a long while, you felt it. Not words. Something slower. A deep patience passing through the wood like a heartbeat.”\n\nShe tilts her head, her antennae flicking as she catches a shift in the air. “The oaks remember you. Even now, under this starless sky, they lean in when you pass. Living things do that sometimes. They remember your touch.”\n\nYou look at the row of ancient trunks lining the path. In the dim light, the trees seem to loom closer, their heavy limbs bowing toward the center of the road. You continue deeper into the grove, the air growing cooler.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 55.42,
+    "isPersistent": false,
+    "isMajor": true,
+    "areaName": "The Firefly Waltz",
+    "text": "Luna alights briefly on a high branch, looking out over a wide clearing between the oaks. Her wings settle around her, the cold firefly still tucked securely between the grey feathers of her wing.\n\n“On warm nights, we used to sit in the tallest oak and watch the fireflies rise out of the grass,” she says. “Thousands of them. All at once. They drifted upward until the whole grove was full of light. They looked like stars brought down to earth.”\n\nShe reaches into her feathers, checking the dark insect. Its legs twitch weakly, a faint sign of life maintained by her proximity. “On the best nights, they rose high enough to meet the stars above. Sky and earth together as points of light. You could not tell where one ended and the other began.”\n\nShe lifts off the branch without another word, her four wings beating rhythmically as she ascends back into the dark canopy. You walk through the silent clearing below her, the grass pale and still beneath your feet.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 72.34,
+    "isPersistent": false,
+    "isMajor": true,
+    "areaName": "[deer encounter story placeholder]",
+    "text": "[deer encounter story placeholder]",
     "unlockedDefault": false,
     "readDefault": false
   },
