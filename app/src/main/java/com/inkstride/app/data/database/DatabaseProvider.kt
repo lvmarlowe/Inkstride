@@ -8,10 +8,16 @@ import com.inkstride.app.data.database.entities.Settings
 import com.inkstride.app.data.database.entities.StorySegment
 import com.inkstride.app.data.database.entities.UnlockState
 
+/**
+ * Creates and seeds the application database.
+ */
 object DatabaseProvider {
     @Volatile
     private var instance: InkstrideDatabase? = null
 
+    /**
+     * Returns a database instance for the process.
+     */
     fun getDatabase(context: Context): InkstrideDatabase {
         return instance ?: synchronized(this) {
             val newInstance = Room.databaseBuilder(
@@ -29,6 +35,9 @@ object DatabaseProvider {
         }
     }
 
+    /**
+     * Ensures default settings and seeded story data exist.
+     */
     suspend fun ensureDefaults(context: Context) {
         val database = getDatabase(context)
         ensureDefaultSettings(database)
@@ -41,24 +50,33 @@ object DatabaseProvider {
         ensureSeededUnlockStates(database, seededStoryData)
     }
 
+    /**
+     * Writes normalized default settings when stored settings are missing or invalid.
+     */
     private suspend fun ensureDefaultSettings(database: InkstrideDatabase) {
         val settingsDao = database.settingsDao()
         val currentSettings = settingsDao.get()
         val normalizedSettings = (currentSettings ?: Settings()).normalized()
 
+        // Avoids unnecessary writes when values are already normalized.
         if (currentSettings != normalizedSettings) {
             settingsDao.upsert(normalizedSettings)
         }
     }
 
+    /**
+     * Seeds milestones and story segments from asset data.
+     */
     private suspend fun ensureSeededMilestonesAndStory(
         database: InkstrideDatabase,
         seededStoryData: List<StorySeedEntry>
     ) {
+        // Keeps milestone and story updates in one transaction.
         database.withTransaction {
             val milestoneDao = database.milestoneDao()
             val storySegmentDao = database.storySegmentDao()
 
+            // Removes seeded milestones that are no longer present in asset data.
             if (seededStoryData.isNotEmpty()) {
                 milestoneDao.deleteByDistanceMarkerNotIn(
                     seededStoryData.map { it.distanceMarker }
@@ -77,6 +95,7 @@ object DatabaseProvider {
                         )
                     ).toInt()
 
+                // Refreshes mutable milestone fields when seed values change.
                 if (
                     milestone != null && (
                             milestone.areaName != areaName ||
@@ -102,12 +121,16 @@ object DatabaseProvider {
                         )
                     )
                 } else if (existingSegment.text != text) {
+                    // Refreshes segment text when seed text changes.
                     storySegmentDao.insert(existingSegment.copy(text = text))
                 }
             }
         }
     }
 
+    /**
+     * Seeds unlock-state rows that are missing for existing story segments.
+     */
     private suspend fun ensureSeededUnlockStates(
         database: InkstrideDatabase,
         seededStoryData: List<StorySeedEntry>
@@ -120,6 +143,7 @@ object DatabaseProvider {
         for (seed in seededStoryData) {
             val milestone = milestoneDao.getByDistanceMarker(seed.distanceMarker) ?: continue
             val segmentId = storySegmentDao.getByMilestoneId(milestone.id).firstOrNull()?.id ?: continue
+            // Prevents an invalid default where read is true while unlocked is false.
             val normalizedReadDefault = if (seed.unlockedDefault) seed.readDefault else false
             defaultsBySegmentId[segmentId] = seed.unlockedDefault to normalizedReadDefault
         }
@@ -127,6 +151,7 @@ object DatabaseProvider {
         val segments = storySegmentDao.getAll()
         if (segments.isEmpty()) return
 
+        // Inserts only missing rows to preserve existing user progress.
         val missingStates = segments.mapNotNull { seg ->
             val existing = unlockStateDao.getByStorySegmentId(seg.id)
             if (existing != null) {

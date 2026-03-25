@@ -3,9 +3,23 @@ package com.inkstride.app.data.database
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
+/**
+ * Defines schema migrations for InkstrideDatabase.
+ *
+ * Migration steps preserve user data while enforcing newer constraints,
+ * normalizing legacy values, and rebuilding indexes or triggers required
+ * by the current schema contract.
+ */
 object DatabaseMigrator {
+    /**
+     * Migrates schema from version 6 to version 7.
+     */
     val MIGRATION_6_7 = object : Migration(6, 7) {
+        /**
+         * Rebuilds constrained tables and normalizes legacy values.
+         */
         override fun migrate(db: SupportSQLiteDatabase) {
+            // Rebuilds settings with value constraints.
             db.execSQL(
                 """
                 CREATE TABLE IF NOT EXISTS `settings_new` (
@@ -37,6 +51,7 @@ object DatabaseMigrator {
             db.execSQL("DROP TABLE `settings`")
             db.execSQL("ALTER TABLE `settings_new` RENAME TO `settings`")
 
+            // Rebuilds progress state and clamps invalid negative values.
             db.execSQL(
                 """
                 CREATE TABLE IF NOT EXISTS `progress_state_new` (
@@ -73,6 +88,7 @@ object DatabaseMigrator {
             db.execSQL("DROP TABLE `progress_state`")
             db.execSQL("ALTER TABLE `progress_state_new` RENAME TO `progress_state`")
 
+            // Rebuilds daily stats and keeps rows with valid date keys.
             db.execSQL(
                 """
                 CREATE TABLE IF NOT EXISTS `daily_stats_new` (
@@ -100,6 +116,7 @@ object DatabaseMigrator {
             db.execSQL("DROP TABLE `daily_stats`")
             db.execSQL("ALTER TABLE `daily_stats_new` RENAME TO `daily_stats`")
 
+            // Rebuilds milestones and restores unique distance index.
             db.execSQL(
                 """
                 CREATE TABLE IF NOT EXISTS `milestone_new` (
@@ -135,6 +152,7 @@ object DatabaseMigrator {
                 "CREATE UNIQUE INDEX IF NOT EXISTS `index_milestone_distanceMarker` ON `milestone` (`distanceMarker`)"
             )
 
+            // Rebuilds story segments and normalizes blank narrative text.
             db.execSQL(
                 """
                 CREATE TABLE IF NOT EXISTS `story_segment_new` (
@@ -165,6 +183,7 @@ object DatabaseMigrator {
                 "CREATE UNIQUE INDEX IF NOT EXISTS `index_story_segment_milestoneId` ON `story_segment` (`milestoneId`)"
             )
 
+            // Rebuilds unlock state and prevents read=true when unlocked=false.
             db.execSQL(
                 """
                 CREATE TABLE IF NOT EXISTS `unlock_state_new` (
@@ -199,9 +218,10 @@ object DatabaseMigrator {
                 "CREATE INDEX IF NOT EXISTS `index_unlock_state_unlocked_read_storySegmentId` ON `unlock_state` (`unlocked`, `read`, `storySegmentId`)"
             )
 
+            // Prevents id mutation in settings updates.
             db.execSQL(
                 """
-                CREATE TRIGGER IF NOT EXISTS `settings_singleton_id_guard`
+                CREATE TRIGGER IF NOT EXISTS `settings_id_guard`
                 BEFORE UPDATE ON `settings`
                 WHEN NEW.`id` != 1
                 BEGIN
@@ -210,9 +230,10 @@ object DatabaseMigrator {
                 """.trimIndent()
             )
 
+            // Prevents id mutation in progress updates.
             db.execSQL(
                 """
-                CREATE TRIGGER IF NOT EXISTS `progress_state_singleton_id_guard`
+                CREATE TRIGGER IF NOT EXISTS `progress_state_id_guard`
                 BEFORE UPDATE ON `progress_state`
                 WHEN NEW.`id` != 1
                 BEGIN
@@ -223,8 +244,14 @@ object DatabaseMigrator {
         }
     }
 
-
+    /**
+     * Migrates schema from version 7 to version 8.
+     */
     val MIGRATION_7_8 = object : Migration(7, 8) {
+
+        /**
+         * Adds persistence flag for milestone rows.
+         */
         override fun migrate(db: SupportSQLiteDatabase) {
             db.execSQL(
                 "ALTER TABLE `milestone` ADD COLUMN `is_persistent` INTEGER NOT NULL DEFAULT 1"
