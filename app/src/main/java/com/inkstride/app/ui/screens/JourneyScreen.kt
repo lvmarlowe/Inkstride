@@ -324,7 +324,7 @@ fun JourneyScreen(
                     DividerLine()
 
                     StatBlock(
-                        label = "NEXT MILESTONE IN",
+                        label = "NEXT MILESTONE",
                         value = formatDistance(nextMilestoneDistance),
                         unit = distanceUnitLabelFormatter
                             .unitLabel(nextMilestoneDistance, distanceUnit)
