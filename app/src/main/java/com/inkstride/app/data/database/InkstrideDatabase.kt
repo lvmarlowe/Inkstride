@@ -16,7 +16,8 @@ import com.inkstride.app.data.database.entities.StorySegment
 import com.inkstride.app.data.database.entities.UnlockState
 
 /**
- * Defines the Room database and DAO entry points.
+ * InkstrideDatabase: Defines the Room database and DAO entry points.
+ * Registers all entities and exposes access methods for each table.
  */
 @Database(
     entities = [
@@ -32,33 +33,21 @@ import com.inkstride.app.data.database.entities.UnlockState
 )
 abstract class InkstrideDatabase : RoomDatabase() {
 
-    /**
-     * Returns DAO for settings rows.
-     */
+    // settingsDao: Returns DAO for settings rows.
     abstract fun settingsDao(): SettingsDao
 
-    /**
-     * Returns DAO for progress-state rows.
-     */
+    // progressStateDao: Returns DAO for progress state rows.
     abstract fun progressStateDao(): ProgressStateDao
 
-    /**
-     * Returns DAO for daily stats rows.
-     */
+    // dailyStatsDao: Returns DAO for daily stats rows.
     abstract fun dailyStatsDao(): DailyStatsDao
 
-    /**
-     * Returns DAO for milestone rows.
-     */
+    // milestoneDao: Returns DAO for milestone rows.
     abstract fun milestoneDao(): MilestoneDao
 
-    /**
-     * Returns DAO for story segment rows.
-     */
+    // storySegmentDao: Returns DAO for story segment rows.
     abstract fun storySegmentDao(): StorySegmentDao
 
-    /**
-     * Returns DAO for unlock-state rows.
-     */
+    // unlockStateDao: Returns DAO for unlock state rows.
     abstract fun unlockStateDao(): UnlockStateDao
 }

@@ -4,22 +4,20 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 /**
- * Defines schema migrations for InkstrideDatabase.
- *
+ * DatabaseMigrator: Defines schema migrations for InkstrideDatabase.
  * Migration steps preserve user data while enforcing newer constraints,
  * normalizing legacy values, and rebuilding indexes or triggers required
  * by the current schema contract.
  */
 object DatabaseMigrator {
     /**
-     * Migrates schema from version 6 to version 7.
+     * MIGRATION_6_7: Migrates schema from version 6 to version 7.
+     * Rebuilds constrained tables and normalizes legacy values.
      */
     val MIGRATION_6_7 = object : Migration(6, 7) {
-        /**
-         * Rebuilds constrained tables and normalizes legacy values.
-         */
         override fun migrate(db: SupportSQLiteDatabase) {
-            // Rebuilds settings with value constraints.
+
+            // Rebuilds settings with value constraints to enforce valid character name and distance unit.
             db.execSQL(
                 """
                 CREATE TABLE IF NOT EXISTS `settings_new` (
@@ -51,7 +49,7 @@ object DatabaseMigrator {
             db.execSQL("DROP TABLE `settings`")
             db.execSQL("ALTER TABLE `settings_new` RENAME TO `settings`")
 
-            // Rebuilds progress state and clamps invalid negative values.
+            // Rebuilds progress state and clamps invalid negative values to keep totals valid.
             db.execSQL(
                 """
                 CREATE TABLE IF NOT EXISTS `progress_state_new` (
@@ -88,7 +86,7 @@ object DatabaseMigrator {
             db.execSQL("DROP TABLE `progress_state`")
             db.execSQL("ALTER TABLE `progress_state_new` RENAME TO `progress_state`")
 
-            // Rebuilds daily stats and keeps rows with valid date keys.
+            // Rebuilds daily stats and keeps only rows with valid date keys to drop malformed records.
             db.execSQL(
                 """
                 CREATE TABLE IF NOT EXISTS `daily_stats_new` (
@@ -116,7 +114,7 @@ object DatabaseMigrator {
             db.execSQL("DROP TABLE `daily_stats`")
             db.execSQL("ALTER TABLE `daily_stats_new` RENAME TO `daily_stats`")
 
-            // Rebuilds milestones and restores unique distance index.
+            // Rebuilds milestones and restores unique distance index to prevent duplicate route points.
             db.execSQL(
                 """
                 CREATE TABLE IF NOT EXISTS `milestone_new` (
@@ -152,7 +150,7 @@ object DatabaseMigrator {
                 "CREATE UNIQUE INDEX IF NOT EXISTS `index_milestone_distanceMarker` ON `milestone` (`distanceMarker`)"
             )
 
-            // Rebuilds story segments and normalizes blank narrative text.
+            // Rebuilds story segments and replaces blank narrative text to prevent empty content from reaching the UI.
             db.execSQL(
                 """
                 CREATE TABLE IF NOT EXISTS `story_segment_new` (
@@ -183,7 +181,7 @@ object DatabaseMigrator {
                 "CREATE UNIQUE INDEX IF NOT EXISTS `index_story_segment_milestoneId` ON `story_segment` (`milestoneId`)"
             )
 
-            // Rebuilds unlock state and prevents read=true when unlocked=false.
+            // Rebuilds unlock state and prevents read=true when unlocked=false to keep flag state consistent.
             db.execSQL(
                 """
                 CREATE TABLE IF NOT EXISTS `unlock_state_new` (
@@ -218,7 +216,7 @@ object DatabaseMigrator {
                 "CREATE INDEX IF NOT EXISTS `index_unlock_state_unlocked_read_storySegmentId` ON `unlock_state` (`unlocked`, `read`, `storySegmentId`)"
             )
 
-            // Prevents id mutation in settings updates.
+            // Prevents id mutation in settings updates to protect the single row constraint.
             db.execSQL(
                 """
                 CREATE TRIGGER IF NOT EXISTS `settings_id_guard`
@@ -230,7 +228,7 @@ object DatabaseMigrator {
                 """.trimIndent()
             )
 
-            // Prevents id mutation in progress updates.
+            // Prevents id mutation in progress updates to protect the single row constraint.
             db.execSQL(
                 """
                 CREATE TRIGGER IF NOT EXISTS `progress_state_id_guard`
@@ -245,14 +243,12 @@ object DatabaseMigrator {
     }
 
     /**
-     * Migrates schema from version 7 to version 8.
+     * MIGRATION_7_8: Migrates schema from version 7 to version 8.
+     * Adds persistence flag for milestone rows so anchor story points survive resets.
      */
     val MIGRATION_7_8 = object : Migration(7, 8) {
-
-        /**
-         * Adds persistence flag for milestone rows.
-         */
         override fun migrate(db: SupportSQLiteDatabase) {
+            // Adds is_persistent column with a default of true so existing milestones stay visible after migration.
             db.execSQL(
                 "ALTER TABLE `milestone` ADD COLUMN `is_persistent` INTEGER NOT NULL DEFAULT 1"
             )

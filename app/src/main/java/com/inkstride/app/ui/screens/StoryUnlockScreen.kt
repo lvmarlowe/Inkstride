@@ -43,6 +43,10 @@ import com.inkstride.app.ui.text.StoryTextFormatter
 import kotlinx.coroutines.launch
 import java.util.Locale
 
+/**
+ * StoryUnlockScreen: Displays newly unlocked story segments in a horizontal pager.
+ * Fires onSegmentNavigatedAway when the user leaves a page and onContinue when they finish reading.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun StoryUnlockScreen(
@@ -60,6 +64,7 @@ fun StoryUnlockScreen(
     val areaById = remember { mutableStateMapOf<Int, String>() }
     val pagerState = rememberPagerState(pageCount = { storySegmentIds.size })
 
+    // Loads segment text and area names from the database whenever the segment id list changes.
     LaunchedEffect(storySegmentIds) {
         val db = DatabaseProvider.getDatabase(context)
         storyById.clear()
@@ -71,6 +76,7 @@ fun StoryUnlockScreen(
         }
     }
 
+    // Fires onSegmentNavigatedAway for the previous page when the settled page changes.
     LaunchedEffect(pagerState, storySegmentIds) {
         var previousPage = pagerState.settledPage
         snapshotFlow { pagerState.settledPage }.collect { currentPage ->
@@ -107,6 +113,7 @@ fun StoryUnlockScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
+                // Uses the provided subtitle or falls back to the current segment's area name.
                 val currentSegmentId = storySegmentIds.getOrNull(pagerState.currentPage)
                 val currentAreaSubtitle = subtitle ?: currentSegmentId?.let { areaById[it].orEmpty() }
                 val formattedSubtitle = currentAreaSubtitle
@@ -149,6 +156,7 @@ fun StoryUnlockScreen(
                         letterSpacing = 0.08.em
                     )
 
+                    // Renders the forward arrow only when there are more pages ahead.
                     val canGoForward = pagerState.currentPage < storySegmentIds.lastIndex
                     if (showForwardArrow && storySegmentIds.size > 1 && canGoForward) {
                         IconButton(
@@ -177,6 +185,7 @@ fun StoryUnlockScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f, fill = true),
+                    // Disables swipe when the forward arrow is hidden or only one segment is present.
                     userScrollEnabled = showForwardArrow && storySegmentIds.size > 1
                 ) { page ->
                     val segmentId = storySegmentIds[page]

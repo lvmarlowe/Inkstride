@@ -5,10 +5,22 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 
+/**
+ * StoryTextFormatter: Parses inline italic markup in story text for Compose display.
+ * Converts paired i tags to italic spans so story content can use emphasis without a rich text engine.
+ */
 object StoryTextFormatter {
+
+    // Opening tag marking the start of an italic span in story text.
     private const val START_TAG = "<i>"
+
+    // Closing tag marking the end of an italic span in story text.
     private const val END_TAG = "</i>"
 
+    /**
+     * parseItalicMarkup: Returns an AnnotatedString with italic spans applied from i tag pairs.
+     * Appends remaining text as-is when an opening or closing tag is missing to avoid data loss.
+     */
     fun parseItalicMarkup(text: String): AnnotatedString {
         return buildAnnotatedString {
             var cursor = 0

@@ -6,8 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /**
- * Stores unlock and read flags for each story segment.
- *
+ * UnlockState: Stores unlock and read flags for each story segment.
  * Composite index supports fast queries for unread badge checks
  * and ordered inbox/recap retrieval.
  */
@@ -28,12 +27,12 @@ import androidx.room.PrimaryKey
 )
 data class UnlockState(
 
-    // Uses segment id as the primary key for one-to-one state mapping.
+    // Uses segment id as the primary key to enforce one-to-one state mapping per segment.
     @PrimaryKey val storySegmentId: Int,
 
-    // Marks segment as unlocked and available to read.
+    // Marks segment as unlocked and available to read when the user reaches the milestone.
     val unlocked: Boolean = false,
 
-    // Marks segment as already opened by the user.
+    // Marks segment as already opened by the user to clear it from the story inbox.
     val read: Boolean = false
 )

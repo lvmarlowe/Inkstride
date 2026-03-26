@@ -7,8 +7,7 @@ import androidx.room.Query
 import com.inkstride.app.data.database.entities.UnlockState
 
 /**
- * Defines database access methods for UnlockState entities.
- *
+ * UnlockStateDao: Defines database access methods for UnlockState entities.
  * Provides segment-level unlock and read-state lookups,
  * unread existence checks, state updates, and upsert operations
  * for single and bulk unlock-state persistence.
@@ -16,31 +15,31 @@ import com.inkstride.app.data.database.entities.UnlockState
 @Dao
 interface UnlockStateDao {
 
-    // Returns unlock state for a segment, or null if no state exists.
+    // getByStorySegmentId: Returns unlock state for a segment, or null if no state exists.
     @Query("SELECT * FROM unlock_state WHERE storySegmentId = :storySegmentId LIMIT 1")
     suspend fun getByStorySegmentId(storySegmentId: Int): UnlockState?
 
-    // Returns all unlocked states ordered by segment id.
+    // getAllUnlocked: Returns all unlocked states ordered by segment id for sequential processing.
     @Query("SELECT * FROM unlock_state WHERE unlocked = 1 ORDER BY storySegmentId ASC")
     suspend fun getAllUnlocked(): List<UnlockState>
 
-    // Returns true when at least one unlocked segment remains unread.
+    // hasAnyUnlockedUnread: Returns true when at least one unlocked segment remains unread to drive inbox badge state.
     @Query("SELECT COUNT(*) > 0 FROM unlock_state WHERE unlocked = 1 AND read = 0")
     suspend fun hasAnyUnlockedUnread(): Boolean
 
-    // Inserts or replaces a single unlock state row.
+    // upsert: Inserts or replaces a single unlock state row to persist segment progress.
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(unlockState: UnlockState)
 
-    // Marks a segment as read.
+    // markAsRead: Marks a segment as read to clear it from the story inbox.
     @Query("UPDATE unlock_state SET read = 1 WHERE storySegmentId = :storySegmentId")
     suspend fun markAsRead(storySegmentId: Int)
 
-    // Deletes every unlock state row.
+    // deleteAll: Deletes every unlock state row to reset story progress.
     @Query("DELETE FROM unlock_state")
     suspend fun deleteAll()
 
-    // Inserts or replaces a collection of unlock state rows.
+    // upsertAll: Inserts or replaces a collection of unlock state rows for bulk state restoration.
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertAll(states: List<UnlockState>)
 }

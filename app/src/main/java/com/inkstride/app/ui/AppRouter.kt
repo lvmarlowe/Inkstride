@@ -36,8 +36,13 @@ import com.inkstride.app.ui.viewmodels.AppRouteScreen
 import com.inkstride.app.ui.viewmodels.AppRouterEffect
 import com.inkstride.app.ui.viewmodels.AppRouterViewModel
 
+// Permission string for reading Health Connect data in the background.
 private const val BACKGROUND_PERMISSION = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
 
+/**
+ * AppRouter: Composes the active screen based on router state and handles permission launchers.
+ * Initializes the database, wires permission results to the view model, and re-evaluates routes on resume.
+ */
 @Composable
 fun AppRouter(innerPadding: PaddingValues) {
     val context = LocalContext.current
@@ -64,11 +69,13 @@ fun AppRouter(innerPadding: PaddingValues) {
 
     val uiState by appRouterViewModel.uiState.collectAsState()
 
+    // hasBackgroundPermission: Checks whether the background Health Connect permission is currently granted.
     fun hasBackgroundPermission(): Boolean {
         return ContextCompat.checkSelfPermission(context, BACKGROUND_PERMISSION) ==
                 PackageManager.PERMISSION_GRANTED
     }
 
+    // Handles the background permission result and refreshes the route based on the outcome.
     val bgLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) {
@@ -77,6 +84,7 @@ fun AppRouter(innerPadding: PaddingValues) {
         )
     }
 
+    // Handles the Health Connect permission result and refreshes the route based on the outcome.
     val permLauncher = rememberLauncherForActivityResult(
         healthConnectManager.requestPermissionsActivityContract()
     ) {
@@ -85,6 +93,7 @@ fun AppRouter(innerPadding: PaddingValues) {
         )
     }
 
+    // Collects one-time effects from the view model and launches the appropriate permission dialog.
     LaunchedEffect(appRouterViewModel) {
         appRouterViewModel.effects.collect { effect ->
             when (effect) {
@@ -95,11 +104,13 @@ fun AppRouter(innerPadding: PaddingValues) {
         }
     }
 
+    // Seeds the database and performs the initial route evaluation on first composition.
     LaunchedEffect(Unit) {
         DatabaseProvider.ensureDefaults(context)
         appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
     }
 
+    // Re-evaluates the route each time the app returns to the started state to catch permission changes.
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
@@ -135,6 +146,7 @@ fun AppRouter(innerPadding: PaddingValues) {
                     }
                 )
             } else {
+                // Falls back to a route refresh when intro segment id is unexpectedly null.
                 LaunchedEffect(Unit) {
                     appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
                 }
@@ -156,6 +168,7 @@ fun AppRouter(innerPadding: PaddingValues) {
                     }
                 )
             } else {
+                // Clears the unlock session when segment ids are unexpectedly empty.
                 LaunchedEffect(Unit) {
                     appRouterViewModel.onStoryUnlockContinue()
                 }

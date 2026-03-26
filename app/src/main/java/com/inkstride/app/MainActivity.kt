@@ -10,6 +10,10 @@ import androidx.compose.ui.Modifier
 import com.inkstride.app.ui.AppRouter
 import com.inkstride.app.ui.theme.InkstrideTheme
 
+/**
+ * MainActivity: Entry point for the app that sets up edge-to-edge display and launches AppRouter.
+ * Delegates all navigation and screen logic to AppRouter within the app theme and scaffold.
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

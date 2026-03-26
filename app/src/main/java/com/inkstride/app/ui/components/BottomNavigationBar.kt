@@ -28,6 +28,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 
+/**
+ * BottomNavigationBar: Renders the two-tab bottom navigation bar for Journey and Storybook screens.
+ * Shows a red badge on the Storybook tab when unread story segments are available.
+ */
 @Composable
 fun BottomNavigationBar(
     onJourneyClick: () -> Unit,
@@ -41,6 +45,7 @@ fun BottomNavigationBar(
             .fillMaxWidth()
             .background(Color.Black)
     ) {
+        // Renders a faint top border to visually separate the bar from screen content.
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -84,6 +89,7 @@ fun BottomNavigationBar(
                             modifier = Modifier.size(42.dp)
                         )
 
+                        // Renders the unread badge when unlocked story segments are waiting.
                         if (hasStorybookNotification) {
                             Box(
                                 modifier = Modifier
@@ -102,6 +108,10 @@ fun BottomNavigationBar(
     }
 }
 
+/**
+ * NavigationItem: Renders one tab with an icon and label at the selected or unselected opacity.
+ * Dims unselected tabs to indicate the active screen without hiding inactive options.
+ */
 @Composable
 private fun NavigationItem(
     modifier: Modifier,
@@ -109,6 +119,7 @@ private fun NavigationItem(
     label: String,
     isSelected: Boolean
 ) {
+    // Applies full white for selected tab and reduced opacity for unselected tab.
     val itemColor = if (isSelected) Color.White else Color(0x99FFFFFF)
 
     Column(

@@ -19,6 +19,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+/**
+ * PermissionsScreen: Displays a prompt asking the user to grant Health Connect step permissions.
+ * Shown when permissions are missing so the app can explain why access is needed before requesting it.
+ */
 @Composable
 fun PermissionsScreen(
     modifier: Modifier = Modifier,

@@ -7,16 +7,24 @@ import com.inkstride.app.data.database.entities.Milestone
 import com.inkstride.app.data.database.entities.Settings
 import com.inkstride.app.data.database.entities.StorySegment
 import com.inkstride.app.data.database.entities.UnlockState
+import com.inkstride.app.services.DataValidator
 
 /**
- * Creates and seeds the application database.
+ * DatabaseProvider: Provides database access and default seed setup.
+ * Keeps startup data rules in one place so first launch and upgrades behave the same way.
  */
 object DatabaseProvider {
+
     @Volatile
+    // Holds the shared database reference so only one instance exists per process.
     private var instance: InkstrideDatabase? = null
 
+    // Applies shared normalization rules during seed and default setup.
+    private val dataValidator = DataValidator()
+
     /**
-     * Returns a database instance for the process.
+     * getDatabase: Returns the shared Room database instance.
+     * Builds once with required migrations and reuses the same reference afterward.
      */
     fun getDatabase(context: Context): InkstrideDatabase {
         return instance ?: synchronized(this) {
@@ -36,14 +44,15 @@ object DatabaseProvider {
     }
 
     /**
-     * Ensures default settings and seeded story data exist.
+     * ensureDefaults: Ensures default settings and seed data exist on startup.
+     * Normalizes values before writing so runtime behavior matches database constraints.
      */
     suspend fun ensureDefaults(context: Context) {
         val database = getDatabase(context)
         ensureDefaultSettings(database)
 
         val characterName = database.settingsDao().get()?.normalized()?.characterName
-            ?: Settings.DEFAULT_CHARACTER_NAME
+            ?: DataValidator.DEFAULT_CHARACTER_NAME
         val seededStoryData = StorySeedDataSource.load(context, characterName)
 
         ensureSeededMilestonesAndStory(database, seededStoryData)
@@ -51,32 +60,31 @@ object DatabaseProvider {
     }
 
     /**
-     * Writes normalized default settings when stored settings are missing or invalid.
+     * ensureDefaultSettings: Ensures the settings table has one normalized row.
+     * Writes only when the current row differs from its normalized form to avoid unnecessary updates.
      */
     private suspend fun ensureDefaultSettings(database: InkstrideDatabase) {
         val settingsDao = database.settingsDao()
         val currentSettings = settingsDao.get()
         val normalizedSettings = (currentSettings ?: Settings()).normalized()
 
-        // Avoids unnecessary writes when values are already normalized.
         if (currentSettings != normalizedSettings) {
             settingsDao.upsert(normalizedSettings)
         }
     }
 
     /**
-     * Seeds milestones and story segments from asset data.
+     * ensureSeededMilestonesAndStory: Ensures milestone and story segment rows match the bundled seed set.
+     * Inserts or updates existing rows to keep text and metadata aligned with the latest seed file.
      */
     private suspend fun ensureSeededMilestonesAndStory(
         database: InkstrideDatabase,
         seededStoryData: List<StorySeedEntry>
     ) {
-        // Keeps milestone and story updates in one transaction.
         database.withTransaction {
             val milestoneDao = database.milestoneDao()
             val storySegmentDao = database.storySegmentDao()
 
-            // Removes seeded milestones that are no longer present in asset data.
             if (seededStoryData.isNotEmpty()) {
                 milestoneDao.deleteByDistanceMarkerNotIn(
                     seededStoryData.map { it.distanceMarker }
@@ -95,7 +103,6 @@ object DatabaseProvider {
                         )
                     ).toInt()
 
-                // Refreshes mutable milestone fields when seed values change.
                 if (
                     milestone != null && (
                             milestone.areaName != areaName ||
@@ -121,7 +128,6 @@ object DatabaseProvider {
                         )
                     )
                 } else if (existingSegment.text != text) {
-                    // Refreshes segment text when seed text changes.
                     storySegmentDao.insert(existingSegment.copy(text = text))
                 }
             }
@@ -129,7 +135,8 @@ object DatabaseProvider {
     }
 
     /**
-     * Seeds unlock-state rows that are missing for existing story segments.
+     * ensureSeededUnlockStates: Ensures each story segment has an unlock state row.
+     * Normalizes read defaults so a segment cannot be marked read before it is unlocked.
      */
     private suspend fun ensureSeededUnlockStates(
         database: InkstrideDatabase,
@@ -143,15 +150,16 @@ object DatabaseProvider {
         for (seed in seededStoryData) {
             val milestone = milestoneDao.getByDistanceMarker(seed.distanceMarker) ?: continue
             val segmentId = storySegmentDao.getByMilestoneId(milestone.id).firstOrNull()?.id ?: continue
-            // Prevents an invalid default where read is true while unlocked is false.
-            val normalizedReadDefault = if (seed.unlockedDefault) seed.readDefault else false
+            val normalizedReadDefault = dataValidator.normalizeReadFlag(
+                unlocked = seed.unlockedDefault,
+                read = seed.readDefault
+            )
             defaultsBySegmentId[segmentId] = seed.unlockedDefault to normalizedReadDefault
         }
 
         val segments = storySegmentDao.getAll()
         if (segments.isEmpty()) return
 
-        // Inserts only missing rows to preserve existing user progress.
         val missingStates = segments.mapNotNull { seg ->
             val existing = unlockStateDao.getByStorySegmentId(seg.id)
             if (existing != null) {

@@ -9,13 +9,22 @@ import com.inkstride.app.health.StepTotals
 import com.inkstride.app.services.ProgressCalculator
 import java.time.LocalDate
 
+/**
+ * ProgressRepository: Handles persistence of step and distance data from Health Connect.
+ * Keeps progress state and daily stats in sync so journey calculations reflect current activity.
+ */
 class ProgressRepository(
     private val context: Context,
     private val progressStateDao: ProgressStateDao,
     private val dailyStatsDao: DailyStatsDao
 ) {
+    // Applies shared distance and rounding rules for progress calculations.
     private val progressCalculator = ProgressCalculator()
 
+    /**
+     * persistSnapshotFromHealthConnect: Writes cumulative and daily totals from a Health Connect sync.
+     * Returns the rounded total distance for use by the caller after persisting both rows.
+     */
     suspend fun persistSnapshotFromHealthConnect(
         stepTotals: StepTotals,
         dayNumber: Int

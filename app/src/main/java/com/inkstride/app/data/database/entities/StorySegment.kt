@@ -6,8 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /**
- * Stores one story segment tied to one milestone.
- *
+ * StorySegment: Stores one story segment tied to one milestone.
  * Unique milestone index enforces one segment per milestone,
  * which keeps unlock progression deterministic.
  */
@@ -28,9 +27,9 @@ import androidx.room.PrimaryKey
 data class StorySegment(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
 
-    // Links segment to milestone parent row.
+    // Links segment to its milestone parent row so cascading deletes remove orphaned content.
     val milestoneId: Int,
 
-    // Stores full narrative content shown to the user.
+    // Stores full narrative content shown to the user when the segment is unlocked.
     val text: String
 )

@@ -11,14 +11,29 @@ import com.inkstride.app.services.ProgressCalculator
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
+/**
+ * StepSyncCoordinator: Coordinates step sync execution and prevents overlapping sync runs.
+ * Queues manual retriggers so no user-initiated sync is silently dropped.
+ */
 object StepSyncCoordinator {
 
+    // Guards isSyncRunning and pendingManualRerun so concurrent sync calls stay consistent.
     private val stateMutex = Mutex()
+
+    // Tracks whether a sync is currently running to block duplicate executions.
     private var isSyncRunning = false
+
+    // Flags a pending manual rerun requested while a sync was already running.
     private var pendingManualRerun = false
 
+    // Wraps sync execution with error handling and retry logic.
     private val errorHandler = AppErrorHandler()
 
+    /**
+     * syncNow: Runs a step sync for the given trigger type and returns the result.
+     * Queues manual triggers when a sync is already running so they are not lost.
+     * Skips automatic and background triggers when a sync is already running.
+     */
     suspend fun syncNow(
         context: Context,
         trigger: StepSyncTrigger = StepSyncTrigger.AUTOMATIC
@@ -64,6 +79,10 @@ object StepSyncCoordinator {
         }
     }
 
+    /**
+     * runSingleSync: Executes one full sync pass and returns the result.
+     * Reads steps, persists progress, checks milestone unlocks, and assembles the snapshot.
+     */
     private suspend fun runSingleSync(context: Context): StepSyncResult {
         val outcome = errorHandler.runSuspend(shouldRetry = true) {
             val totals = StepsSyncer.syncIfPermitted(context)
@@ -132,12 +151,19 @@ object StepSyncCoordinator {
     }
 }
 
+/**
+ * StepSyncTrigger: Identifies what initiated a sync so the coordinator can apply the right queuing behavior.
+ */
 enum class StepSyncTrigger {
     MANUAL,
     AUTOMATIC,
     BACKGROUND
 }
 
+/**
+ * StepSyncSnapshot: Stores the output of a successful sync pass for use by the UI layer.
+ * Carries distance, milestone, story, and unit data assembled in one object.
+ */
 data class StepSyncSnapshot(
     val dayNumber: Int,
     val todayDistance: Double,
@@ -149,6 +175,10 @@ data class StepSyncSnapshot(
     val currentAreaName: String
 )
 
+/**
+ * StepSyncResult: Represents all possible outcomes of a sync attempt.
+ * Lets callers handle each case without inspecting raw exceptions or error codes.
+ */
 sealed interface StepSyncResult {
     data class Success(val snapshot: StepSyncSnapshot) : StepSyncResult
     data object NoPermission : StepSyncResult

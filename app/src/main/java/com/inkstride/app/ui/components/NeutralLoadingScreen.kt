@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
+// NeutralLoadingScreen: Displays a centered white loading spinner on a black background.
 @Composable
 fun NeutralLoadingScreen(modifier: Modifier = Modifier) {
     Surface(

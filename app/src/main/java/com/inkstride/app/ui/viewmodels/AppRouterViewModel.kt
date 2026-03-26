@@ -13,9 +13,15 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+// Retry count used when permission is not immediately granted after a request.
 private const val PERMISSION_RECHECK_COUNT = 3
+
+// Delay in milliseconds between each permission recheck attempt.
 private const val PERMISSION_RECHECK_DELAY_MS = 220L
 
+/**
+ * AppRouteScreen: Identifies each screen the router can navigate to.
+ */
 enum class AppRouteScreen {
     PERMISSIONS,
     JOURNEY,
@@ -24,6 +30,10 @@ enum class AppRouteScreen {
     STORY_UNLOCK
 }
 
+/**
+ * AppRouterUiState: Holds the current navigation destination and story-related display state.
+ * Drives screen routing and story notification badge from a single observed state.
+ */
 data class AppRouterUiState(
     val screen: AppRouteScreen? = null,
     val introSegmentId: Int? = null,
@@ -33,10 +43,17 @@ data class AppRouterUiState(
     val returnScreenAfterStoryUnlock: AppRouteScreen = AppRouteScreen.JOURNEY
 )
 
+/**
+ * AppRouterEffect: Represents one-time side effects emitted by the router to the UI layer.
+ */
 sealed interface AppRouterEffect {
     data object RequestBackgroundPermission : AppRouterEffect
 }
 
+/**
+ * AppRouterViewModel: Manages app-level navigation state and story unlock routing.
+ * Evaluates permissions and unread story state to determine which screen to display.
+ */
 class AppRouterViewModel(
     private val healthConnectManager: HealthConnectManager,
     private val storyRepository: StoryRepository
@@ -48,6 +65,11 @@ class AppRouterViewModel(
     private val _effects = MutableSharedFlow<AppRouterEffect>()
     val effects: SharedFlow<AppRouterEffect> = _effects.asSharedFlow()
 
+    /**
+     * refreshRoute: Recalculates the active screen based on permission state and unread story content.
+     * Retries permission checks after a request to handle brief grant delays from the OS.
+     * Preserves the active unlock session when refreshing from within the story unlock screen.
+     */
     fun refreshRoute(
         hasBackgroundPermission: Boolean,
         afterPermissionRequest: Boolean = false,
@@ -102,6 +124,7 @@ class AppRouterViewModel(
                 .getUnlockedUnreadSegments()
                 .map { segment -> segment.id }
 
+            // Keeps the active unlock session ids when returning to the story unlock screen mid-session.
             val unreadUnlockSegmentIds = if (
                 previousScreen == AppRouteScreen.STORY_UNLOCK &&
                 activeUnlockSessionIds.isNotEmpty()
@@ -111,6 +134,7 @@ class AppRouterViewModel(
                 unreadUnlockSegmentIdsFromDb
             }
 
+            // Derives badge state from the active session when mid-unlock, otherwise from the database.
             val hasStoryNotification = if (
                 previousScreen == AppRouteScreen.STORY_UNLOCK &&
                 activeUnlockSessionIds.isNotEmpty()
@@ -124,6 +148,7 @@ class AppRouterViewModel(
                 storyRepository.getAreaNameForStorySegment(segmentId)
             }.orEmpty()
 
+            // Returns to storybook when coming from storybook, stays in unlock if segments remain, otherwise goes to journey.
             val destination = when (previousScreen) {
                 AppRouteScreen.STORYBOOK -> AppRouteScreen.STORYBOOK
                 AppRouteScreen.STORY_UNLOCK -> {
@@ -145,6 +170,7 @@ class AppRouterViewModel(
         }
     }
 
+    // onBackgroundPermissionResult: Refreshes route after the background permission dialog is dismissed.
     fun onBackgroundPermissionResult(hasBackgroundPermission: Boolean) {
         refreshRoute(
             hasBackgroundPermission = hasBackgroundPermission,
@@ -152,6 +178,7 @@ class AppRouterViewModel(
         )
     }
 
+    // onPermissionsResult: Refreshes route after the Health Connect permission request returns.
     fun onPermissionsResult(hasBackgroundPermission: Boolean) {
         refreshRoute(
             hasBackgroundPermission = hasBackgroundPermission,
@@ -159,6 +186,10 @@ class AppRouterViewModel(
         )
     }
 
+    /**
+     * openStoryDestinationFromNavigation: Routes to story unlock when unread segments exist, otherwise to storybook.
+     * Records the current content screen so the router can return to it after the unlock session ends.
+     */
     fun openStoryDestinationFromNavigation() {
         val currentContentScreen = if (_uiState.value.screen == AppRouteScreen.STORYBOOK) {
             AppRouteScreen.STORYBOOK
@@ -191,6 +222,7 @@ class AppRouterViewModel(
         }
     }
 
+    // onPotentialNewUnlocks: Updates unread segment state and badge when new unlocks may be available after a sync.
     fun onPotentialNewUnlocks() {
         viewModelScope.launch {
             val unreadSegments = storyRepository.getUnlockedUnreadSegments()
@@ -206,10 +238,12 @@ class AppRouterViewModel(
         }
     }
 
+    // onJourneySelected: Routes to the journey screen when the user taps the journey tab.
     fun onJourneySelected() {
         _uiState.update { it.copy(screen = AppRouteScreen.JOURNEY) }
     }
 
+    // onIntroContinue: Marks the intro segment as read and routes to the journey screen.
     fun onIntroContinue() {
         val introSegmentId = _uiState.value.introSegmentId ?: return
         viewModelScope.launch {
@@ -218,12 +252,14 @@ class AppRouterViewModel(
         }
     }
 
+    // onStoryUnlockSegmentNavigatedAway: Marks a segment as read when the user swipes away from its page.
     fun onStoryUnlockSegmentNavigatedAway(segmentId: Int) {
         viewModelScope.launch {
             storyRepository.markAsRead(segmentId)
         }
     }
 
+    // onStoryUnlockContinue: Marks the current segment as read and returns to the screen before the unlock session.
     fun onStoryUnlockContinue(currentSegmentId: Int) {
         viewModelScope.launch {
             storyRepository.markAsRead(currentSegmentId)
@@ -239,6 +275,7 @@ class AppRouterViewModel(
         }
     }
 
+    // onStoryUnlockContinue: Clears the unlock session and returns to the screen before the unlock session.
     fun onStoryUnlockContinue() {
         viewModelScope.launch {
             val hasUnreadSegments = storyRepository.hasUnlockedUnreadSegments()

@@ -56,8 +56,13 @@ import java.time.LocalDate
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
+// Interval in minutes between automatic foreground syncs while the screen is active.
 private const val FOREGROUND_SYNC_MINUTES = 5L
 
+/**
+ * JourneyScreen: Displays daily and total distance stats with pull-to-refresh and periodic sync.
+ * Triggers story unlock callbacks when new segments or the intro become available after a sync.
+ */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun JourneyScreen(
@@ -87,6 +92,7 @@ fun JourneyScreen(
     var msgOk by remember { mutableStateOf(true) }
     var msgText by remember { mutableStateOf("") }
 
+    // flash: Shows a timed status message and clears it after 1800ms.
     fun flash(ok: Boolean, text: String) {
         msgOk = ok
         msgText = text
@@ -97,6 +103,7 @@ fun JourneyScreen(
         }
     }
 
+    // applySnapshot: Applies a successful sync result to screen state and fires story callbacks.
     fun applySnapshot(result: StepSyncResult.Success) {
         hasPermission = true
         dayNumber = result.snapshot.dayNumber
@@ -114,6 +121,7 @@ fun JourneyScreen(
         }
     }
 
+    // sync: Runs one sync pass and updates state or shows feedback based on the result.
     suspend fun sync(showFeedback: Boolean, trigger: StepSyncTrigger) {
         val result = StepSyncCoordinator.syncNow(context, trigger)
         when (result) {
@@ -142,6 +150,10 @@ fun JourneyScreen(
         }
     }
 
+    /**
+     * syncOnOpenWithRetry: Retries automatic sync up to three times on open to handle brief delays.
+     * Returns early on success or permission revocation so retries stop as soon as a result is known.
+     */
     suspend fun syncOnOpenWithRetry() {
         var attempt = 0
         while (attempt < 3) {
@@ -170,6 +182,10 @@ fun JourneyScreen(
         }
     }
 
+    /**
+     * loadPersistedSnapshot: Reads the last persisted progress from the database to populate the screen before sync completes.
+     * Prevents the screen from showing all zeros while the first sync is in flight.
+     */
     suspend fun loadPersistedSnapshot() {
         val database = DatabaseProvider.getDatabase(context)
         val progressState = database.progressStateDao().get()
@@ -213,6 +229,7 @@ fun JourneyScreen(
         }
     )
 
+    // Runs once on composition to check permissions, load persisted data, and trigger initial sync.
     LaunchedEffect(Unit) {
         hasPermission = healthConnectManager.hasAllPermissions()
         if (hasPermission) {
@@ -229,6 +246,7 @@ fun JourneyScreen(
         }
     }
 
+    // Runs a sync on resume and repeats every FOREGROUND_SYNC_MINUTES while the screen is active.
     LaunchedEffect(hasPermission, lifecycleOwner) {
         if (!hasPermission) return@LaunchedEffect
 
@@ -333,6 +351,7 @@ fun JourneyScreen(
                 }
             }
 
+            // Renders a timed fade-in status message anchored to the top of the screen.
             AnimatedVisibility(
                 visible = showMsg,
                 enter = fadeIn(),
@@ -365,6 +384,10 @@ fun JourneyScreen(
     }
 }
 
+/**
+ * StatBlock: Renders a labeled distance stat with a large value and unit label below it.
+ * Used for today's distance, total distance, and next milestone display.
+ */
 @Composable
 private fun StatBlock(
     label: String,
@@ -401,6 +424,7 @@ private fun StatBlock(
     }
 }
 
+// DividerLine: Renders a faint full-width horizontal rule to separate stat blocks.
 @Composable
 private fun DividerLine() {
     Box(
@@ -411,6 +435,7 @@ private fun DividerLine() {
     )
 }
 
+// formatDistance: Formats a distance value to two decimal places for consistent display output.
 private fun formatDistance(distance: Double): String {
     return String.format(Locale.US, "%.2f", distance)
 }

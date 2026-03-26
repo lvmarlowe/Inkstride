@@ -31,6 +31,10 @@ import com.inkstride.app.ui.components.NeutralLoadingScreen
 import com.inkstride.app.ui.text.StoryTextFormatter
 import java.util.Locale
 
+/**
+ * StorybookScreen: Displays all read and unlocked story segments in journey order.
+ * Shows a loading screen until segments are fetched, then renders each entry with its area label.
+ */
 @Composable
 fun StorybookScreen(
     modifier: Modifier = Modifier
@@ -38,6 +42,7 @@ fun StorybookScreen(
     val context = LocalContext.current
     var readSegments by remember { mutableStateOf<List<StorybookSegment>?>(null) }
 
+    // Loads read unlocked segments on composition, trimming blank entries before display.
     LaunchedEffect(Unit) {
         val storyRepository = StoryRepository(context)
         readSegments = storyRepository
@@ -106,6 +111,7 @@ fun StorybookScreen(
                     )
                 } else {
                     segments.forEachIndexed { index, segment ->
+                        // Renders the persistent area label above the segment text when present.
                         segment.persistentAreaName
                             ?.takeIf { it.isNotBlank() }
                             ?.let { areaName ->
@@ -126,6 +132,7 @@ fun StorybookScreen(
                             lineHeight = (18 * 1.4).sp
                         )
 
+                        // Adds spacing between segments but omits it after the last entry.
                         if (index < segments.lastIndex) {
                             Spacer(modifier = Modifier.height(16.dp))
                         }
