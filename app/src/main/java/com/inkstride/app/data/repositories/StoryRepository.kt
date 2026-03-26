@@ -2,8 +2,9 @@ package com.inkstride.app.data.repositories
 
 import android.content.Context
 import com.inkstride.app.data.database.DatabaseProvider
+import com.inkstride.app.data.database.StorySeedDataSource
+import com.inkstride.app.data.database.entities.Settings
 import com.inkstride.app.data.database.entities.StorySegment
-import com.inkstride.app.services.DataValidator
 
 /**
  * StoryRepository: Handles story reads and state updates used by story and storybook screens.
@@ -11,33 +12,27 @@ import com.inkstride.app.services.DataValidator
  */
 class StoryRepository(context: Context) {
 
-    // Shares one database handle across repository methods.
-    private val database = DatabaseProvider.getDatabase(context)
-
-    // Reads and maps story segment rows.
+    private val appContext = context.applicationContext
+    private val database = DatabaseProvider.getDatabase(appContext)
     private val storySegmentDao = database.storySegmentDao()
-
-    // Reads and updates unlock and read state rows.
     private val unlockStateDao = database.unlockStateDao()
-
-    // Reads milestone metadata used for story grouping.
     private val milestoneDao = database.milestoneDao()
-
-    // Applies shared cleanup rules for mapped storybook values.
-    private val dataValidator = DataValidator()
 
     /**
      * getIntroSegmentIfUnreadUnlocked: Returns the intro segment only when it is unlocked and unread.
      * Prevents first-run narrative content from replaying after the user has already read it.
      */
     suspend fun getIntroSegmentIfUnreadUnlocked(): StorySegment? {
-        val milestones = database.milestoneDao().getAll()
-        if (milestones.isEmpty()) return null
-
-        val introMilestone = milestones.firstOrNull { it.distanceMarker <= 0.0 } ?: milestones.first()
+        val characterName = database.settingsDao().get()?.normalized()?.characterName
+            ?: Settings.DEFAULT_CHARACTER_NAME
+        val introDistanceMarker = StorySeedDataSource
+            .load(appContext, characterName)
+            .firstOrNull { it.unlockedDefault }
+            ?.distanceMarker
+            ?: return null
+        val introMilestone = milestoneDao.getByDistanceMarker(introDistanceMarker) ?: return null
         val introSegment = storySegmentDao.getByMilestoneId(introMilestone.id).firstOrNull() ?: return null
         val introState = unlockStateDao.getByStorySegmentId(introSegment.id) ?: return null
-
         return if (introState.unlocked && !introState.read) introSegment else null
     }
 
@@ -56,7 +51,7 @@ class StoryRepository(context: Context) {
             StorybookSegment(
                 text = segment.text,
                 persistentAreaName = if (milestone?.isPersistent == true) {
-                    dataValidator.normalizeAreaName(milestone.areaName)
+                    milestone.areaName.trim().ifBlank { null }
                 } else {
                     null
                 }
@@ -64,14 +59,18 @@ class StoryRepository(context: Context) {
         }
     }
 
-    // getUnlockedUnreadSegments: Returns unlocked segments that are still unread for story inbox display.
+    // getUnlockedUnreadSegments: Returns unlocked, unread segments excluding the intro to avoid badge overlap.
     suspend fun getUnlockedUnreadSegments(): List<StorySegment> {
+        val introId = getIntroSegmentId()
         return storySegmentDao.getUnlockedUnreadOrderedByDistance()
+            .filter { it.id != introId }
     }
 
-    // hasUnlockedUnreadSegments: Returns true when at least one unlocked segment remains unread to drive inbox badge state.
+    // hasUnlockedUnreadSegments: Returns true when at least one non-intro unlocked segment remains unread to drive inbox badge state.
     suspend fun hasUnlockedUnreadSegments(): Boolean {
-        return unlockStateDao.hasAnyUnlockedUnread()
+        val introId = getIntroSegmentId()
+        return storySegmentDao.getUnlockedUnreadOrderedByDistance()
+            .any { it.id != introId }
     }
 
     // getAreaNameForStorySegment: Returns milestone area name for a segment, or empty string when missing.
@@ -82,6 +81,19 @@ class StoryRepository(context: Context) {
     // markAsRead: Marks a story segment as read to clear it from the story inbox.
     suspend fun markAsRead(storySegmentId: Int) {
         unlockStateDao.markAsRead(storySegmentId)
+    }
+
+    // getIntroSegmentId: Returns the segment id for the first seed entry with unlockedDefault true, or null if not found.
+    private suspend fun getIntroSegmentId(): Int? {
+        val characterName = database.settingsDao().get()?.normalized()?.characterName
+            ?: Settings.DEFAULT_CHARACTER_NAME
+        val introDistanceMarker = StorySeedDataSource
+            .load(appContext, characterName)
+            .firstOrNull { it.unlockedDefault }
+            ?.distanceMarker
+            ?: return null
+        val introMilestone = milestoneDao.getByDistanceMarker(introDistanceMarker) ?: return null
+        return storySegmentDao.getByMilestoneId(introMilestone.id).firstOrNull()?.id
     }
 }
 

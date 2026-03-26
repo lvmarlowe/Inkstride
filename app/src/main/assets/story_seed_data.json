@@ -5,7 +5,7 @@
     "isMajor": true,
     "areaName": "The Forest's Edge",
     "text": "You wake at the edge of a forest.\n\nThe bark of the trees is a black so inky it's like staring into a void. They are bare, stripped of leaves. Their branches jut out like cracks in the world. Above, the sky is bleached pale—a faded photograph lost to time.\n\nIt's strangely silent. There are no birds calling. No leaves rustling. No insects buzzing. The air is unnaturally still, as if the forest is holding its breath.\n\nYou search for a memory. <i>Who am I? Where am I? What happened here?</i> But you find nothing.\n\nInstead, a heavy weight settles in your chest, and you feel a pull deep in your bones. A pull toward the forest, like it's beckoning you.\n\nYou have the sudden, inexplicable certainty that the world will stay this way until you fix it. That somewhere in these colorless woods, the silence is waiting for you to break it.\n\nA path cuts through the earth like a jagged scar. Under the thick layer of ash, it feels well-worn and familiar.\n\nYou start walking.",
-    "unlockedDefault": false,
+    "unlockedDefault": true,
     "readDefault": false
   },
   {

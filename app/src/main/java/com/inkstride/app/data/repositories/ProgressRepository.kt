@@ -6,6 +6,7 @@ import com.inkstride.app.data.database.daos.ProgressStateDao
 import com.inkstride.app.data.database.entities.DailyStats
 import com.inkstride.app.data.database.entities.ProgressState
 import com.inkstride.app.health.StepTotals
+import com.inkstride.app.services.DataValidator
 import com.inkstride.app.services.ProgressCalculator
 import java.time.LocalDate
 
@@ -18,6 +19,9 @@ class ProgressRepository(
     private val progressStateDao: ProgressStateDao,
     private val dailyStatsDao: DailyStatsDao
 ) {
+    // Applies shared coercion and normalization rules before values are persisted.
+    private val dataValidator = DataValidator()
+
     // Applies shared distance and rounding rules for progress calculations.
     private val progressCalculator = ProgressCalculator()
 
@@ -29,13 +33,17 @@ class ProgressRepository(
         stepTotals: StepTotals,
         dayNumber: Int
     ): Double {
-        val totalDistance = progressCalculator.stepsToDistance(stepTotals.cumulativeSteps)
-        val todayDistance = progressCalculator.stepsToDistance(stepTotals.todaySteps)
+        val safeDayNumber = dataValidator.coerceDayNumber(dayNumber)
+        val safeCumulativeSteps = dataValidator.coerceSteps(stepTotals.cumulativeSteps)
+        val safeTodaySteps = dataValidator.coerceSteps(stepTotals.todaySteps)
+
+        val totalDistance = progressCalculator.stepsToDistance(safeCumulativeSteps)
+        val todayDistance = progressCalculator.stepsToDistance(safeTodaySteps)
 
         val updatedState = ProgressState(
             id = 1,
-            dayNumber = dayNumber,
-            totalSteps = stepTotals.cumulativeSteps,
+            dayNumber = safeDayNumber,
+            totalSteps = safeCumulativeSteps,
             totalDistance = progressCalculator.roundDistance(totalDistance),
             lastSyncEpochMilliseconds = System.currentTimeMillis()
         )
@@ -44,7 +52,7 @@ class ProgressRepository(
         val dateKey = LocalDate.now().toString()
         val todayStats = DailyStats(
             dateKey = dateKey,
-            stepsToday = stepTotals.todaySteps,
+            stepsToday = safeTodaySteps,
             distanceToday = progressCalculator.roundDistance(todayDistance)
         )
         dailyStatsDao.upsert(todayStats)

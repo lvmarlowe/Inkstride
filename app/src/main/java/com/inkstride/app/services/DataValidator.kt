@@ -10,7 +10,7 @@ class DataValidator {
 
     // normalizeCharacterName: Trims extra spaces and returns the default name when blank.
     fun normalizeCharacterName(raw: String): String {
-        return raw.trim().ifBlank { DEFAULT_CHARACTER_NAME }
+        return raw.trim().take(40).ifBlank { DEFAULT_CHARACTER_NAME }
     }
 
     // normalizeDistanceUnit: Maps to a known DistanceUnit so unknown or null values use the default.

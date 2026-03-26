@@ -243,12 +243,24 @@ class AppRouterViewModel(
         _uiState.update { it.copy(screen = AppRouteScreen.JOURNEY) }
     }
 
-    // onIntroContinue: Marks the intro segment as read and routes to the journey screen.
+    /**
+     * onIntroContinue: Marks the intro segment as read and routes to the journey screen.
+     * Recalculates badge state after marking as read so the notification reflects true unread state on arrival.
+     */
     fun onIntroContinue() {
         val introSegmentId = _uiState.value.introSegmentId ?: return
         viewModelScope.launch {
             storyRepository.markAsRead(introSegmentId)
-            _uiState.update { it.copy(screen = AppRouteScreen.JOURNEY, introSegmentId = null) }
+            val hasUnreadSegments = storyRepository.hasUnlockedUnreadSegments()
+            _uiState.update {
+                it.copy(
+                    screen = AppRouteScreen.JOURNEY,
+                    introSegmentId = null,
+                    hasStoryNotification = hasUnreadSegments,
+                    unreadUnlockSegmentIds = emptyList(),
+                    unlockAreaName = ""
+                )
+            }
         }
     }
 
