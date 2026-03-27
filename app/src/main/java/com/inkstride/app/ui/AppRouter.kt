@@ -18,8 +18,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.inkstride.app.MainActivity
@@ -52,19 +50,11 @@ fun AppRouter(innerPadding: PaddingValues) {
     val storyRepository = remember { StoryRepository(context) }
 
     val activity = context as MainActivity
-    val appRouterViewModel = remember(activity, healthConnectManager, storyRepository) {
-        ViewModelProvider(
-            activity,
-            object : ViewModelProvider.Factory {
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    @Suppress("UNCHECKED_CAST")
-                    return AppRouterViewModel(
-                        healthConnectManager = healthConnectManager,
-                        storyRepository = storyRepository
-                    ) as T
-                }
-            }
-        )[AppRouterViewModel::class.java]
+    val appRouterViewModel = activity.rememberViewModel(healthConnectManager, storyRepository) {
+        AppRouterViewModel(
+            healthConnectManager = healthConnectManager,
+            storyRepository = storyRepository
+        )
     }
 
     val uiState by appRouterViewModel.uiState.collectAsState()
@@ -134,19 +124,19 @@ fun AppRouter(innerPadding: PaddingValues) {
         )
 
         AppRouteScreen.INTRO -> {
-            val segmentId = uiState.introSegmentId
-            if (segmentId != null) {
+            val introSegmentId = uiState.introSegmentId
+            if (introSegmentId != null) {
                 StoryUnlockScreen(
                     modifier = contentModifier,
-                    storySegmentIds = listOf(segmentId),
-                    onSegmentNavigatedAway = {},
+                    storySegmentIds = listOf(introSegmentId),
+                    onSegmentNavigatedAway = { },
+                    onContinue = { appRouterViewModel.onIntroContinue() },
                     showForwardArrow = false,
-                    onContinue = {
-                        appRouterViewModel.onIntroContinue()
-                    }
+                    title = "New Journey, New Story",
+                    subtitle = ""
                 )
             } else {
-                // Falls back to a route refresh when intro segment id is unexpectedly null.
+                // Re-checks route if intro state is unexpectedly empty.
                 LaunchedEffect(Unit) {
                     appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
                 }

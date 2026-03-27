@@ -16,7 +16,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -25,7 +25,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
@@ -38,8 +39,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import com.inkstride.app.data.database.DatabaseProvider
+import com.inkstride.app.MainActivity
+import com.inkstride.app.data.repositories.StoryRepository
+import com.inkstride.app.ui.components.NeutralLoadingScreen
+import com.inkstride.app.ui.rememberViewModel
 import com.inkstride.app.ui.text.StoryTextFormatter
+import com.inkstride.app.ui.viewmodels.StoryUnlockViewModel
+import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -60,31 +66,41 @@ fun StoryUnlockScreen(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val storyById = remember { mutableStateMapOf<Int, String>() }
-    val areaById = remember { mutableStateMapOf<Int, String>() }
     val pagerState = rememberPagerState(pageCount = { storySegmentIds.size })
 
-    // Loads segment text and area names from the database whenever the segment id list changes.
-    LaunchedEffect(storySegmentIds) {
-        val db = DatabaseProvider.getDatabase(context)
-        storyById.clear()
-        areaById.clear()
-        storySegmentIds.forEach { segmentId ->
-            val segment = db.storySegmentDao().getById(segmentId)
-            storyById[segmentId] = segment?.text.orEmpty()
-            areaById[segmentId] = db.milestoneDao().getAreaNameByStorySegmentId(segmentId).orEmpty()
-        }
+    val activity = context as MainActivity
+    val storyRepository = remember { StoryRepository(context) }
+    val storyUnlockViewModel = activity.rememberViewModel(storyRepository) {
+        StoryUnlockViewModel(
+            storyRepository = storyRepository
+        )
+    }
+
+    val uiState by storyUnlockViewModel.uiState.collectAsState()
+
+    // Loads story segment text and area names whenever the segment id list changes.
+    LaunchedEffect(storySegmentIds, storyUnlockViewModel) {
+        storyUnlockViewModel.loadSegments(storySegmentIds)
     }
 
     // Fires onSegmentNavigatedAway for the previous page when the settled page changes.
-    LaunchedEffect(pagerState, storySegmentIds) {
-        var previousPage = pagerState.settledPage
-        snapshotFlow { pagerState.settledPage }.collect { currentPage ->
-            if (currentPage != previousPage) {
-                storySegmentIds.getOrNull(previousPage)?.let(onSegmentNavigatedAway)
-                previousPage = currentPage
+    // Uses scan to carry previous and current page as a pair so no mutable variable is needed.
+    LaunchedEffect(pagerState, storySegmentIds, storyUnlockViewModel) {
+        snapshotFlow { pagerState.settledPage }
+            .scan(pagerState.settledPage to pagerState.settledPage) { (_, prev), current -> prev to current }
+            .collect { (previousPage, currentPage) ->
+                if (currentPage != previousPage) {
+                    storySegmentIds.getOrNull(previousPage)?.let { previousSegmentId ->
+                        storyUnlockViewModel.onSegmentViewed(previousSegmentId)
+                        onSegmentNavigatedAway(previousSegmentId)
+                    }
+                }
             }
-        }
+    }
+
+    if (uiState.loading) {
+        NeutralLoadingScreen(modifier = modifier)
+        return
     }
 
     Surface(modifier = modifier.fillMaxSize(), color = Color.Black) {
@@ -115,7 +131,7 @@ fun StoryUnlockScreen(
 
                 // Uses the provided subtitle or falls back to the current segment's area name.
                 val currentSegmentId = storySegmentIds.getOrNull(pagerState.currentPage)
-                val currentAreaSubtitle = subtitle ?: currentSegmentId?.let { areaById[it].orEmpty() }
+                val currentAreaSubtitle = subtitle ?: currentSegmentId?.let { uiState.areaById[it].orEmpty() }
                 val formattedSubtitle = currentAreaSubtitle
                     ?.takeIf { it.isNotBlank() }
                     ?.uppercase(Locale.US)
@@ -170,7 +186,7 @@ fun StoryUnlockScreen(
                             }
                         ) {
                             Icon(
-                                imageVector = Icons.Rounded.KeyboardArrowRight,
+                                imageVector = Icons.AutoMirrored.Rounded.KeyboardArrowRight,
                                 contentDescription = "Next story segment",
                                 tint = Color.White
                             )
@@ -190,7 +206,7 @@ fun StoryUnlockScreen(
                 ) { page ->
                     val segmentId = storySegmentIds[page]
                     Text(
-                        text = StoryTextFormatter.parseItalicMarkup(storyById[segmentId].orEmpty()),
+                        text = StoryTextFormatter.parseItalicMarkup(uiState.storyById[segmentId].orEmpty()),
                         color = Color.White,
                         fontSize = 20.sp,
                         lineHeight = 30.sp,
@@ -210,7 +226,10 @@ fun StoryUnlockScreen(
             ) {
                 Button(
                     onClick = {
-                        storySegmentIds.getOrNull(pagerState.currentPage)?.let(onContinue)
+                        storySegmentIds.getOrNull(pagerState.currentPage)?.let { currentSegmentId ->
+                            storyUnlockViewModel.onSegmentViewed(currentSegmentId)
+                            onContinue(currentSegmentId)
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.White,

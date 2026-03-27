@@ -18,27 +18,36 @@ class StoryRepository(context: Context) {
     private val unlockStateDao = database.unlockStateDao()
     private val milestoneDao = database.milestoneDao()
 
+    // Cached intro segment id to avoid repeatedly loading seed data in the same app process.
+    private var introSegmentIdCache: Int? = null
+
+    // Tracks whether introSegmentIdCache has been populated, including a null result.
+    private var hasLoadedIntroSegmentIdCache = false
+
     /**
      * getIntroSegmentIfUnreadUnlocked: Returns the intro segment only when it is unlocked and unread.
      * Prevents first-run narrative content from replaying after the user has already read it.
      */
     suspend fun getIntroSegmentIfUnreadUnlocked(): StorySegment? {
-        val characterName = database.settingsDao().get()?.normalized()?.characterName
-            ?: Settings.DEFAULT_CHARACTER_NAME
-        val introDistanceMarker = StorySeedDataSource
-            .load(appContext, characterName)
-            .firstOrNull { it.unlockedDefault }
-            ?.distanceMarker
-            ?: return null
-        val introMilestone = milestoneDao.getByDistanceMarker(introDistanceMarker) ?: return null
-        val introSegment = storySegmentDao.getByMilestoneId(introMilestone.id).firstOrNull() ?: return null
-        val introState = unlockStateDao.getByStorySegmentId(introSegment.id) ?: return null
+        val introSegmentId = getIntroSegmentIdCached() ?: return null
+        val introSegment = storySegmentDao.getById(introSegmentId) ?: return null
+        val introState = unlockStateDao.getByStorySegmentId(introSegmentId) ?: return null
         return if (introState.unlocked && !introState.read) introSegment else null
     }
 
-    // getReadUnlockedSegments: Returns read and unlocked story segments in distance order for recap display.
-    suspend fun getReadUnlockedSegments(): List<StorySegment> {
-        return storySegmentDao.getReadUnlockedOrderedByDistance()
+    /**
+     * getStoryUnlockSegments: Returns unlock-ready story text and area labels for the requested ids.
+     * Preserves caller order and fills missing values with empty strings so pager rendering stays stable.
+     */
+    suspend fun getStoryUnlockSegments(storySegmentIds: List<Int>): List<StoryUnlockSegment> {
+        return storySegmentIds.map { segmentId ->
+            val segment = storySegmentDao.getById(segmentId)
+            StoryUnlockSegment(
+                id = segmentId,
+                text = segment?.text.orEmpty(),
+                areaName = milestoneDao.getAreaNameByStorySegmentId(segmentId).orEmpty()
+            )
+        }
     }
 
     /**
@@ -61,14 +70,14 @@ class StoryRepository(context: Context) {
 
     // getUnlockedUnreadSegments: Returns unlocked, unread segments excluding the intro to avoid badge overlap.
     suspend fun getUnlockedUnreadSegments(): List<StorySegment> {
-        val introId = getIntroSegmentId()
+        val introId = getIntroSegmentIdCached()
         return storySegmentDao.getUnlockedUnreadOrderedByDistance()
             .filter { it.id != introId }
     }
 
     // hasUnlockedUnreadSegments: Returns true when at least one non-intro unlocked segment remains unread to drive inbox badge state.
     suspend fun hasUnlockedUnreadSegments(): Boolean {
-        val introId = getIntroSegmentId()
+        val introId = getIntroSegmentIdCached()
         return storySegmentDao.getUnlockedUnreadOrderedByDistance()
             .any { it.id != introId }
     }
@@ -83,8 +92,22 @@ class StoryRepository(context: Context) {
         unlockStateDao.markAsRead(storySegmentId)
     }
 
-    // getIntroSegmentId: Returns the segment id for the first seed entry with unlockedDefault true, or null if not found.
-    private suspend fun getIntroSegmentId(): Int? {
+    /**
+     * getIntroSegmentIdCached: Returns a cached intro segment id when available, otherwise computes and stores it.
+     * Caches null too so repeated calls do not keep re-reading seed data when intro content is missing.
+     */
+    private suspend fun getIntroSegmentIdCached(): Int? {
+        if (hasLoadedIntroSegmentIdCache) {
+            return introSegmentIdCache
+        }
+
+        introSegmentIdCache = loadIntroSegmentId()
+        hasLoadedIntroSegmentIdCache = true
+        return introSegmentIdCache
+    }
+
+    // loadIntroSegmentId: Resolves the intro segment id from character seed data and milestone mapping.
+    private suspend fun loadIntroSegmentId(): Int? {
         val characterName = database.settingsDao().get()?.normalized()?.characterName
             ?: Settings.DEFAULT_CHARACTER_NAME
         val introDistanceMarker = StorySeedDataSource
@@ -96,6 +119,15 @@ class StoryRepository(context: Context) {
         return storySegmentDao.getByMilestoneId(introMilestone.id).firstOrNull()?.id
     }
 }
+
+/**
+ * StoryUnlockSegment: Stores unlock-screen text and area label for a specific story segment id.
+ */
+data class StoryUnlockSegment(
+    val id: Int,
+    val text: String,
+    val areaName: String
+)
 
 /**
  * StorybookSegment: Stores storybook-ready segment text with an optional persistent area label.

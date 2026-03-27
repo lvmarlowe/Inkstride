@@ -13,10 +13,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,10 +24,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.inkstride.app.MainActivity
 import com.inkstride.app.data.repositories.StoryRepository
-import com.inkstride.app.data.repositories.StorybookSegment
 import com.inkstride.app.ui.components.NeutralLoadingScreen
+import com.inkstride.app.ui.rememberViewModel
 import com.inkstride.app.ui.text.StoryTextFormatter
+import com.inkstride.app.ui.viewmodels.StorybookViewModel
 import java.util.Locale
 
 /**
@@ -40,19 +41,23 @@ fun StorybookScreen(
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
-    var readSegments by remember { mutableStateOf<List<StorybookSegment>?>(null) }
 
-    // Loads read unlocked segments on composition, trimming blank entries before display.
-    LaunchedEffect(Unit) {
-        val storyRepository = StoryRepository(context)
-        readSegments = storyRepository
-            .getReadUnlockedStorybookSegments()
-            .map { it.copy(text = it.text.trim()) }
-            .filter { it.text.isNotBlank() }
+    val activity = context as MainActivity
+    val storyRepository = remember { StoryRepository(context) }
+    val storybookViewModel = activity.rememberViewModel(storyRepository) {
+        StorybookViewModel(
+            storyRepository = storyRepository
+        )
     }
 
-    val segments = readSegments
-    if (segments == null) {
+    val uiState by storybookViewModel.uiState.collectAsState()
+
+    // Loads read unlocked segments on composition through the view model.
+    LaunchedEffect(storybookViewModel) {
+        storybookViewModel.onScreenOpened()
+    }
+
+    if (uiState.loading) {
         NeutralLoadingScreen(modifier = modifier)
         return
     }
@@ -101,7 +106,16 @@ fun StorybookScreen(
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
             ) {
-                if (segments.isEmpty()) {
+                val errorMessage = uiState.errorMessage
+                if (errorMessage != null) {
+                    Text(
+                        text = errorMessage,
+                        color = Color(0xB3FFFFFF),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Normal,
+                        lineHeight = (18 * 1.4).sp
+                    )
+                } else if (uiState.segments.isEmpty()) {
                     Text(
                         text = "No story segments read yet.",
                         color = Color(0xB3FFFFFF),
@@ -110,7 +124,7 @@ fun StorybookScreen(
                         lineHeight = (18 * 1.4).sp
                     )
                 } else {
-                    segments.forEachIndexed { index, segment ->
+                    uiState.segments.forEachIndexed { index, segment ->
                         // Renders the persistent area label above the segment text when present.
                         segment.persistentAreaName
                             ?.takeIf { it.isNotBlank() }
@@ -133,7 +147,7 @@ fun StorybookScreen(
                         )
 
                         // Adds spacing between segments but omits it after the last entry.
-                        if (index < segments.lastIndex) {
+                        if (index < uiState.segments.lastIndex) {
                             Spacer(modifier = Modifier.height(16.dp))
                         }
                     }

@@ -192,8 +192,8 @@
     "distanceMarker": 16.84,
     "isPersistent": false,
     "isMajor": false,
-    "areaName": "The Floating Lesson",
-    "text": "Pebble's head bobs in the heavy river.\n\n“I remember how hard you thought floatin' was at first. I told you then, dear, you just didn't trust the water yet. You'd stiffen right up and sink like a stone! I'd support you until one day, you finally let go and just...floated. After that, we'd lay there smilin' for hours, just watchin' the clouds go by.”\n\nYou look at the stagnant current and press on.",
+    "areaName": "Stories in the Clouds",
+    "text": "Pebble's head bobs in the heavy river.\n\n“You'd stiffen right up and start to sink like a stone! I'd hold you up until one day you finally let go and just...floated. After that, we'd lay there for hours, just watchin' the clouds go by. You'd tell stories about every single one. 'That one's lonely,' you'd say. 'That one's in a hurry.'”\n\nYou look at the stagnant current and press on.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -211,7 +211,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Rushing Rapids",
-    "text": "Pebble flips in the unmoving water.\n\n“We used to spend whole summers dancin' together in the rapids, dear. We'd wade in until you could barely touch the bottom and spin through the spray like leaves in the wind. You said the water was the only thing that moved as fast as your thoughts.”\n\nShe touches the surface wistfully, and her paw leaves a waxen indentation. “Now the water just sits here, like it just…gave up.”\n\nYou continue down the riverbank, the image of your “fast thoughts” staying with you.",
+    "text": "Pebble flips in the unmoving water.\n\n“We used to spend whole summers dancin' together in the rapids, dear. We'd wade in until you could barely touch the bottom and spin through the spray like leaves in the wind. You said the water reminded you of a story that didn't know its own ending yet: still movin', still figurin' itself out.”\n\nShe touches the surface wistfully, and her paw leaves a waxen indentation. “Now the water just sits here, like it just…gave up.”\n\nYou continue down the riverbank.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -274,7 +274,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Unstoppable Current",
-    "text": "You stop in the middle of the sticky mire, your breath coming in ragged gasps as the humidity of the marsh settles over you. You look at the dark smudge on your skin and remember Pebble's words—how you once said the water was the only thing that moved as fast as your thoughts.\n\nHere, in a world that has completely stalled, you realize that your mind hasn't stopped. Even without your memories, your thoughts are still surging, still trying to find a way through the Unmaking. You feel like the only current left in a world that has come to a halt.\n\nYou wipe the sweat and ash from your brow and trudge toward a line of massive, pale shapes on the horizon.",
+    "text": "You stop in the middle of the sticky mire, your breath coming in ragged gasps as the humidity of the marsh settles over you. You look at the dark smudge on your skin and remember Pebble's words—how you once said the water reminded you of a story that didn't know its own ending yet.\n\nHere, in a world that has completely stalled, you realize that <i>you</i> are like that unstoppable current. You have no memories, no beginning you can point to, no sense of what comes next. And yet something in you keeps moving forward anyway.\n\nYou wipe the sweat and ash from your brow and trudge toward a line of massive, pale shapes on the horizon.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -310,7 +310,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Suspended World",
-    "text": "Gully stops to look at a cluster of tadpoles suspended above a stagnant pool. They are frozen midjump, their tails translucent and iridescent.\n\nNearby, a dead leaf hangs halfway between a branch and the mud, caught in an unmoving mist. “Everything got stuck,” Gully says, his voice a melodic ribbit.\n\n“The Unmaking didn't just take the color—it took the <i>next</i>. Tadpoles can't grow. Leaves can't become soil. It's like the marsh just stopped midsentence.”\n\nYou push past a weeping mushroom, Gully hopping beside you.",
+    "text": "Gully stops to look at a cluster of tadpoles suspended above a stagnant pool. They are frozen midjump, their tails translucent and iridescent.\n\nNearby, a dead leaf hangs halfway between a branch and the mud, caught in an unmoving mist. “Everything got stuck,” Gully says, his voice a melodic ribbit.\n\n“The Unmaking didn't just take the color—it took the <i>next</i>. Tadpoles can't grow. Leaves can't become soil. It's like the marsh just stopped midsentence.”\n\nYou push past a weeping mushroom, the air growing denser, as Gully hops beside you.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -328,7 +328,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Radiant Glow",
-    "text": "As you walk, Gully begins to hum a low, rumbling note.\n\n“We used to search for the mushrooms that glowed the brightest,” he says, his eyes reflecting the pale sky. “You'd touch the caps and they'd light up—a warm glow that filled the whole bog.”\n\nHis hum vibrates in your chest as you navigate together between the giant, dull stalks.",
+    "text": "As you walk, Gully begins to hum a low, rumbling note.\n\n“You know, the mushrooms used to glow when you passed —a warm glow that filled the whole bog. We'd search for the ones that glowed the brightest,” he says, his eyes drifting to the dull caps around you. “Not because you touched them. Just because you were near.”\n\nHe watches you for a moment. “They don't do that for anyone else. I've been here a long time. I would know.”\n\nHis hum vibrates in your chest as you navigate together between the giant, dull stalks.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -346,7 +346,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Stalled Decay",
-    "text": "Gully pauses and his throat pulses in a slow, heavy beat.\n\n“It came from that way,” he says softly, pointing a webbed finger deeper into the marsh, his milky eye focused on something you cannot see.\n\n“Instantly, everything started to turn. All the mushrooms started turning to goo and dripped into the peat. The wood started decaying. Everything started rotting.”\n\nYou both walk toward the distant haze, the unease of the story settling over you.",
+    "text": "Gully pauses and his throat pulses in a slow, heavy rhythm.\n\n“It came from that way,” he says softly, pointing a webbed finger deeper into the marsh, his milky eye focused on something you cannot see.\n\n“Instantly, everything started to turn. All the mushrooms started turning to goo and dripped into the peat. The wood started decaying, going soft and black. Everything started rotting.”\n\nYou both walk toward the distant haze, the unease of the story settling over you.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -400,7 +400,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Inspired Medium",
-    "text": "You stop for a moment, looking back at the distant, gloomy smudge of the wetlands. You think about what Gully said—that the world is just a sketch waiting for someone to turn it into a work of art.\n\nYou look at your hands, at the ink that shimmers beneath the ash, and realize that you aren't just a visitor here. If the forest is the canvas, you are the medium.\n\nThe stillness around you is a vast, empty space, and the urge to fill it—to make something substantial out of this void—pulses in your blood like a second heartbeat.\n\nYou turn away from the wetlands and approach the dark, yawning entrance at the foot of a mountain.",
+    "text": "You stop for a moment, looking back at the distant, gloomy smudge of the wetlands. You think about what Gully said—that the world is just a sketch waiting for someone to turn it into a work of art.\n\nYou look at your hands, at the ink that shimmers beneath the ash, and realize he was talking about <i>you</i>. The forest is the canvas, and <i>you</i> are the medium.\n\nThe stillness around you is a vast, empty space, and the urge to fill it—to make something substantial out of this void—pulses in your blood like a second heartbeat.\n\nYou turn away from the wetlands and approach the dark, yawning entrance at the foot of a mountain.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -472,7 +472,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Anomalous Shadows",
-    "text": "You continue through the gallery of fractured chambers, where the crushing weight seems to grow heavier with every step.\n\nYou ask Mica if anything else changed when you disappeared.\n\nMica circles a stalactite, their movements structured and  precise. “Affirmative,” Mica replies, their ears rotating back toward you.\n\n“The previous recordings include an observation outside the formal experimental parameters. In the past, the s-s-shadows in this chamber behaved anomalously in your presence. Their angles did not correspond to any fixed light s-s-source. I have no satisfactory explanation for the data. I recorded it regardless.”\n\nMica glides silently into the next passage. You follow the faint shimmer of their wings.",
+    "text": "You continue through the gallery of fractured chambers, where the crushing weight seems to grow heavier with every step.\n\nYou ask Mica if anything else changed when you disappeared.\n\nMica circles a stalactite, their movements structured and precise. “Affirmative,” Mica replies, their ears rotating back toward you.\n\n“The previous recordings include an observation outside the formal experimental parameters. In the past, the s-s-shadows in this chamber behaved anomalously in your presence. Their angles did not correspond to any fixed light s-s-source. I have no satisfactory explanation for the data. I recorded it regardless.”\n\nMica glides silently into the next passage. You follow the faint shimmer of their wings.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -544,7 +544,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "Atmospheric Shift",
-    "text": "As you climb, the air becomes thinner and the crushing pressure begins to lift. The jagged floor turns back into dark, damp loam covered in thick mats of spongy moss and powdery lichen. You can see the light of the pale full moon through the narrow exit above.\n\nMica glides ahead, their wings undulating slowly in the night air. They sniffle again, the sound louder, less muffled than before.\n\n“The s-s-surface conditions are within acceptable parameters,” Mica reports. “Prepare for the change in density. The s-s-space ahead is much less confined. It will be a s-s-significant s-s-shift in your sensory input, but my recordings suggest you handle the transition well.”\n\nMica ripples upward through the thinning air. You climb the final incline.",
+    "text": "As you climb, the air becomes thinner and the crushing pressure begins to lift. The jagged floor turns back into dark, damp loam covered in thick mats of spongy moss and powdery lichen. You can see the light of the pale moon through the narrow exit above.\n\nMica glides ahead, their wings undulating slowly in the night air. They sniffle again, the sound louder, less muffled than before.\n\n“The s-s-surface conditions are within acceptable parameters,” Mica reports. “Prepare for the change in density. The s-s-space ahead is much less confined. It will be a s-s-significant s-s-shift in your sensory input, but my recordings suggest you handle the transition well.”\n\nMica ripples upward through the thinning air. You climb the final incline.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -589,7 +589,7 @@
     "isPersistent": true,
     "isMajor": false,
     "areaName": "Dappleleaf Grove",
-    "text": "The stone path finally softens, disappearing into a towering cathedral of ancient oaks. These are not the spindly, broken trees from the forest's edge; they are massive and imposing. Their wide trunks ar? wrapped in bark so deeply furrowed it looks like weathered iron.\n\nHigh above, the canopy is a dense, interlocking weave of branches. Yet, the leaves are brittle—mere silhouettes against the hollow sky.\n\nThe air is damp and smells of wet bark, and the sky is a vast, starless expanse. Every star has been plucked from the dark, leaving the space between the clouds empty.\n\nThe moon has climbed higher since you left the caverns, but its light is too thin and diminished to illuminate your path. It hangs like a fading ember in the blackness, casting a dim, silvery shadow that barely reaches the forest floor. The darkness here feels like a hole in the world where something used to be.\n\nThe only sound is the dry, rhythmic rasp of oak limbs shifting in the high-altitude air. You stand at the center of the grove, a solitary figure in a landscape defined by what is missing.\n\nYou walk toward it",
+    "text": "The stone path finally softens, disappearing into a towering cathedral of ancient oaks. These are not the spindly, broken trees from the forest's edge; they are massive and imposing. Their wide trunks are wrapped in bark so deeply furrowed it looks like weathered iron.\n\nHigh above, the canopy is a dense, interlocking weave of branches. Yet, the leaves are brittle—mere silhouettes against the hollow sky.\n\nThe air is damp and smells of wet bark, and the sky is a vast, starless expanse. Every star has been plucked from the dark, leaving the space between the clouds empty.\n\nThe moon has climbed higher since you left the caverns, but its light is too thin and diminished to illuminate your path. It hangs like a fading ember in the blackness, casting a dim, silvery shadow that barely reaches the forest floor. The darkness here feels like a hole in the world where something used to be.\n\nThe only sound is the dry, rhythmic rasp of oak limbs shifting in the high-altitude air. You stand at the center of the grove, a solitary figure in a landscape defined by what is missing.\n\nYou walk toward it.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -634,7 +634,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Guardian of the Valley",
-    "text": "Luna drifts lower as a draft moves through the canopy, rustling the paper-thin leaves. She gestures with her wing towards the empty sky hanging over the Wandering River, where Pebble reminded you of who you were.\n\n“Pebble came next,” she says. “A round shape sitting low on a long stream of stars, like she was floating on her back down the river. I asked that constellation to watch over the valley.” She turns in a slow arc and bends her head toward the wing holding the delicate firefly, speaking to it in a hushed tone. A look of concern flashes across her face, and she picks up speed, beating her wings more urgently.\n\nYou stay close behind as the path curves gently through the trees.",
+    "text": "Luna drifts lower as a draft moves through the canopy, rustling the paper-thin leaves. She gestures with her wing towards the empty sky hanging over the Wandering River, where Pebble reminded you of how you saw the world.\n\n“Pebble came next,” she says. “A round shape sitting low on a long stream of stars, like she was floating on her back down the river. I asked that constellation to watch over the valley.” She turns in a slow arc and bends her head toward the wing holding the delicate firefly, speaking to it in a hushed tone. A look of concern flashes across her face, and she picks up speed, beating her wings more urgently.\n\nYou stay close behind as the path curves gently through the trees.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -661,7 +661,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Unfinished Map",
-    "text": "Luna has grown quieter as you walk, her speed steadily increasing, her whispers to the extinguished firefly tucked safely in her wing becoming more frequent, her antennae flicking more frantically. Though her face remains calm, the beat of her wings steady.\n\n“We never finished,” she says solemnly, her antennae drooping. “There were still parts of the forest without eyes. We kept looking but had not yet found them when the Unmaking came.”\n\nA shiver runs through you. She continues, “Now I cannot find any of the guardians. I have searched the dark over and over, looking for even the slightest trace of their light. Called to them in the night and listened for even the faintest whisper of a response. But they are gone. Completely gone.”\n\nYou feel their absence now, as Luna does. It's almost as if you have lost the creatures themselves, the friends who gave back what you had forgotten, who guided you when you were lost. You and Luna continue forward into the dark, your heart heavy and aching.",
+    "text": "Luna has grown quieter as you walk, her speed steadily increasing, her whispers to the extinguished firefly tucked safely in her wing becoming more frequent, her antennae flicking more frantically. Though her face remains calm, the beat of her wings steady.\n\n“We never finished,” she says solemnly, her antennae drooping. “There was still one part of the forest without eyes. We kept looking but had not yet found them when the Unmaking came.”\n\nA shiver runs through you. She continues, “Now I cannot find any of the guardians. I have searched the dark over and over, looking for even the slightest trace of their light. Called to them in the night and listened for even the faintest whisper of a response. But they are gone. Completely gone.”\n\nYou feel their absence now, as Luna does. It's almost as if you have lost the creatures themselves, the friends who gave back what you had forgotten, who guided you when you were lost.\n\nBut there is still one more out there—the final friend you never found in the stars. Somewhere in this undone world, in the one part of the forest that had no eyes watching over it, someone has been waiting. Keeping whatever they kept of you.\n\nYou and Luna continue forward into the dark, your heart heavy and aching, but with a flicker of something that might, in another world, have been called hope.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -724,7 +724,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Bowing Path",
-    "text": "The oaks close in again, their contorted limbs arching so low the path becomes a tunnel of iron-grey wood. They do not droop — they reach, hard and insistent, frozen mid-extension toward something overhead that never came. You move through them in a crouch, the dry friction of wood filling the silence.\n\nLuna threads the gaps ahead of you, her wings adjusting with fluid precision. She says nothing. You follow the pale shimmer of her feathers through the dark.",
+    "text": "The oaks close in again, their contorted limbs arching so low the path becomes a tunnel of iron-grey wood. They do not droop—they reach, hard and insistent, frozen mid-extension toward something overhead that never came. You move through them in a crouch, the dry friction of wood filling the silence.\n\nLuna threads the gaps ahead of you, her wings adjusting with fluid precision. She says nothing. You follow the pale shimmer of her feathers through the dark.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -733,7 +733,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Resonant Creak",
-    "text": "Luna hovers near a massive, twisted trunk, her lower wings spread wide against the bark. Her throat pulses with a low, constant thrum that travels through the soles of your feet and up into your chest. You wait, watching.\n\nA slow creak answers her — a single branch shifting upward, straightening almost imperceptibly. Luna turns to you, her antennae trembling. “They are still trying,” she says. “That is enough.”\n\nShe lifts back into the canopy, and you press on beneath the dark arms of the wood.",
+    "text": "Luna hovers near a massive, twisted trunk, her lower wings spread wide against the bark. Her throat pulses with a low, constant thrum that travels through the soles of your feet and up into your chest. You wait, watching.\n\nA slow creak answers her—a single branch shifting upward, straightening almost imperceptibly. Luna turns to you, her antennae trembling. “They are still trying,” she says. “That is enough.”\n\nShe lifts back into the canopy, and you press on beneath the dark arms of the wood.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -742,7 +742,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Fading Frequency",
-    "text": "Luna stops speaking entirely. She produces a sequence of low clicks and a sustained hum as she moves through the interlocking branches above, a silver shape just visible in the dark. You can feel the faint movement of the fireflies’ legs against your palms — small, intermittent, persisting.\n\nYou keep your head down and follow the rhythm of her wings. The air is now warm as a summer's day. The trees press closer on either side, their reaching limbs motionless and vast.\n\nYou match her pace, looking straight ahead.",
+    "text": "Luna stops speaking entirely. She produces a sequence of low clicks and a sustained hum as she moves through the interlocking branches above, a silver shape just visible in the dark. You can feel the faint movement of the fireflies’ legs against your palms—small, intermittent, persisting.\n\nYou keep your head down and follow the rhythm of her wings. The air is now warm as a summer's day. The trees press closer on either side, their reaching limbs motionless and vast.\n\nYou match her pace, looking straight ahead.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -751,7 +751,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Still-Burning Few",
-    "text": "The path opens into a small clearing where the oaks pull back from one another, their reaching limbs no longer interlocked. Luna slows, her wingbeats changing rhythm. She descends toward the base of a broad trunk and stops.\n\nTucked into a hollow at its roots, three fireflies glow dimly. Faint, barely a suggestion of light, but steady. The Unmaking did not reach them here, or did not reach them fully. Luna is motionless for a long moment, studying them. Then she looks at you, something resolved and quiet in her expression.\n\n“This is where I stay,” she says. “These fireflies still have their spark. If anything can reach the others, it is them.” She settles at the hollow’s edge, drawing dozens of dark, lifeless fireflies from her feathers and placing them carefully beside the glowing ones.\n\nShe nods at you, signaling you to do the same. You set the tiny insects you’ve been carrying gently amongst the others. “Go on, {{characterName}}. You have what you came for. So do I.” She does not watch you leave. She is already working, her low clicks and hums filling the hollow.\n\nYou step back onto the path and continue alone into the dark",
+    "text": "The path opens into a small clearing where the oaks pull back from one another, their reaching limbs no longer interlocked. Luna slows, her wingbeats changing rhythm. She descends toward the base of a broad trunk and stops.\n\nTucked into a hollow at its roots, three fireflies glow dimly. Faint, barely a suggestion of light, but steady. The Unmaking did not reach them here, or did not reach them fully. Luna is motionless for a long moment, studying them. Then she looks at you, something resolved and quiet in her expression.\n\n“This is where I stay,” she says. “These fireflies still have their spark. If anything can reach the others, it is them.” She settles at the hollow’s edge, drawing dozens of dark, lifeless fireflies from her feathers and placing them carefully beside the glowing ones.\n\nShe nods at you, signaling you to do the same. You set the tiny insects you’ve been carrying gently amongst the others. “Go on, {{characterName}}. You have what you came for. So do I.” She does not watch you leave. She is already working, her low clicks and hums filling the hollow.\n\nYou step back onto the path and continue alone into the dark.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -792,22 +792,129 @@
     "readDefault": false
   },
   {
-    "distanceMarker": 137.84,
-    "isPersistent": false,
-    "isMajor": true,
-    "areaName": "[deer encounter story placeholder]",
-    "text": "[deer encounter story placeholder]",
+    "distanceMarker": 133.61,
+    "isPersistent": true,
+    "isMajor": false,
+    "areaName": "Buttercup Meadow",
+    "text": "The grove falls away behind you, and the world opens.\n\nThe meadow stretches in every direction, vast and unbroken. It should be beautiful—you can tell it was, once. The grass grows thick and waist-high, and the wildflowers are still there if you look closely, their shapes intact. But every stem is bowed. Every petal faces down. Nothing here reaches upward. The whole meadow leans away from the sun as if the light is something to shrink from.\n\nThe air smells of dry chalk and something faintly sweet, like flowers that have been pressed between pages for too long.\n\nFar across the plateau, at the edge of where the meadow meets a line of withered trees, something stands. The figure is too still to be a trick of the light. The presence is watching you.\n\nYou start walking.",
     "unlockedDefault": false,
     "readDefault": false
   },
   {
-    "distanceMarker": 168.00,
-    "isPersistent": true,
+    "distanceMarker": 136.84,
+    "isPersistent": false,
     "isMajor": true,
-    "areaName": "[complete area placeholder]",
-    "text": "[complete story placeholder]",
+    "areaName": "The Horned One: The Clarion Call",
+    "text": "The first thing you see is the gold.\n\nIt catches the sterile light from across the plateau—two branching points of warm color rising above the bowed grass, splitting and splitting against the pale sky like the last living thing in the world. You have not seen color since you first woke at the forest’s edge. Your eyes do not know what to do with it.\n\nAs you draw closer, the creature takes shape beneath the antlers. The Horned One is tall, possessing the broad, sturdy frame of something built for strength and long distances. A coat the color of dried grass makes the form nearly invisible against the meadow. The creature’s face is long and calm, featuring dark, unblinking eyes that hold no urgency even as the gaze holds everything.\n\nThe antlers rise from the creature’s head like golden branches, tines splitting and splitting again. The texture is less like bone and more like the bark of every tree the forest has ever known. Gold leaves shimmer in the light. This is the only remaining warmth that the Unmaking did not erase.\n\nThe Horned One does not greet you. When the creature speaks, it is as if the conversation has been underway for some time.\n\n“You stopped at the edge of the grove,” the voice says. It is low and resonant, a sound that seems to rise from the earth rather than a throat. “You stood there for a long moment. I watched you decide.”\n\nThe creature stares at you, dark eyes unblinking.\n\n“That is the only memory of yours that concerns me. Not what you have lost. What you chose to do at the edge of it.”\n\nYou say nothing.\n\n“Good. You are already listening. That is a start.”\n\nThe Horned One turns toward the open meadow. You fall into step beside the creature, the golden antlers catching the light ahead of you.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 139.73,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Record",
+    "text": "The Horned One does not move from the shadow of the withered tree. Golden antlers catch the sterile light as the creature speaks.\n\n“This meadow grew toward a sun it decided it had no right to want,” the creature says. “So it stopped. Folded itself down. Made itself small so the world could not say it had no right to stand tall.”\n\nA pause. The dry stalks shift without wind, as if pulling inward.\n\n“You have hesitated the same way. Twice that I recorded. Once at the northern edge of the thicket, before the steepest grade, where you slowed until I thought you had stopped entirely. Once at the mouth of the caverns, where you stood in the dark for eleven counted breaths.”\n\nThe creature’s dark eyes find you.\n\n“But I am not here to discuss the hesitation. I am here because of what came after it. Both times, you moved. That is the only part of your history worth carrying into what comes next.”\n\nThe creature moves forward, sure and deliberate, and you walk alongside.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 142.41,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Only Biography",
+    "text": "“You tell me you do not remember who you are.”\n\nThe Horned One takes one slow step toward you. The pale grass bends and does not spring back.\n\n“I tell you: That does not matter. Your feet carried you through the thicket. Through the river valley. Through the rot of the marsh and the dark of the cave. Through the starless sky of the grove. You did not remember yourself through any of it, and yet here you stand.”\n\nThe creature stops.\n\n“The forgetting did not stop you. It tried. It failed. That is the only biography that matters now—not what you were, but what you did when you could not remember what you were. I have kept that record.” A pause. “It is the record of someone who does not stop.”\n\nYou look at the bowed flowers at your feet. Not one of them is looking back.\n\n“Your feet remember the road. Your chest remembers the breath of the high air. That is enough. I do not ask for your history—I ask for your momentum.” The Horned One’s dark eyes look down at the folded buttercups. “Do not do what they did. Do not decide you have no right to keep going. Stand tall, Inker.”\n\nThe Horned One moves forward without looking back. You lift your eyes from the flowers and follow.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 145.18,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "One Word",
+    "text": "“The stars have gone dark,” the Horned One says. “The paths have turned to ash. In such a world, the only direction left is the one you carry inside.”\n\nThe golden antlers cast no shadow in the sterile light.\n\n“Your heart is a needle, Inker. It does not care about the dark, and it does not fear the cold. It only knows one word.” The dark eyes drop briefly to your chest, then rise again. “Do not look to the sky for guidance. The stars have abdicated their posts. Do not look to the path for the way. It can only lead you so far. Look inward. Your resolve is a needle that only points one way. Align your spirit to it and let the world follow your lead.”\n\nThe meadow is very quiet.\n\n“You will know the word. And when you do, remember it. You will need it before the end.”\n\nThe creature walks on. You keep pace, a space sitting in your chest where the word will sit.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 148.32,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "What Waits at the Heart",
+    "text": "“There is one more thing.”\n\nThe stillness around the Horned One shifts. The dark eyes carry something new—the weight of something that demands to be met honestly.\n\n“The Unmaking is a vast, hungry silence, but it is not absolute. It can be pushed back by every determined step. Resolve is not a feeling—it is a choice you make with every mile. Do not look at the shadows flickering at the edge of your vision. Look at the path you are treading into existence. Resolve is the one thing the Unmaking cannot touch.”\n\nThe creature is very still.\n\n“At the heart of this forest, you will meet someone. I must warn you: Do not arrive there small. Do not arrive uncertain. Do not arrive still carrying the destruction of the forest inside of you.” The gaze does not waver. “You will need every mile you have walked to stand in that place. Every moment you chose to move forward over stopping. Every step you took when the world gave you no reason to keep going.”\n\nA long pause.\n\n“Prepare yourself.”\n\nThe Horned One is still for a long moment. Then the creature turns, and you understand the conversation is nearly over.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 151.07,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Move",
+    "text": "The Horned One turns away—not toward the heart of the forest, but back the way you came. Back toward the grove, back toward the dark of the cave and the rot and the river and the thicket. The golden antlers catch the light one last time.\n\nThe creature’s voice rings out. Resonant. Certain. “The horizon is not a place to stop, Inker—it is a reminder that there is more to discover. The Unmaking has obscured the paths, but it cannot steal the ground beneath your feet. I have set the coordinate in your heart. My eyes will be on the horizon we have yet to reach, but my command remains in the marrow of your bones. When the cold tries to slow your blood, remember the North I have given you. Do not look back for me. Look forward for the light. You will carry the name of every creature with you.”\n\nA pause.\n\n“You did not walk here alone {{characterName}}. You will not walk forward alone. Every name you were given in these woods is yours to keep. Mine is the last. I am Harken. I told you that you would know the word. Here it is…”\n\nHarken’s dark eyes hold you one last time, brief and absolute.\n\n<i>“Move.”</i>\n\nHarken bounds back into the pale grass without looking back. The creature fades from view within minutes. The golden antlers are the last thing you see—splitting and splitting against the bleached sky—and then they are gone too.\n\nThe silence that follows is not empty. It has a shape to it. A direction.\n\nAs the meadow closes behind you, the coordinate in your chest does not waver. The pull in your bones has changed—it is no longer a pull at all. It is a push, steady and insistent, from somewhere behind your sternum.\n\nYou turn toward the heart of the forest and walk—for the one who kept the record of every time you chose to move, and who never once doubted you.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 153.84,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Ash-Salt Flats",
+    "text": "The path beneath your feet disappears, swallowed by a sea of waist-high grass. Stiff and skeletal, the stalks are coated in a fine, white powder that kicks up like salt with every step. They stand petrified, as if sensing the end is near.\n\nThere is no wind, yet the meadow is never silent. Every step produces a papery rustling that carries for miles in the thin air.\n\nYou feel small here. The pale sky feels like a watching eye that never blinks.\n\nYou think about Harken's words. <i>At the heart of this forest, you will meet someone. . . . Do not arrive there small.</i>You straighten your spine, lift your chest, hold your head high, and keep walking.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 156.92,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Sunless Burn",
+    "text": "The light is a paradox. It is so bright that the world is reduced to sharp lines and the deepest charcoal shadows, illuminating the landscape without revealing it. You hold your hand up to the sun, and the light passes through the gaps of your fingers without casting a shadow to shield your eyes.\n\nYou look down at the smudge of ink on your skin. In this bleached landscape, it is the only thing that looks substantial. The meadow feels like a ghost of a place, a memory that has been scrubbed clean until only the armature remains.\n\n<i>Do not arrive uncertain,</i> Harken said.\n\nYou are not certain. You have not been certain once since you woke at the edge of the forest.\n\nBut you are still here, still moving forward, still putting one foot in front of the other.\n\nYou wonder if that's what certainty really is—choosing something over and over in the absence of any guarantee that you're right.\n\nYou let that thought continue to carry you forward.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 159.61,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Tenuous Horizon",
+    "text": "Distance is difficult to judge in the open. There are no landmarks to mark your progress or measure yourself against. You find a cluster of rocks that look like they were once part of a stream, but the bed is filled with nothing but silt.\n\nYou stop to catch your breath. You look up at the pale line where the earth meets the sky.\n\n<i>The horizon is not a place to stop, Inker—it is a reminder that there is more to discover.</i>\n\nYou fix your gaze on it and press on.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 161.83,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "What the Past Holds",
+    "text": "You stop to rest and your pack slides from your shoulders with a weight that surprises you.\n\nYou open it.\n\nThe thorn. The dry leaf it pierced. The knotted vine, still unyielding, still wound impossibly tight against itself. The leaden root with the metal nugget grown into its heart. The worry stone, its groove worn smooth by a thumb that rubbed and rubbed until the rock gave way. The piece of white bark with the scratched-out figure.\n\nYou have been carrying all of it since the beginning. Each one found in the margins of the path, pressed into your hands by some instinct you couldn’t name. You told yourself you were imagining the person who left them. You pictured a stranger. Someone driven by a rage with nowhere to go. Someone drowning in their own weight. Someone fearing they were truly, fundamentally alone.\n\nNow, on the far side of Harken’s warning, you wonder for the first time if they were left by the one waiting at the heart of the forest.\n\nYou reach for the metal nugget last. You have held it before—cold, scratched into ruin by someone who couldn’t bear to look at themselves.\n\nIt is no longer cold.\n\nYou turn it over in your palm. Where the frantic scratches caught the sterile light before, they catch something warmer now. Where you held the nugget, the grey has shifted—scrubbed away, or transmuted—and beneath it, unmistakably, is gold.\n\nYou close your hand around it and hold it for a long moment.\n\nThen you place it back with the others, shoulder the pack, and keep walking.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 163.44,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "The Path of Resolve",
+    "text": "The grass begins to thin, revealing a wide, flat plateau of cracked earth. The heart of the forest darkens the horizon ahead.\n\nYou think of Harken’s words about the hesitations recorded, the moments of stopping and then choosing forward. You have been adding to that record with every step since the parting.\n\nThe heart of the forest is somewhere beyond the tree line. You will reach it in time. For now there is only the next step, and the next, and the certainty that both are enough.\n\nYou do not slow.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 165.29,
+    "isPersistent": false,
+    "isMajor": false,
+    "areaName": "Everything You Have",
+    "text": "You've come to realize that there is nothing left to find here. No creatures watching from the grass. No objects half-buried in the silt. No conversations waiting to be had.\n\nThis part of meadow offers only the ground beneath your feet, the sky above, and the thoughts in your head. All of them are the color and texture of a canvas scraped clean.\n\nThe tree line ahead has grown from a suggestion into a wall. Dark and dense, the trunks are barely visible from here. The canopy is a ceiling that begins where the sky ends.\n\nSomething is in there, waiting.\n\n<i>Prepare yourself.</i>\n\nHarken’s words have not left you. But how do you prepare yourself for something you know nothing about?\n\n All you're sure of is this—what waits at the heart of this forest will require everything you have.\n\nYou take stock of everything you have. Everything you've become since you stepped onto the path at the forest's edge. It is more than you started with.\n\nYour step does not falter. You walk into the trees.",
+    "unlockedDefault": false,
+    "readDefault": false
+  },
+  {
+    "distanceMarker": 168.0,
+    "isPersistent": true,
+    "isMajor": false,
+    "areaName": "The Heart of the Forest",
+    "text": "The meadow ends.\n\nThe cracked earth gives way to something older—dark soil, dense and damp. The smell of it rises around you, familiar, like an old memory you can't quite place.\n\nThe withered grass is finally behind you. Ahead, the trees are ancient things, their trunks as wide as boulders, their bark scored with deep lines that run in patterns too deliberate to be accidental.\n\nAbove the canopy, the jagged peak of the mountain stands tall.\n\nThe coordinate in your chest does not waver. You are closer now. You can feel it.\n\nYou stand at the threshold and look into deep, dense woods. Somewhere in there, the Unmaking began. Somewhere in there, someone is waiting. Somewhere in there, lies the answer to a question you do not yet know to ask.\n\nYou <i>move</i>.",
     "unlockedDefault": false,
     "readDefault": false
   }
-
 ]
