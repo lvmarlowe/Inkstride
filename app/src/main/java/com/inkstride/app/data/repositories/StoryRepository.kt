@@ -18,11 +18,9 @@ class StoryRepository(context: Context) {
     private val unlockStateDao = database.unlockStateDao()
     private val milestoneDao = database.milestoneDao()
 
-    // Cached intro segment id to avoid repeatedly loading seed data in the same app process.
-    private var introSegmentIdCache: Int? = null
-
-    // Tracks whether introSegmentIdCache has been populated, including a null result.
-    private var hasLoadedIntroSegmentIdCache = false
+    // Holds the intro segment id after first load so seed data is not re-read on every call.
+    // Uses a placeholder value so a null result can be cached without a separate flag.
+    private var introSegmentIdCache: Any? = INTRO_SEGMENT_ID_UNINITIALIZED
 
     /**
      * getIntroSegmentIfUnreadUnlocked: Returns the intro segment only when it is unlocked and unread.
@@ -77,9 +75,7 @@ class StoryRepository(context: Context) {
 
     // hasUnlockedUnreadSegments: Returns true when at least one non-intro unlocked segment remains unread to drive inbox badge state.
     suspend fun hasUnlockedUnreadSegments(): Boolean {
-        val introId = getIntroSegmentIdCached()
-        return storySegmentDao.getUnlockedUnreadOrderedByDistance()
-            .any { it.id != introId }
+        return getUnlockedUnreadSegments().isNotEmpty()
     }
 
     // getAreaNameForStorySegment: Returns milestone area name for a segment, or empty string when missing.
@@ -97,13 +93,14 @@ class StoryRepository(context: Context) {
      * Caches null too so repeated calls do not keep re-reading seed data when intro content is missing.
      */
     private suspend fun getIntroSegmentIdCached(): Int? {
-        if (hasLoadedIntroSegmentIdCache) {
-            return introSegmentIdCache
+        if (introSegmentIdCache !== INTRO_SEGMENT_ID_UNINITIALIZED) {
+            @Suppress("UNCHECKED_CAST")
+            return introSegmentIdCache as Int?
         }
 
         introSegmentIdCache = loadIntroSegmentId()
-        hasLoadedIntroSegmentIdCache = true
-        return introSegmentIdCache
+        @Suppress("UNCHECKED_CAST")
+        return introSegmentIdCache as Int?
     }
 
     // loadIntroSegmentId: Resolves the intro segment id from character seed data and milestone mapping.
@@ -119,6 +116,12 @@ class StoryRepository(context: Context) {
         return storySegmentDao.getByMilestoneId(introMilestone.id).firstOrNull()?.id
     }
 }
+
+// Placeholder object used to mark the intro segment id cache as not yet loaded.
+private object IntroSegmentIdUninitialized
+
+// Stores the placeholder instance for identity checks in getIntroSegmentIdCached.
+private val INTRO_SEGMENT_ID_UNINITIALIZED: Any = IntroSegmentIdUninitialized
 
 /**
  * StoryUnlockSegment: Stores unlock-screen text and area label for a specific story segment id.

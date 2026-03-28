@@ -45,15 +45,18 @@ private const val BACKGROUND_PERMISSION = "android.permission.health.READ_HEALTH
 fun AppRouter(innerPadding: PaddingValues) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+    val appContext = context.applicationContext
 
-    val healthConnectManager = remember { HealthConnectManager(context) }
-    val storyRepository = remember { StoryRepository(context) }
+    // Keeps a UI-owned manager for permission contracts. The router view model builds its own app-context dependencies.
+    val healthConnectManager = remember(appContext) { HealthConnectManager(appContext) }
+
+    // Shares one story repository instance across router-composed story screens.
+    val storyRepository = remember(appContext) { StoryRepository(appContext) }
 
     val activity = context as MainActivity
-    val appRouterViewModel = activity.rememberViewModel(healthConnectManager, storyRepository) {
+    val appRouterViewModel = activity.rememberViewModel(appContext) {
         AppRouterViewModel(
-            healthConnectManager = healthConnectManager,
-            storyRepository = storyRepository
+            appContext = appContext
         )
     }
 
@@ -133,7 +136,8 @@ fun AppRouter(innerPadding: PaddingValues) {
                     onContinue = { appRouterViewModel.onIntroContinue() },
                     showForwardArrow = false,
                     title = "New Journey, New Story",
-                    subtitle = ""
+                    subtitle = "",
+                    storyRepository = storyRepository
                 )
             } else {
                 // Re-checks route if intro state is unexpectedly empty.
@@ -154,13 +158,14 @@ fun AppRouter(innerPadding: PaddingValues) {
                     showForwardArrow = true,
                     title = "A New Memory Made",
                     onContinue = { currentSegmentId ->
-                        appRouterViewModel.onStoryUnlockContinue(currentSegmentId)
-                    }
+                        appRouterViewModel.onStoryUnlockContinueFromPager(currentSegmentId)
+                    },
+                    storyRepository = storyRepository
                 )
             } else {
                 // Clears the unlock session when segment ids are unexpectedly empty.
                 LaunchedEffect(Unit) {
-                    appRouterViewModel.onStoryUnlockContinue()
+                    appRouterViewModel.onStoryUnlockContinueFromEmptySession()
                 }
             }
         }
@@ -187,6 +192,7 @@ fun AppRouter(innerPadding: PaddingValues) {
                     )
 
                     AppRouteScreen.STORYBOOK -> StorybookScreen(
+                        storyRepository = storyRepository,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(bottom = 88.dp)

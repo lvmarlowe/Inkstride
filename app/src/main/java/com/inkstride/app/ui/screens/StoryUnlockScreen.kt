@@ -27,7 +27,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -58,6 +57,7 @@ import java.util.Locale
 fun StoryUnlockScreen(
     modifier: Modifier = Modifier,
     storySegmentIds: List<Int>,
+    storyRepository: StoryRepository,
     onSegmentNavigatedAway: (Int) -> Unit,
     onContinue: (Int) -> Unit,
     showForwardArrow: Boolean = true,
@@ -69,7 +69,6 @@ fun StoryUnlockScreen(
     val pagerState = rememberPagerState(pageCount = { storySegmentIds.size })
 
     val activity = context as MainActivity
-    val storyRepository = remember { StoryRepository(context) }
     val storyUnlockViewModel = activity.rememberViewModel(storyRepository) {
         StoryUnlockViewModel(
             storyRepository = storyRepository

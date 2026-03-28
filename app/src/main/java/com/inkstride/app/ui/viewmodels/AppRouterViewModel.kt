@@ -1,5 +1,6 @@
 package com.inkstride.app.ui.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.inkstride.app.data.repositories.StoryRepository
@@ -55,9 +56,12 @@ sealed interface AppRouterEffect {
  * Evaluates permissions and unread story state to determine which screen to display.
  */
 class AppRouterViewModel(
-    private val healthConnectManager: HealthConnectManager,
-    private val storyRepository: StoryRepository
+    appContext: Context
 ) : ViewModel() {
+
+    // Uses application context-owned dependencies so the view model does not capture composable remember instances.
+    private val healthConnectManager = HealthConnectManager(appContext)
+    private val storyRepository = StoryRepository(appContext)
 
     private val _uiState = MutableStateFlow(AppRouterUiState())
     val uiState: StateFlow<AppRouterUiState> = _uiState.asStateFlow()
@@ -251,12 +255,12 @@ class AppRouterViewModel(
         val introSegmentId = _uiState.value.introSegmentId ?: return
         viewModelScope.launch {
             storyRepository.markAsRead(introSegmentId)
-            val hasUnreadSegments = storyRepository.hasUnlockedUnreadSegments()
+            val unreadSegments = storyRepository.getUnlockedUnreadSegments()
             _uiState.update {
                 it.copy(
                     screen = AppRouteScreen.JOURNEY,
                     introSegmentId = null,
-                    hasStoryNotification = hasUnreadSegments,
+                    hasStoryNotification = unreadSegments.isNotEmpty(),
                     unreadUnlockSegmentIds = emptyList(),
                     unlockAreaName = ""
                 )
@@ -271,14 +275,14 @@ class AppRouterViewModel(
         }
     }
 
-    // onStoryUnlockContinue: Marks the current segment as read and returns to the screen before the unlock session.
-    fun onStoryUnlockContinue(currentSegmentId: Int) {
+    // onStoryUnlockContinueFromPager: Marks the current segment as read and returns to the screen before the unlock session.
+    fun onStoryUnlockContinueFromPager(currentSegmentId: Int) {
         viewModelScope.launch {
             storyRepository.markAsRead(currentSegmentId)
-            val hasUnreadSegments = storyRepository.hasUnlockedUnreadSegments()
+            val unreadSegments = storyRepository.getUnlockedUnreadSegments()
             _uiState.update {
                 it.copy(
-                    hasStoryNotification = hasUnreadSegments,
+                    hasStoryNotification = unreadSegments.isNotEmpty(),
                     unreadUnlockSegmentIds = emptyList(),
                     unlockAreaName = "",
                     screen = it.returnScreenAfterStoryUnlock
@@ -287,13 +291,13 @@ class AppRouterViewModel(
         }
     }
 
-    // onStoryUnlockContinue: Clears the unlock session and returns to the screen before the unlock session.
-    fun onStoryUnlockContinue() {
+    // onStoryUnlockContinueFromEmptySession: Clears the unlock session without marking a segment as read and returns to the screen before the unlock session.
+    fun onStoryUnlockContinueFromEmptySession() {
         viewModelScope.launch {
-            val hasUnreadSegments = storyRepository.hasUnlockedUnreadSegments()
+            val unreadSegments = storyRepository.getUnlockedUnreadSegments()
             _uiState.update {
                 it.copy(
-                    hasStoryNotification = hasUnreadSegments,
+                    hasStoryNotification = unreadSegments.isNotEmpty(),
                     unreadUnlockSegmentIds = emptyList(),
                     unlockAreaName = "",
                     screen = it.returnScreenAfterStoryUnlock

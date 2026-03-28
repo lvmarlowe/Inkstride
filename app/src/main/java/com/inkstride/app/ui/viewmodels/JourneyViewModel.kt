@@ -76,6 +76,7 @@ class JourneyViewModel(
     private val appContext: Context,
     private val healthConnectManager: HealthConnectManager
 ) : ViewModel() {
+    private val journeySnapshotRepository = JourneySnapshotRepository(appContext)
 
     private val _uiState = MutableStateFlow(JourneyUiState())
     val uiState: StateFlow<JourneyUiState> = _uiState.asStateFlow()
@@ -240,40 +241,82 @@ class JourneyViewModel(
      * Avoids rendering all-zero stats when startup sync has not completed yet.
      */
     private suspend fun loadPersistedSnapshot() {
+        val snapshot = journeySnapshotRepository.loadPersistedSnapshot()
+        _uiState.update {
+            it.copy(distanceUnit = snapshot.distanceUnit)
+        }
+
+        if (!snapshot.hasProgressState) return
+
+        _uiState.update {
+            it.copy(
+                dayNumber = snapshot.dayNumber,
+                totalDistance = snapshot.totalDistance,
+                todayDistance = snapshot.todayDistance,
+                nextMilestoneDistance = snapshot.nextMilestoneDistance,
+                journeyAreaName = snapshot.journeyAreaName
+            )
+        }
+    }
+}
+
+/**
+ * JourneySnapshotRepository: Reads persisted journey values needed for initial screen rendering.
+ * Keeps direct database access out of JourneyViewModel so screen state stays repository-driven.
+ */
+private class JourneySnapshotRepository(
+    private val appContext: Context
+) {
+    suspend fun loadPersistedSnapshot(): PersistedJourneySnapshot {
         val database = DatabaseProvider.getDatabase(appContext)
         val progressState = database.progressStateDao().get()
         val settings = database.settingsDao().get()
 
         val distanceUnit = DistanceUnit.fromStorageValue(settings?.distanceUnit)
-        _uiState.update { it.copy(distanceUnit = distanceUnit) }
-
         if (progressState == null) {
-            return
+            return PersistedJourneySnapshot(
+                hasProgressState = false,
+                distanceUnit = distanceUnit
+            )
         }
 
         val totalDistance = progressState.totalDistance
-        val todayKey = LocalDate.now().toString()
-        val todayDistance = database.dailyStatsDao().getByDate(todayKey)?.distanceToday ?: 0.0
+        val todayDistance = database.dailyStatsDao()
+            .getByDate(LocalDate.now().toString())
+            ?.distanceToday
+            ?: 0.0
 
         val milestoneDao = database.milestoneDao()
         val nextMilestone = milestoneDao.getNextUnreached(totalDistance)
         val journeyAreaName = milestoneDao.getLatestPersistentUnlockedAreaName().orEmpty()
         val progressCalculator = ProgressCalculator()
-        val nextMilestoneDistance = progressCalculator.roundDistance(
-            progressCalculator.getRemainingDistance(
-                currentDistance = totalDistance,
-                nextMilestoneDistance = nextMilestone?.distanceMarker ?: totalDistance
-            )
-        )
 
-        _uiState.update {
-            it.copy(
-                dayNumber = progressState.dayNumber,
-                totalDistance = totalDistance,
-                todayDistance = todayDistance,
-                nextMilestoneDistance = nextMilestoneDistance,
-                journeyAreaName = journeyAreaName
-            )
-        }
+        return PersistedJourneySnapshot(
+            hasProgressState = true,
+            dayNumber = progressState.dayNumber,
+            todayDistance = todayDistance,
+            totalDistance = totalDistance,
+            nextMilestoneDistance = progressCalculator.roundDistance(
+                progressCalculator.getRemainingDistance(
+                    currentDistance = totalDistance,
+                    nextMilestoneDistance = nextMilestone?.distanceMarker ?: totalDistance
+                )
+            ),
+            distanceUnit = distanceUnit,
+            journeyAreaName = journeyAreaName
+        )
     }
 }
+
+/**
+ * PersistedJourneySnapshot: Bundles persisted journey fields used before sync completes.
+ */
+private data class PersistedJourneySnapshot(
+    val hasProgressState: Boolean,
+    val dayNumber: Int = 1,
+    val todayDistance: Double = 0.0,
+    val totalDistance: Double = 0.0,
+    val nextMilestoneDistance: Double = 0.0,
+    val distanceUnit: DistanceUnit = DistanceUnit.MILE,
+    val journeyAreaName: String = ""
+)

@@ -445,7 +445,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "Acoustic Resonance",
-    "text": "The cavern opens into a series of rounded chambers where the walls are pockmarked with shallow, jagged holes.\n\nMica circles the room, their ears twitching at the sound of the rock groaning under the pressure. They pause, looking at the ceiling where the stone bows inward.\n\n“Chronological logs identify this chamber as the site of Experiment 1: Acoustic Resonance Mapping,” Mica says, their voice muffled and clipped in the dense air. “In the past, you provided an acoustic trigger, and I utilized the return to construct a s-s-spatial map. The air density was lower then. Currently, the particulate saturation is absorbing the acoustic return before it can travel. Try to replicate the hum.”\n\nMica drifts to the far edge of the chamber. You move deeper into the dark after them.",
+    "text": "The cavern opens into a series of rounded chambers where the walls are pockmarked with shallow, jagged holes.\n\nMica circles the room, their ears twitching at the sound of the rock groaning under the pressure. They pause, looking at the ceiling where the stone bows inward.\n\n“Chronological logs identify this chamber as the site of Experiment 1: Acoustic Resonance Mapping,” Mica says, their voice muffled and clipped in the dense air. “In the past, you provided an acoustic trigger, and I utilized the return to construct a s-s-spatial map. The air density was lower then. Currently, the particulate s-s-saturation is absorbing the acoustic return before it can travel. Try to replicate the hum.”\n\nMica drifts to the far edge of the chamber. You move deeper into the dark after them.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -454,7 +454,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Stifled Hum",
-    "text": "Per Mica's instruction, you let out a low, steady note, but the sound feels like it is being choked as soon as it leaves your throat. It does not travel; it simply hangs in the thick air for a moment before dropping away.\n\nMica's ears twitch, catching the lack of return. “S-s-signal is absent. This does not match the archival data from our previous s-s-sessions. In the past, the transformation of the stone was instantaneous. In other words, you could shape the world with your voice. Currently, however, your output is below the required s-s-structural threshold. The resonance is inconclusive.”\n\nMica sniffles and records the failure.\n\nMica turns and glides onward, wings barely rippling. You fall into step beneath them.",
+    "text": "Per Mica's instruction, you let out a low, steady note, but the sound feels like it is being choked as soon as it leaves your throat. It does not travel; it simply hangs in the thick air for a moment before dropping away.\n\nMica's ears twitch, catching the lack of return. “S-s-signal is absent. This does not match the archival data from our previous s-s-sessions. In the past, the transformation of the stone was instantaneous. In other words, you could shape the world with your voice. Currently, however, your output is below the required threshold. The resonance is ineffective.”\n\nMica sniffles and records the failure.\n\nMica turns and glides onward, wings barely rippling. You fall into step beneath them.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -463,7 +463,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "Knowledge is Liberation",
-    "text": "Mica suddenly lets out a wet, high-pitched sneeze that causes them to wobble in the air. Their wings churn in a frantic surge to regain their hover, and they look physically drained by the effort of maintaining their flight in the heavy air.\n\nWith a quick shake, they settle their ruffled fur. “The particulate matter from the crumbling stone is a persistent allergen,” Mica mutters, eyes watery and narrowed.\n\n“Physically, this environment is taxing for a vessel of my s-s-size. However, my mental faculties remain s-s-stable. Knowledge is the only liberation from the s-s-suffering of the flesh.”\n\nMica steadies, soars higher, and presses on. You walk beneath them through the settling dust.",
+    "text": "Mica suddenly lets out a wet, high-pitched sneeze that causes them to wobble in the air. Their wings churn in a frantic surge to regain their hover, and they look physically drained by the effort of maintaining their flight in the thick air.\n\nWith a quick shake, they settle their ruffled fur. “The particulate matter from the crumbling s-s-stone is a persistent allergen,” Mica mutters, eyes watery and narrowed.\n\n“Physically, this environment is taxing for a vessel of my s-s-size. However, my mental faculties remain s-s-stable. Knowledge is the only liberation from the s-s-suffering of the flesh.”\n\nMica steadies, soars higher, and presses on. You walk beneath them through the settling dust.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -481,7 +481,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Discarded Compass",
-    "text": "The path drops into a shallow depression filled with silver dust and fragments of crushed rock.\n\nAs you walk, your foot strikes something hard and metallic under crumbled stone. You reach down and pull a tarnished metal compass from the debris. It is heavy and cold, the glass cracked from the weight of the stone. The needle spins in frantic, meaningless circles.\n\nMica drifts closer, their eyes glowing with a faint, shifting light.\n\n“Ah,” Mica says, their voice dropping lower, as if describing a precious artifact.\n\n“That is the property of the s-s-strata. I had recorded it as lost during the inventory following the Unmaking. It is a precision instrument, designed to track the subsurface field lines when the atmosphere is too thick for sensory mapping.”\n\nYou continue through the silver dust, turning the tarnished metal over in your hands.",
+    "text": "The path drops into a shallow depression filled with silver dust and crushed rock.\n\nAs you walk, your foot strikes something hard and metallic under crumbled stone. You reach down and pull a tarnished metal compass from the debris. It is heavy and cold, the glass cracked from the weight of the stone. The needle spins in frantic, meaningless circles.\n\nMica drifts closer, their eyes glowing with a faint, shifting light.\n\n“Ah,” Mica says, their voice dropping lower, as if describing a precious artifact.\n\n“That is the property of the s-s-strata. I had recorded it as lost during the inventory following the Unmaking. It is a precision instrument, designed to track the subsurface field lines when the atmosphere is too thick for s-s-sensory mapping.”\n\nYou continue through the silver dust, turning the tarnished metal over in your hands.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -490,7 +490,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "Magnetic Mapping",
-    "text": "The air begins to thrum with a low, electric tension as you enter a massive vault.\n\nMica glides toward the center, their wings shimmering as they sense the magnetic lines. They sniffle once before clearing their throat grandly.\n\n“Observe Experiment 2: Magnetic Field Line Mapping,” Mica says. “I loaned you that device to verify the accuracy of my magnetoreceptive readings. We recorded the coordinates of the subsurface field lines while I traced their paths through the rock. When you went missing, the lines became fractured. They drifted through the stone without a guide. Now, analyze the needle.”\n\nYou look down at the compass. It has stopped spinning. It points directly at your chest.\n\nMica circles the vault in a slow, wide arc. You walk beneath them, the compass heavy in your hand.",
+    "text": "The air begins to thrum with a low, electric tension as you enter a massive vault.\n\nMica glides toward the center, their wings shimmering as they sense the magnetic lines. They sniffle and then their throat grandly.\n\n“Observe Experiment 2: Magnetic Field Line Mapping,” Mica says. “I loaned you that device to verify the accuracy of my magnetoreceptive readings. We recorded the coordinates of the s-s-subsurface field lines while I traced their paths through the rock. When you went missing, the lines became fractured. They drifted through the s-s-stone without a guide. Now, analyze the needle.”\n\nYou look down at the compass. It has stopped spinning. It points directly at your chest.\n\nMica circles the vault in a slow, wide arc. You walk beneath them, the compass heavy in your hand.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -499,7 +499,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Personal North",
-    "text": "As you move across the chamber, the needle of the compass follows you with mechanical precision. Every step you take realigns the magnetic orientation of the entire vault, the invisible field lines bending toward you despite the crushing weight of the atmosphere.\n\n“S-s-statistically impossible. Magnetic North has always tracked your position—I recorded it myself. When you disappeared, it had nothing to follow, and the needle simply spun. But you have returned, and it is recalibrating to you again. You are the anchor point for a world under pressure. The world is rewriting its own compass to point at you.”\n\nMica ascends toward the passage above. You trudge upward after them.",
+    "text": "As you move across the chamber, the needle of the compass follows you with mechanical precision. Every step you take realigns the magnetic orientation of the entire vault, the invisible field lines bending toward you despite the crushing weight of the atmosphere.\n\n“S-s-scientifically impossible. Magnetic North has always tracked your position. I recorded it myself. When you disappeared, it had nothing to follow, and the needle simply s-s-spun. But you have returned, and it is recalibrating to you again. You are the anchor point for a world under pressure. The world is rewriting its own compass to point at you.”\n\nMica ascends toward the passage above. You trudge upward after them.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -508,7 +508,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "Sensory Intensity",
-    "text": "Mica doesn't fly ahead this time. They stay beside you, exactly three meters away, maintaining a steady hover that keeps them in your peripheral vision.\n\nWhenever you turn your head toward them, Mica's ears flick backward, and they drift a few inches further away, as if your direct attention is physically loud.\n\n“Close-range monitoring is required to observe the way the field lines react to your gait,” Mica says. “It is a s-s-substantial amount of data. It would be inefficient for me to be elsewhere when the s-s-subject is so active. The electromagnetic overlap is manageable.”\n\nMica remains exactly three meters to your left as you move toward the final cluster of crystals.",
+    "text": "Mica doesn't fly ahead this time. They stay beside you, exactly three meters away, maintaining a steady hover that keeps them in your peripheral vision.\n\nWhenever you turn your head toward them, Mica's ears flick backward, and they drift a few inches further away, as if your direct attention is physically loud.\n\n“Close-range monitoring is required to observe the way the field lines react to your gait,” Mica says. “It is a s-s-substantial amount of data. It would be insufficient for me to be elsewhere when the s-s-subject is so active. The electromagnetic overlap is manageable.”\n\nMica remains exactly three meters to your left as you move toward the final cluster of crystals.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -517,7 +517,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "Crystalline Lattice",
-    "text": "The path is lined with massive, clouded crystals. They are dull and smoky, their surfaces covered in a thick layer of ash and deep cracks. Mica hovers near a jagged crack in a central pillar and sniffles.\n\n“Experiment 3: Crystalline Lattice Alignment,” Mica says. “In the past, you touched the crystals to test their s-s-structural integrity. They would realign under your touch. Now, they are crumbling under the weight of the Unmaking. The light is trapped inside. Contact is necessary for calibration.”\n\nYou approach the clouded stones.",
+    "text": "The path is lined with massive, clouded crystals. They are dull and smoky, their surfaces covered in a thick layer of ash and deep cracks. Mica hovers near a jagged crack in a central pillar and sweeps one wing out ceremoniously toward a cluster of crystals.\n\n“Experiment 3: Crystalline Lattice Alignment,” Mica says. “In the past, you touched the crystals to repair their s-s-structural integrity. They would realign under your touch. Now, they are crumbling under the weight of the Unmaking. Contact is necessary for recalibration.”\n\nYou approach the clouded stones.",
     "unlockedDefault": false,
     "readDefault": false
   },
@@ -535,7 +535,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "Unstable Records",
-    "text": "The cavern remains dark, the colorless ash on the ground swallowing the little light you have left.\n\nMica hovers nearby, their fur flattened by the heavy air. They look at you, their head tilting at a sharp angle.\n\n“The s-s-stability has not returned,” Mica observes. “The Unmaking continues to unbind the laws of physics here, though your presence prevents total collapse. You are the reason this place hasn't collapsed into a single point, even if you cannot yet repair the damage. Knowledge of this fact is a s-s-step toward freedom.”\n\nMica turns and heads toward the faint light above. You follow, your feet stirring ash with every step.",
+    "text": "The cavern remains dark, the colorless ash on the ground swallowing the little light you have left.\n\nMica hovers nearby, their fur flattened by the heavy air. They look at you, their head tilting at a sharp angle.\n\n“The s-s-stability has not returned,” Mica observes. “The Unmaking continues to unbind the laws of physics here, though your presence prevents total collapse. You are the reason this place hasn't collapsed into a s-s-single point, even if you cannot yet repair the damage. Knowledge of this fact is a s-s-step toward freedom.”\n\nMica turns and heads toward the faint light above. You follow, your feet stirring ash with every step.",
     "unlockedDefault": false,
     "readDefault": false
   },

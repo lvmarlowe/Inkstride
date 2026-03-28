@@ -24,11 +24,47 @@ object StorySeedDataSource {
     // Marks the token replaced with the player-selected character name during load.
     private const val CHARACTER_NAME_TOKEN = "{{characterName}}"
 
+    // Caches parsed raw seed entries so subsequent loads avoid repeated asset I/O and JSON parsing.
+    @Volatile
+    private var parsedSeedCache: List<RawStorySeedEntry>? = null
+
     /**
      * load: Parses seeded story entries from JSON and applies character name token replacement.
      * Returns one StorySeedEntry per JSON object for use during database setup.
      */
     fun load(context: Context, characterName: String): List<StorySeedEntry> {
+        return getParsedSeedEntries(context).map { rawEntry ->
+            StorySeedEntry(
+                distanceMarker = rawEntry.distanceMarker,
+                isPersistent = rawEntry.isPersistent,
+                isMajor = rawEntry.isMajor,
+                areaName = rawEntry.areaName,
+                text = rawEntry.textTemplate.replace(CHARACTER_NAME_TOKEN, characterName),
+                unlockedDefault = rawEntry.unlockedDefault,
+                readDefault = rawEntry.readDefault
+            )
+        }
+    }
+
+    // getParsedSeedEntries: Parses raw seed data once and reuses it for subsequent loads.
+    private fun getParsedSeedEntries(context: Context): List<RawStorySeedEntry> {
+        parsedSeedCache?.let { cached ->
+            return cached
+        }
+
+        return synchronized(this) {
+            parsedSeedCache?.let { cached ->
+                return@synchronized cached
+            }
+
+            val parsed = parseRawSeedEntries(context)
+            parsedSeedCache = parsed
+            parsed
+        }
+    }
+
+    // parseRawSeedEntries: Reads and parses the seed asset into raw entries without token replacement.
+    private fun parseRawSeedEntries(context: Context): List<RawStorySeedEntry> {
         val json = context.assets.open(STORY_SEED_ASSET_PATH)
             .bufferedReader()
             .use { it.readText() }
@@ -38,12 +74,12 @@ object StorySeedDataSource {
             for (index in 0 until array.length()) {
                 val item = array.getJSONObject(index)
                 add(
-                    StorySeedEntry(
+                    RawStorySeedEntry(
                         distanceMarker = item.getDouble("distanceMarker"),
                         isPersistent = item.optBoolean("isPersistent", true),
                         isMajor = item.optBoolean("isMajor", false),
                         areaName = item.optString("areaName", ""),
-                        text = item.getString("text").replace(CHARACTER_NAME_TOKEN, characterName),
+                        textTemplate = item.getString("text"),
                         unlockedDefault = item.optBoolean("unlockedDefault", false),
                         readDefault = item.optBoolean("readDefault", false)
                     )
@@ -52,6 +88,20 @@ object StorySeedDataSource {
         }
     }
 }
+
+/**
+ * RawStorySeedEntry: Stores parsed JSON values before runtime character token replacement is applied.
+ * Separates raw asset data from the final StorySeedEntry so token replacement only runs when needed.
+ */
+private data class RawStorySeedEntry(
+    val distanceMarker: Double,
+    val isPersistent: Boolean,
+    val isMajor: Boolean,
+    val areaName: String,
+    val textTemplate: String,
+    val unlockedDefault: Boolean,
+    val readDefault: Boolean
+)
 
 /**
  * StorySeedEntry: Represents one seeded story entry parsed from the bundled JSON asset.

@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,12 +37,12 @@ import java.util.Locale
  */
 @Composable
 fun StorybookScreen(
+    storyRepository: StoryRepository,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
     val activity = context as MainActivity
-    val storyRepository = remember { StoryRepository(context) }
     val storybookViewModel = activity.rememberViewModel(storyRepository) {
         StorybookViewModel(
             storyRepository = storyRepository
@@ -106,6 +105,7 @@ fun StorybookScreen(
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
             ) {
+                // Assigns to a local variable so Kotlin can smart cast the nullable error message.
                 val errorMessage = uiState.errorMessage
                 if (errorMessage != null) {
                     Text(
@@ -140,20 +140,18 @@ fun StorybookScreen(
 
                         Text(
                             text = StoryTextFormatter.parseItalicMarkup(segment.text),
-                            color = Color(0xB3FFFFFF),
-                            fontSize = 18.sp,
+                            color = Color(0xDEFFFFFF),
+                            fontSize = 20.sp,
                             fontWeight = FontWeight.Normal,
-                            lineHeight = (18 * 1.4).sp
+                            lineHeight = (20 * 1.6).sp
                         )
 
                         // Adds spacing between segments but omits it after the last entry.
                         if (index < uiState.segments.lastIndex) {
-                            Spacer(modifier = Modifier.height(16.dp))
+                            Spacer(modifier = Modifier.height(40.dp))
                         }
                     }
                 }
-
-                Spacer(modifier = Modifier.height(120.dp))
             }
         }
     }
