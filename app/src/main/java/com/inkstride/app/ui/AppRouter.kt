@@ -22,7 +22,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
 import com.inkstride.app.MainActivity
 import com.inkstride.app.data.database.DatabaseProvider
-import com.inkstride.app.data.repositories.StoryRepository
 import com.inkstride.app.health.HealthConnectManager
 import com.inkstride.app.ui.components.BottomNavigationBar
 import com.inkstride.app.ui.components.NeutralLoadingScreen
@@ -34,7 +33,7 @@ import com.inkstride.app.ui.viewmodels.AppRouteScreen
 import com.inkstride.app.ui.viewmodels.AppRouterEffect
 import com.inkstride.app.ui.viewmodels.AppRouterViewModel
 
-// Permission string for reading Health Connect data in the background.
+// Defines the permission string for reading Health Connect data in the background.
 private const val BACKGROUND_PERMISSION = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
 
 /**
@@ -47,18 +46,16 @@ fun AppRouter(innerPadding: PaddingValues) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val appContext = context.applicationContext
 
-    // Keeps a UI-owned manager for permission contracts. The router view model builds its own app-context dependencies.
+    // Provides a UI-owned manager for permission contracts so the router view model builds its own app-context dependencies.
     val healthConnectManager = remember(appContext) { HealthConnectManager(appContext) }
-
-    // Shares one story repository instance across router-composed story screens.
-    val storyRepository = remember(appContext) { StoryRepository(appContext) }
 
     val activity = context as MainActivity
     val appRouterViewModel = activity.rememberViewModel(appContext) {
-        AppRouterViewModel(
-            appContext = appContext
-        )
+        AppRouterViewModel(appContext = appContext)
     }
+
+    // Retrieves the single story repository instance owned by the router view model.
+    val storyRepository = appRouterViewModel.getStoryRepository()
 
     val uiState by appRouterViewModel.uiState.collectAsState()
 
@@ -206,6 +203,7 @@ fun AppRouter(innerPadding: PaddingValues) {
                     onStorybookClick = { appRouterViewModel.openStoryDestinationFromNavigation() },
                     hasStorybookNotification = uiState.hasStoryNotification,
                     isJourneySelected = isJourneySelected,
+                    storyBadgeColor = uiState.storyBadgeColor,
                     modifier = Modifier.align(Alignment.BottomCenter)
                 )
             }

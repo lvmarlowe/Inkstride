@@ -254,4 +254,17 @@ object DatabaseMigrator {
             )
         }
     }
+
+    /**
+     * MIGRATION_8_9: Migrates schema from version 8 to version 9.
+     * Adds badge color column to milestone rows so story progress can drive badge color transitions.
+     */
+    val MIGRATION_8_9 = object : Migration(8, 9) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            // Adds badge_color column with an empty default so existing milestones carry no color transition.
+            db.execSQL(
+                "ALTER TABLE `milestone` ADD COLUMN `badge_color` TEXT NOT NULL DEFAULT ''"
+            )
+        }
+    }
 }

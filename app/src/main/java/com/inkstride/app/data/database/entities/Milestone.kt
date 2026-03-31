@@ -7,8 +7,7 @@ import androidx.room.PrimaryKey
 
 /**
  * Milestone: Stores route milestones used for story unlock and progression logic.
- * Distance markers stay unique so each route point maps
- * to one milestone row.
+ * Distance markers stay unique so each route point maps to one milestone row.
  */
 @Entity(
     tableName = "milestone",
@@ -22,12 +21,16 @@ data class Milestone(
 
     // Flags major milestones for prominent UI treatment to distinguish key story moments.
     val isMajor: Boolean = false,
-    @ColumnInfo(name = "area_name")
 
+    @ColumnInfo(name = "area_name")
     // Stores the user-facing location label displayed in story and recap views.
     val areaName: String = "",
-    @ColumnInfo(name = "is_persistent")
 
+    @ColumnInfo(name = "is_persistent")
     // Keeps milestone available across resets so anchor story points are never lost.
-    val isPersistent: Boolean = true
+    val isPersistent: Boolean = true,
+
+    @ColumnInfo(name = "badge_color")
+    // Stores the badge color transition triggered at this milestone, or empty string when none.
+    val badgeColor: String = ""
 )

@@ -15,8 +15,8 @@ import com.inkstride.app.services.DataValidator
  */
 object DatabaseProvider {
 
-    @Volatile
     // Holds the shared database reference so only one instance exists per process.
+    @Volatile
     private var instance: InkstrideDatabase? = null
 
     // Applies shared normalization rules during seed and default setup.
@@ -35,7 +35,8 @@ object DatabaseProvider {
             )
                 .addMigrations(
                     DatabaseMigrator.MIGRATION_6_7,
-                    DatabaseMigrator.MIGRATION_7_8
+                    DatabaseMigrator.MIGRATION_7_8,
+                    DatabaseMigrator.MIGRATION_8_9
                 )
                 .build()
             instance = newInstance
@@ -75,7 +76,7 @@ object DatabaseProvider {
 
     /**
      * ensureSeededMilestonesAndStory: Ensures milestone and story segment rows match the bundled seed set.
-     * Inserts or updates existing rows to keep text and metadata aligned with the latest seed file.
+     * Inserts or updates existing rows to keep text, metadata, and badge color aligned with the latest seed file.
      */
     private suspend fun ensureSeededMilestonesAndStory(
         database: InkstrideDatabase,
@@ -91,7 +92,7 @@ object DatabaseProvider {
                 )
             }
 
-            for ((distanceMarker, isPersistent, isMajor, areaName, text, _, _) in seededStoryData) {
+            for ((distanceMarker, isPersistent, isMajor, areaName, text, _, _, badgeColor) in seededStoryData) {
                 val milestone = milestoneDao.getByDistanceMarker(distanceMarker)
                 val milestoneId = milestone?.id
                     ?: milestoneDao.insert(
@@ -99,7 +100,8 @@ object DatabaseProvider {
                             distanceMarker = distanceMarker,
                             isPersistent = isPersistent,
                             isMajor = isMajor,
-                            areaName = areaName
+                            areaName = areaName,
+                            badgeColor = badgeColor
                         )
                     ).toInt()
 
@@ -107,14 +109,16 @@ object DatabaseProvider {
                     milestone != null && (
                             milestone.areaName != areaName ||
                                     milestone.isMajor != isMajor ||
-                                    milestone.isPersistent != isPersistent
+                                    milestone.isPersistent != isPersistent ||
+                                    milestone.badgeColor != badgeColor
                             )
                 ) {
                     milestoneDao.insert(
                         milestone.copy(
                             areaName = areaName,
                             isMajor = isMajor,
-                            isPersistent = isPersistent
+                            isPersistent = isPersistent,
+                            badgeColor = badgeColor
                         )
                     )
                 }
@@ -135,8 +139,8 @@ object DatabaseProvider {
     }
 
     /**
-     * ensureSeededUnlockStates: Ensures each story segment has an unlock state row.
-     * Normalizes read defaults so a segment cannot be marked read before it is unlocked.
+     * ensureSeededUnlockStates: Synchronizes unlock-state rows using seed defaults plus earned progress.
+     * Preserves existing read progress for still-unlocked rows and normalizes read when locked.
      */
     private suspend fun ensureSeededUnlockStates(
         database: InkstrideDatabase,
@@ -145,8 +149,10 @@ object DatabaseProvider {
         val unlockStateDao = database.unlockStateDao()
         val storySegmentDao = database.storySegmentDao()
         val milestoneDao = database.milestoneDao()
+        val currentDistanceMiles = database.progressStateDao().get()?.totalDistance ?: 0.0
 
         val defaultsBySegmentId = mutableMapOf<Int, Pair<Boolean, Boolean>>()
+        val distanceBySegmentId = mutableMapOf<Int, Double>()
         for (seed in seededStoryData) {
             val milestone = milestoneDao.getByDistanceMarker(seed.distanceMarker) ?: continue
             val segmentId = storySegmentDao.getByMilestoneId(milestone.id).firstOrNull()?.id ?: continue
@@ -155,27 +161,42 @@ object DatabaseProvider {
                 read = seed.readDefault
             )
             defaultsBySegmentId[segmentId] = seed.unlockedDefault to normalizedReadDefault
+            distanceBySegmentId[segmentId] = seed.distanceMarker
         }
 
         val segments = storySegmentDao.getAll()
         if (segments.isEmpty()) return
 
-        val missingStates = segments.mapNotNull { seg ->
+        val desiredStates = mutableListOf<UnlockState>()
+
+        for (seg in segments) {
+            val defaults = defaultsBySegmentId[seg.id] ?: (false to false)
             val existing = unlockStateDao.getByStorySegmentId(seg.id)
-            if (existing != null) {
-                null
-            } else {
-                val defaults = defaultsBySegmentId[seg.id] ?: (false to false)
-                UnlockState(
-                    storySegmentId = seg.id,
-                    unlocked = defaults.first,
-                    read = defaults.second
-                )
+
+            val milestoneDistance = distanceBySegmentId[seg.id]
+            val unlockedByProgress = milestoneDistance != null && currentDistanceMiles >= milestoneDistance
+            val desiredUnlocked = defaults.first || unlockedByProgress
+            val desiredRead = dataValidator.normalizeReadFlag(
+                unlocked = desiredUnlocked,
+                read = if (desiredUnlocked) {
+                    defaults.second || (existing?.read ?: false)
+                } else {
+                    false
+                }
+            )
+
+            val desiredState = UnlockState(
+                storySegmentId = seg.id,
+                unlocked = desiredUnlocked,
+                read = desiredRead
+            )
+            if (existing != desiredState) {
+                desiredStates += desiredState
             }
         }
 
-        if (missingStates.isNotEmpty()) {
-            unlockStateDao.upsertAll(missingStates)
+        if (desiredStates.isNotEmpty()) {
+            unlockStateDao.upsertAll(desiredStates)
         }
     }
 }

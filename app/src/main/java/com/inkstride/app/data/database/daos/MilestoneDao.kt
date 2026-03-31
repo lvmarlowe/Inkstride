@@ -63,6 +63,21 @@ interface MilestoneDao {
     @Query("SELECT * FROM milestone WHERE distanceMarker > :currentDistance ORDER BY distanceMarker ASC LIMIT 1")
     suspend fun getNextUnreached(currentDistance: Double): Milestone?
 
+    // getBadgeColorForFurthestUnlocked: Returns the badge color of the furthest unlocked milestone that has one set.
+    @Query(
+        """
+        SELECT m.badge_color
+        FROM milestone m
+        INNER JOIN story_segment s ON s.milestoneId = m.id
+        INNER JOIN unlock_state u ON u.storySegmentId = s.id
+        WHERE u.unlocked = 1
+          AND m.badge_color != ''
+        ORDER BY m.distanceMarker DESC
+        LIMIT 1
+        """
+    )
+    suspend fun getBadgeColorForFurthestUnlocked(): String?
+
     // insert: Inserts or replaces a single milestone and returns the row id for reference.
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(milestone: Milestone): Long

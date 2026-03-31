@@ -27,6 +27,18 @@ interface UnlockStateDao {
     @Query("SELECT COUNT(*) > 0 FROM unlock_state WHERE unlocked = 1 AND read = 0")
     suspend fun hasAnyUnlockedUnread(): Boolean
 
+    // getFurthestUnlockedDistance: Returns the greatest milestone distance among unlocked story segments.
+    @Query(
+        """
+        SELECT MAX(m.distanceMarker)
+        FROM unlock_state u
+        INNER JOIN story_segment s ON s.id = u.storySegmentId
+        INNER JOIN milestone m ON m.id = s.milestoneId
+        WHERE u.unlocked = 1
+        """
+    )
+    suspend fun getFurthestUnlockedDistance(): Double?
+
     // upsert: Inserts or replaces a single unlock state row to persist segment progress.
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(unlockState: UnlockState)

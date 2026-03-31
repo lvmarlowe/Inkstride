@@ -1,6 +1,7 @@
 package com.inkstride.app.data.repositories
 
 import android.content.Context
+import com.inkstride.app.data.BadgeColor
 import com.inkstride.app.data.database.DatabaseProvider
 import com.inkstride.app.data.database.StorySeedDataSource
 import com.inkstride.app.data.database.entities.Settings
@@ -86,6 +87,19 @@ class StoryRepository(context: Context) {
     // markAsRead: Marks a story segment as read to clear it from the story inbox.
     suspend fun markAsRead(storySegmentId: Int) {
         unlockStateDao.markAsRead(storySegmentId)
+    }
+
+    // getTotalDistance: Returns the current total distance from the progress state row, or zero when not initialized.
+    suspend fun getTotalDistance(): Double {
+        return database.progressStateDao().get()?.totalDistance ?: 0.0
+    }
+
+    // getStoryBadgeColor: Returns the badge color of the furthest unlocked milestone that has one set, or white when none applies.
+    suspend fun getStoryBadgeColor(): BadgeColor {
+        val badgeColorValue = milestoneDao.getBadgeColorForFurthestUnlocked() ?: return BadgeColor.WHITE
+        return BadgeColor.entries.firstOrNull {
+            it.name.equals(badgeColorValue, ignoreCase = true)
+        } ?: BadgeColor.WHITE
     }
 
     /**

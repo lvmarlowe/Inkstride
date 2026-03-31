@@ -3,6 +3,7 @@ package com.inkstride.app.ui.viewmodels
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.inkstride.app.data.BadgeColor
 import com.inkstride.app.data.repositories.StoryRepository
 import com.inkstride.app.health.HealthConnectManager
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,10 +15,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// Retry count used when permission is not immediately granted after a request.
+// Defines the retry count used when permission is not immediately granted after a request.
 private const val PERMISSION_RECHECK_COUNT = 3
 
-// Delay in milliseconds between each permission recheck attempt.
+// Sets the delay in milliseconds between each permission recheck attempt.
 private const val PERMISSION_RECHECK_DELAY_MS = 220L
 
 /**
@@ -41,6 +42,8 @@ data class AppRouterUiState(
     val unreadUnlockSegmentIds: List<Int> = emptyList(),
     val hasStoryNotification: Boolean = false,
     val unlockAreaName: String = "",
+    val totalDistanceMiles: Double = 0.0,
+    val storyBadgeColor: BadgeColor = BadgeColor.WHITE,
     val returnScreenAfterStoryUnlock: AppRouteScreen = AppRouteScreen.JOURNEY
 )
 
@@ -59,7 +62,7 @@ class AppRouterViewModel(
     appContext: Context
 ) : ViewModel() {
 
-    // Uses application context-owned dependencies so the view model does not capture composable remember instances.
+    // Stores application context-owned dependencies so the view model does not capture composable remember instances.
     private val healthConnectManager = HealthConnectManager(appContext)
     private val storyRepository = StoryRepository(appContext)
 
@@ -68,6 +71,9 @@ class AppRouterViewModel(
 
     private val _effects = MutableSharedFlow<AppRouterEffect>()
     val effects: SharedFlow<AppRouterEffect> = _effects.asSharedFlow()
+
+    // Exposes the owned story repository for use by screens composed within the router.
+    fun getStoryRepository(): StoryRepository = storyRepository
 
     /**
      * refreshRoute: Recalculates the active screen based on permission state and unread story content.
@@ -100,13 +106,20 @@ class AppRouterViewModel(
                         introSegmentId = null,
                         unreadUnlockSegmentIds = emptyList(),
                         hasStoryNotification = false,
-                        unlockAreaName = ""
+                        unlockAreaName = "",
+                        totalDistanceMiles = 0.0,
+                        storyBadgeColor = BadgeColor.WHITE
                     )
                 }
                 return@launch
             }
 
             healthConnectManager.onPermissionsGranted()
+
+            // Reads current progress and badge color so all route destinations receive up-to-date values.
+            val totalDistanceMiles = storyRepository.getTotalDistance()
+            val storyBadgeColor = storyRepository.getStoryBadgeColor()
+
             if (!hasBackgroundPermission && !afterBackgroundPermissionRequest) {
                 _effects.emit(AppRouterEffect.RequestBackgroundPermission)
                 return@launch
@@ -118,6 +131,8 @@ class AppRouterViewModel(
                     it.copy(
                         introSegmentId = intro.id,
                         hasStoryNotification = true,
+                        totalDistanceMiles = totalDistanceMiles,
+                        storyBadgeColor = storyBadgeColor,
                         screen = AppRouteScreen.INTRO
                     )
                 }
@@ -168,6 +183,8 @@ class AppRouterViewModel(
                     unreadUnlockSegmentIds = unreadUnlockSegmentIds,
                     hasStoryNotification = hasStoryNotification,
                     unlockAreaName = unlockAreaName,
+                    totalDistanceMiles = totalDistanceMiles,
+                    storyBadgeColor = storyBadgeColor,
                     screen = destination
                 )
             }
@@ -235,7 +252,8 @@ class AppRouterViewModel(
                     it.copy(
                         hasStoryNotification = true,
                         unreadUnlockSegmentIds = unreadSegments.map { segment -> segment.id },
-                        unlockAreaName = storyRepository.getAreaNameForStorySegment(unreadSegments.first().id)
+                        unlockAreaName = storyRepository.getAreaNameForStorySegment(unreadSegments.first().id),
+                        storyBadgeColor = storyRepository.getStoryBadgeColor()
                     )
                 }
             }

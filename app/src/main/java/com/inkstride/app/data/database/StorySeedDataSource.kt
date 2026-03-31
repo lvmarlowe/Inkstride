@@ -15,6 +15,7 @@ import org.json.JSONArray
  *   text             - String, story body text, may contain {{characterName}} tokens
  *   unlockedDefault  - Boolean (default false), initial unlocked state during first-time seeding
  *   readDefault      - Boolean (default false), initial read state during first-time seeding
+ *   badgeColor       - String (default ""), badge color transition triggered at this milestone
  */
 object StorySeedDataSource {
 
@@ -41,7 +42,8 @@ object StorySeedDataSource {
                 areaName = rawEntry.areaName,
                 text = rawEntry.textTemplate.replace(CHARACTER_NAME_TOKEN, characterName),
                 unlockedDefault = rawEntry.unlockedDefault,
-                readDefault = rawEntry.readDefault
+                readDefault = rawEntry.readDefault,
+                badgeColor = rawEntry.badgeColor
             )
         }
     }
@@ -81,7 +83,8 @@ object StorySeedDataSource {
                         areaName = item.optString("areaName", ""),
                         textTemplate = item.getString("text"),
                         unlockedDefault = item.optBoolean("unlockedDefault", false),
-                        readDefault = item.optBoolean("readDefault", false)
+                        readDefault = item.optBoolean("readDefault", false),
+                        badgeColor = item.optString("badgeColor", "")
                     )
                 )
             }
@@ -100,7 +103,8 @@ private data class RawStorySeedEntry(
     val areaName: String,
     val textTemplate: String,
     val unlockedDefault: Boolean,
-    val readDefault: Boolean
+    val readDefault: Boolean,
+    val badgeColor: String
 )
 
 /**
@@ -128,5 +132,8 @@ data class StorySeedEntry(
     val unlockedDefault: Boolean,
 
     // Sets initial read state applied during first-time seeding.
-    val readDefault: Boolean
+    val readDefault: Boolean,
+
+    // Stores the badge color transition triggered at this milestone, or empty string when none.
+    val badgeColor: String
 )
