@@ -35,8 +35,7 @@ object DatabaseProvider {
             )
                 .addMigrations(
                     DatabaseMigrator.MIGRATION_6_7,
-                    DatabaseMigrator.MIGRATION_7_8,
-                    DatabaseMigrator.MIGRATION_8_9
+                    DatabaseMigrator.MIGRATION_7_8
                 )
                 .build()
             instance = newInstance
@@ -76,7 +75,7 @@ object DatabaseProvider {
 
     /**
      * ensureSeededMilestonesAndStory: Ensures milestone and story segment rows match the bundled seed set.
-     * Inserts or updates existing rows to keep text, metadata, and badge color aligned with the latest seed file.
+     * Inserts or updates existing rows to keep text and metadata aligned with the latest seed file.
      */
     private suspend fun ensureSeededMilestonesAndStory(
         database: InkstrideDatabase,
@@ -92,7 +91,7 @@ object DatabaseProvider {
                 )
             }
 
-            for ((distanceMarker, isPersistent, isMajor, areaName, text, _, _, badgeColor) in seededStoryData) {
+            for ((distanceMarker, isPersistent, isMajor, areaName, text, _, _) in seededStoryData) {
                 val milestone = milestoneDao.getByDistanceMarker(distanceMarker)
                 val milestoneId = milestone?.id
                     ?: milestoneDao.insert(
@@ -100,8 +99,7 @@ object DatabaseProvider {
                             distanceMarker = distanceMarker,
                             isPersistent = isPersistent,
                             isMajor = isMajor,
-                            areaName = areaName,
-                            badgeColor = badgeColor
+                            areaName = areaName
                         )
                     ).toInt()
 
@@ -109,16 +107,14 @@ object DatabaseProvider {
                     milestone != null && (
                             milestone.areaName != areaName ||
                                     milestone.isMajor != isMajor ||
-                                    milestone.isPersistent != isPersistent ||
-                                    milestone.badgeColor != badgeColor
+                                    milestone.isPersistent != isPersistent
                             )
                 ) {
                     milestoneDao.insert(
                         milestone.copy(
                             areaName = areaName,
                             isMajor = isMajor,
-                            isPersistent = isPersistent,
-                            badgeColor = badgeColor
+                            isPersistent = isPersistent
                         )
                     )
                 }
