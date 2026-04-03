@@ -1,3 +1,4 @@
+// app/src/main/java/com/inkstride/app/data/repositories/StoryRepository.kt
 package com.inkstride.app.data.repositories
 
 import android.content.Context
@@ -6,6 +7,7 @@ import com.inkstride.app.data.database.DatabaseProvider
 import com.inkstride.app.data.database.StorySeedDataSource
 import com.inkstride.app.data.database.entities.Settings
 import com.inkstride.app.data.database.entities.StorySegment
+import com.inkstride.app.services.DataValidator
 
 /**
  * StoryRepository: Handles story reads and state updates used by story and storybook screens.
@@ -18,6 +20,7 @@ class StoryRepository(context: Context) {
     private val storySegmentDao = database.storySegmentDao()
     private val unlockStateDao = database.unlockStateDao()
     private val milestoneDao = database.milestoneDao()
+    private val dataValidator = DataValidator()
 
     // Holds the intro segment id after first load so seed data is not re-read on every call.
     // Uses a placeholder value so a null result can be cached without a separate flag.
@@ -44,7 +47,9 @@ class StoryRepository(context: Context) {
             StoryUnlockSegment(
                 id = segmentId,
                 text = segment?.text.orEmpty(),
-                areaName = milestoneDao.getAreaNameByStorySegmentId(segmentId).orEmpty()
+                areaName = dataValidator.normalizeAreaNameForStorage(
+                    milestoneDao.getAreaNameByStorySegmentId(segmentId)
+                )
             )
         }
     }
@@ -59,7 +64,7 @@ class StoryRepository(context: Context) {
             StorybookSegment(
                 text = segment.text,
                 persistentAreaName = if (milestone?.isPersistent == true) {
-                    milestone.areaName.trim().ifBlank { null }
+                    dataValidator.normalizeAreaName(milestone.areaName)
                 } else {
                     null
                 }
@@ -81,7 +86,9 @@ class StoryRepository(context: Context) {
 
     // getAreaNameForStorySegment: Returns milestone area name for a segment, or empty string when missing.
     suspend fun getAreaNameForStorySegment(storySegmentId: Int): String {
-        return milestoneDao.getAreaNameByStorySegmentId(storySegmentId).orEmpty()
+        return dataValidator.normalizeAreaNameForStorage(
+            milestoneDao.getAreaNameByStorySegmentId(storySegmentId)
+        )
     }
 
     // markAsRead: Marks a story segment as read to clear it from the story inbox.
@@ -96,10 +103,9 @@ class StoryRepository(context: Context) {
 
     // getStoryBadgeColor: Returns the badge color of the furthest unlocked milestone that has one set, or white when none applies.
     suspend fun getStoryBadgeColor(): BadgeColor {
-        val badgeColorValue = milestoneDao.getBadgeColorForFurthestUnlocked() ?: return BadgeColor.WHITE
-        return BadgeColor.entries.firstOrNull {
-            it.name.equals(badgeColorValue, ignoreCase = true)
-        } ?: BadgeColor.WHITE
+        return dataValidator.normalizeBadgeColorEnum(
+            milestoneDao.getBadgeColorForFurthestUnlocked()
+        )
     }
 
     /**

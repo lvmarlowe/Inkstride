@@ -1,17 +1,13 @@
 package com.inkstride.app.services
 
 import com.inkstride.app.data.DistanceUnit
+import com.inkstride.app.data.BadgeColor
 
 /**
  * DataValidator: Centralizes data cleanup rules used across repositories and services.
  * Keeps rules in one place so behavior is consistent before data reaches the database.
  */
 class DataValidator {
-
-    // coerceAtMinimum: Floors a numeric value at the given minimum, overloaded for Double, Long, and Int.
-    private fun coerceAtMinimum(value: Double, minimum: Double): Double = value.coerceAtLeast(minimum)
-    private fun coerceAtMinimum(value: Long, minimum: Long): Long = value.coerceAtLeast(minimum)
-    private fun coerceAtMinimum(value: Int, minimum: Int): Int = value.coerceAtLeast(minimum)
 
     // normalizeCharacterName: Trims extra spaces, limits length, and returns the default name when blank.
     fun normalizeCharacterName(raw: String): String {
@@ -25,17 +21,17 @@ class DataValidator {
 
     // coerceDistance: Floors the value at zero to match persistence rules and UI expectations.
     fun coerceDistance(value: Double): Double {
-        return coerceAtMinimum(value, 0.0)
+        return value.coerceAtLeast(0.0)
     }
 
     // coerceSteps: Floors the value at zero to prevent invalid totals from propagating.
     fun coerceSteps(value: Long): Long {
-        return coerceAtMinimum(value, 0L)
+        return value.coerceAtLeast(0L)
     }
 
     // coerceDayNumber: Floors the value at one so journey progress never reports day zero.
     fun coerceDayNumber(value: Int): Int {
-        return coerceAtMinimum(value, 1)
+        return value.coerceAtLeast(1)
     }
 
     // normalizeReadFlag: Forces read to false when the item is not unlocked.
@@ -43,9 +39,30 @@ class DataValidator {
         return unlocked && read
     }
 
-    // normalizeAreaName: Trims whitespace and returns null when the name is blank.
-    fun normalizeAreaName(raw: String): String? {
-        return raw.trim().ifBlank { null }
+    // normalizeAreaName: Trims whitespace from a nullable string and returns null when blank.
+    fun normalizeAreaName(raw: String?): String? {
+        return raw?.trim().orEmpty().ifBlank { null }
+    }
+
+    // normalizeAreaNameForStorage: Returns a trimmed area name or empty string for database storage fields that cannot be null.
+    fun normalizeAreaNameForStorage(raw: String?): String {
+        return normalizeAreaName(raw).orEmpty()
+    }
+
+    // normalizeBadgeColor: Accepts supported badge values (WHITE/GOLD) and returns blank for unknown or absent values.
+    fun normalizeBadgeColor(raw: String?): String {
+        val candidate = raw?.trim().orEmpty()
+        if (candidate.isBlank()) return ""
+
+        return BadgeColor.entries.firstOrNull {
+            it.name.equals(candidate, ignoreCase = true)
+        }?.name ?: ""
+    }
+
+    // normalizeBadgeColorEnum: Maps a raw string to a BadgeColor enum value, defaulting to WHITE when unknown or absent.
+    fun normalizeBadgeColorEnum(raw: String?): BadgeColor {
+        val normalized = normalizeBadgeColor(raw)
+        return BadgeColor.entries.firstOrNull { it.name == normalized } ?: BadgeColor.WHITE
     }
 
     companion object {
