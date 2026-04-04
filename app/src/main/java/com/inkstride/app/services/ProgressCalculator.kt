@@ -11,14 +11,12 @@ class ProgressCalculator {
     // Uses one conversion factor so all step-to-distance math stays consistent.
     private val stepsPerMile = 2000.0
 
+    // Reuses validation behavior across calculations to keep distance flooring consistent.
+    private val dataValidator = DataValidator()
+
     // stepsToDistance: Returns distance in miles converted from a step count.
     fun stepsToDistance(steps: Long): Double {
         return steps / stepsPerMile
-    }
-
-    // distanceToSteps: Returns step count converted from a mile distance value.
-    fun distanceToSteps(distance: Double): Long {
-        return (distance * stepsPerMile).toLong()
     }
 
     /**
@@ -26,7 +24,6 @@ class ProgressCalculator {
      * Floors at zero so UI and unlock logic never receive a negative distance value.
      */
     fun getRemainingDistance(currentDistance: Double, nextMilestoneDistance: Double): Double {
-        val dataValidator = DataValidator()
         return dataValidator.coerceDistance(nextMilestoneDistance - currentDistance)
     }
 

@@ -1,6 +1,5 @@
 package com.inkstride.app.data.repositories
 
-import android.content.Context
 import com.inkstride.app.data.database.daos.DailyStatsDao
 import com.inkstride.app.data.database.daos.ProgressStateDao
 import com.inkstride.app.data.database.entities.DailyStats
@@ -15,7 +14,6 @@ import java.time.LocalDate
  * Keeps progress state and daily stats in sync so journey calculations reflect current activity.
  */
 class ProgressRepository(
-    private val context: Context,
     private val progressStateDao: ProgressStateDao,
     private val dailyStatsDao: DailyStatsDao
 ) {
@@ -49,9 +47,8 @@ class ProgressRepository(
         )
         progressStateDao.upsert(updatedState)
 
-        val dateKey = LocalDate.now().toString()
         val todayStats = DailyStats(
-            dateKey = dateKey,
+            dateKey = LocalDate.now().toString(),
             stepsToday = safeTodaySteps,
             distanceToday = progressCalculator.roundDistance(todayDistance)
         )

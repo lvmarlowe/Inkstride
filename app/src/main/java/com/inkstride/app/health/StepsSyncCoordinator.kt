@@ -95,7 +95,6 @@ object StepSyncCoordinator {
 
                 val database = DatabaseProvider.getDatabase(context)
                 val progressRepository = ProgressRepository(
-                    context = context,
                     progressStateDao = database.progressStateDao(),
                     dailyStatsDao = database.dailyStatsDao()
                 )

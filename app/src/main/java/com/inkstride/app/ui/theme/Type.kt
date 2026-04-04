@@ -25,4 +25,5 @@ private fun Typography.withFontFamily(fontFamily: FontFamily): Typography = copy
     labelSmall = labelSmall.copy(fontFamily = fontFamily)
 )
 
+// Applies the app font family to all Material typography styles.
 val Typography = Typography().withFontFamily(ComingSoonFontFamily)
