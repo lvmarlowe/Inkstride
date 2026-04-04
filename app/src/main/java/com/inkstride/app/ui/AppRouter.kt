@@ -11,7 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import kotlinx.coroutines.delay
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,6 +28,7 @@ import com.inkstride.app.data.database.DatabaseProvider
 import com.inkstride.app.health.HealthConnectManager
 import com.inkstride.app.ui.components.BottomNavigationBar
 import com.inkstride.app.ui.components.NeutralLoadingScreen
+import com.inkstride.app.ui.components.StartupSplashScreen
 import com.inkstride.app.ui.screens.JourneyScreen
 import com.inkstride.app.ui.screens.PermissionsScreen
 import com.inkstride.app.ui.screens.StoryUnlockScreen
@@ -35,6 +39,8 @@ import com.inkstride.app.ui.viewmodels.AppRouterViewModel
 
 // Defines the permission string for reading Health Connect data in the background.
 private const val BACKGROUND_PERMISSION = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
+private const val STARTUP_SPLASH_MIN_DURATION_MS = 3000L
+private var hasShownStartupSplashInProcess = false
 
 /**
  * AppRouter: Composes the active screen based on router state and handles permission launchers.
@@ -110,6 +116,21 @@ fun AppRouter(innerPadding: PaddingValues) {
     val contentModifier = Modifier
         .fillMaxSize()
         .padding(innerPadding)
+
+    var startupSplashElapsed by remember { mutableStateOf(hasShownStartupSplashInProcess) }
+
+    LaunchedEffect(Unit) {
+        if (!startupSplashElapsed) {
+            delay(STARTUP_SPLASH_MIN_DURATION_MS)
+            startupSplashElapsed = true
+            hasShownStartupSplashInProcess = true
+        }
+    }
+
+    if (!startupSplashElapsed) {
+        StartupSplashScreen(modifier = contentModifier)
+        return
+    }
 
     when (uiState.screen) {
         null -> NeutralLoadingScreen(

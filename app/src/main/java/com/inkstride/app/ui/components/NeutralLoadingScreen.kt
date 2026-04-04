@@ -1,3 +1,4 @@
+// app/src/main/java/com/inkstride/app/ui/components/NeutralLoadingScreen.kt
 package com.inkstride.app.ui.components
 
 import androidx.compose.foundation.layout.Box
