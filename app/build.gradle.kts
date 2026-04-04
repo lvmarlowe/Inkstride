@@ -4,9 +4,14 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.android)
 }
+
 android {
     namespace = "com.inkstride.app"
     compileSdk = 36
+
+    base {
+        archivesName.set("inkstride")
+    }
 
     defaultConfig {
         applicationId = "com.inkstride.app"
@@ -36,6 +41,7 @@ android {
     buildFeatures {
         compose = true
     }
+
     kotlin {
         compilerOptions {
             jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
