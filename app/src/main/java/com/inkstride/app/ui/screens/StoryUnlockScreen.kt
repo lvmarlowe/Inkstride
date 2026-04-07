@@ -1,3 +1,4 @@
+// app/src/main/java/com/inkstride/app/ui/screens/StoryUnlockScreen.kt
 package com.inkstride.app.ui.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -40,7 +41,6 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.inkstride.app.MainActivity
 import com.inkstride.app.data.repositories.StoryRepository
-import com.inkstride.app.ui.components.NeutralLoadingScreen
 import com.inkstride.app.ui.rememberViewModel
 import com.inkstride.app.ui.text.StoryTextFormatter
 import com.inkstride.app.ui.viewmodels.StoryUnlockViewModel
@@ -95,11 +95,6 @@ fun StoryUnlockScreen(
                     }
                 }
             }
-    }
-
-    if (uiState.loading) {
-        NeutralLoadingScreen(modifier = modifier)
-        return
     }
 
     Surface(modifier = modifier.fillMaxSize(), color = Color.Black) {

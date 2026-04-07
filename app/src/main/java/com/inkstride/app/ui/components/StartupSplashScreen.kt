@@ -1,8 +1,9 @@
+// app/src/main/java/com/inkstride/app/ui/components/StartupSplashScreen.kt
 package com.inkstride.app.ui.components
 
 import android.graphics.BitmapFactory
+import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,10 +23,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -49,15 +50,16 @@ fun StartupSplashScreen(modifier: Modifier = Modifier) {
     val logoBitmap = rememberInkstrideLogoBitmap()
 
     // Animates the progress bar from 0 to 100% once on composition using a single forward tween.
-    var targetProgress by remember { mutableFloatStateOf(0f) }
-    val progress by animateFloatAsState(
-        targetValue = targetProgress,
-        animationSpec = tween(durationMillis = 2800, easing = FastOutSlowInEasing),
-        label = "progress-width"
-    )
+    val animatedProgress = remember { Animatable(0f) }
+    val progress by remember { derivedStateOf { animatedProgress.value } }
 
     LaunchedEffect(Unit) {
-        targetProgress = 1f
+        withFrameNanos { }
+        animatedProgress.snapTo(0f)
+        animatedProgress.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(durationMillis = 2800, easing = FastOutSlowInEasing)
+        )
     }
 
     Surface(

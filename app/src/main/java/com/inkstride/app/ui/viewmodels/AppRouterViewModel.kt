@@ -1,3 +1,4 @@
+// app/src/main/java/com/inkstride/app/ui/viewmodels/AppRouterViewModel.kt
 package com.inkstride.app.ui.viewmodels
 
 import android.content.Context
@@ -38,6 +39,7 @@ enum class AppRouteScreen {
  */
 data class AppRouterUiState(
     val screen: AppRouteScreen? = null,
+    val hasResolvedInitialRoute: Boolean = false,
     val introSegmentId: Int? = null,
     val unreadUnlockSegmentIds: List<Int> = emptyList(),
     val hasStoryNotification: Boolean = false,
@@ -72,6 +74,9 @@ class AppRouterViewModel(
     private val _effects = MutableSharedFlow<AppRouterEffect>()
     val effects: SharedFlow<AppRouterEffect> = _effects.asSharedFlow()
 
+    // Ensures only the latest route refresh can publish results.
+    private var refreshGeneration: Long = 0L
+
     // Exposes the owned story repository for use by screens composed within the router.
     fun getStoryRepository(): StoryRepository = storyRepository
 
@@ -87,7 +92,7 @@ class AppRouterViewModel(
     ) {
         val previousScreen = _uiState.value.screen
         val activeUnlockSessionIds = _uiState.value.unreadUnlockSegmentIds
-        _uiState.update { it.copy(screen = null) }
+        val currentGeneration = ++refreshGeneration
 
         viewModelScope.launch {
             var hasPermission = healthConnectManager.hasAllPermissions()
@@ -99,10 +104,13 @@ class AppRouterViewModel(
                 }
             }
 
+            if (currentGeneration != refreshGeneration) return@launch
+
             if (!hasPermission) {
                 _uiState.update {
                     it.copy(
                         screen = AppRouteScreen.PERMISSIONS,
+                        hasResolvedInitialRoute = true,
                         introSegmentId = null,
                         unreadUnlockSegmentIds = emptyList(),
                         hasStoryNotification = false,
@@ -127,13 +135,15 @@ class AppRouterViewModel(
 
             val intro = storyRepository.getIntroSegmentIfUnreadUnlocked()
             if (intro != null) {
+                if (currentGeneration != refreshGeneration) return@launch
                 _uiState.update {
                     it.copy(
                         introSegmentId = intro.id,
                         hasStoryNotification = true,
                         totalDistanceMiles = totalDistanceMiles,
                         storyBadgeColor = storyBadgeColor,
-                        screen = AppRouteScreen.INTRO
+                        screen = AppRouteScreen.INTRO,
+                        hasResolvedInitialRoute = true
                     )
                 }
                 return@launch
@@ -177,6 +187,8 @@ class AppRouterViewModel(
                 else -> AppRouteScreen.JOURNEY
             }
 
+            if (currentGeneration != refreshGeneration) return@launch
+
             _uiState.update {
                 it.copy(
                     introSegmentId = null,
@@ -185,7 +197,8 @@ class AppRouterViewModel(
                     unlockAreaName = unlockAreaName,
                     totalDistanceMiles = totalDistanceMiles,
                     storyBadgeColor = storyBadgeColor,
-                    screen = destination
+                    screen = destination,
+                    hasResolvedInitialRoute = true
                 )
             }
         }
@@ -227,7 +240,8 @@ class AppRouterViewModel(
                         unreadUnlockSegmentIds = unreadSegments.map { segment -> segment.id },
                         returnScreenAfterStoryUnlock = currentContentScreen,
                         unlockAreaName = storyRepository.getAreaNameForStorySegment(unreadSegments.first().id),
-                        screen = AppRouteScreen.STORY_UNLOCK
+                        screen = AppRouteScreen.STORY_UNLOCK,
+                        hasResolvedInitialRoute = true
                     )
                 }
             } else {
@@ -236,7 +250,8 @@ class AppRouterViewModel(
                         hasStoryNotification = false,
                         unreadUnlockSegmentIds = emptyList(),
                         unlockAreaName = "",
-                        screen = AppRouteScreen.STORYBOOK
+                        screen = AppRouteScreen.STORYBOOK,
+                        hasResolvedInitialRoute = true
                     )
                 }
             }
@@ -262,7 +277,12 @@ class AppRouterViewModel(
 
     // onJourneySelected: Routes to the journey screen when the user taps the journey tab.
     fun onJourneySelected() {
-        _uiState.update { it.copy(screen = AppRouteScreen.JOURNEY) }
+        _uiState.update {
+            it.copy(
+                screen = AppRouteScreen.JOURNEY,
+                hasResolvedInitialRoute = true
+            )
+        }
     }
 
     /**
@@ -277,6 +297,7 @@ class AppRouterViewModel(
             _uiState.update {
                 it.copy(
                     screen = AppRouteScreen.JOURNEY,
+                    hasResolvedInitialRoute = true,
                     introSegmentId = null,
                     hasStoryNotification = unreadSegments.isNotEmpty(),
                     unreadUnlockSegmentIds = emptyList(),
@@ -303,7 +324,8 @@ class AppRouterViewModel(
                     hasStoryNotification = unreadSegments.isNotEmpty(),
                     unreadUnlockSegmentIds = emptyList(),
                     unlockAreaName = "",
-                    screen = it.returnScreenAfterStoryUnlock
+                    screen = it.returnScreenAfterStoryUnlock,
+                    hasResolvedInitialRoute = true
                 )
             }
         }
@@ -318,7 +340,8 @@ class AppRouterViewModel(
                     hasStoryNotification = unreadSegments.isNotEmpty(),
                     unreadUnlockSegmentIds = emptyList(),
                     unlockAreaName = "",
-                    screen = it.returnScreenAfterStoryUnlock
+                    screen = it.returnScreenAfterStoryUnlock,
+                    hasResolvedInitialRoute = true
                 )
             }
         }

@@ -1,3 +1,4 @@
+// app/src/main/java/com/inkstride/app/ui/screens/JourneyScreen.kt
 package com.inkstride.app.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
@@ -39,7 +40,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.inkstride.app.MainActivity
 import com.inkstride.app.health.HealthConnectManager
 import com.inkstride.app.services.DistanceUnitLabelFormatter
-import com.inkstride.app.ui.components.NeutralLoadingScreen
 import com.inkstride.app.ui.rememberViewModel
 import com.inkstride.app.ui.viewmodels.JourneyEffect
 import com.inkstride.app.ui.viewmodels.JourneyViewModel
@@ -103,11 +103,6 @@ fun JourneyScreen(
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             journeyViewModel.runForegroundSyncLoop()
         }
-    }
-
-    if (uiState.loading) {
-        NeutralLoadingScreen(modifier = modifier)
-        return
     }
 
     Surface(modifier = modifier.fillMaxSize(), color = Color.Black) {

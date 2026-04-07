@@ -27,7 +27,6 @@ import com.inkstride.app.MainActivity
 import com.inkstride.app.data.database.DatabaseProvider
 import com.inkstride.app.health.HealthConnectManager
 import com.inkstride.app.ui.components.BottomNavigationBar
-import com.inkstride.app.ui.components.NeutralLoadingScreen
 import com.inkstride.app.ui.components.StartupSplashScreen
 import com.inkstride.app.ui.screens.JourneyScreen
 import com.inkstride.app.ui.screens.PermissionsScreen
@@ -36,6 +35,8 @@ import com.inkstride.app.ui.screens.StorybookScreen
 import com.inkstride.app.ui.viewmodels.AppRouteScreen
 import com.inkstride.app.ui.viewmodels.AppRouterEffect
 import com.inkstride.app.ui.viewmodels.AppRouterViewModel
+import com.inkstride.app.ui.viewmodels.JourneyViewModel
+import com.inkstride.app.ui.viewmodels.StorybookViewModel
 
 // Defines the permission string for reading Health Connect data in the background.
 private const val BACKGROUND_PERMISSION = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
@@ -103,6 +104,8 @@ fun AppRouter(innerPadding: PaddingValues) {
     // Seeds the database and performs the initial route evaluation on first composition.
     LaunchedEffect(Unit) {
         DatabaseProvider.ensureDefaults(context)
+        runCatching { JourneyViewModel.warmCache(appContext) }
+        runCatching { StorybookViewModel.warmCache(storyRepository) }
         appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
     }
 
@@ -127,15 +130,20 @@ fun AppRouter(innerPadding: PaddingValues) {
         }
     }
 
-    if (!startupSplashElapsed) {
+    val shouldShowStartupSplash = !startupSplashElapsed || !uiState.hasResolvedInitialRoute
+    if (shouldShowStartupSplash) {
         StartupSplashScreen(modifier = contentModifier)
         return
     }
 
-    when (uiState.screen) {
-        null -> NeutralLoadingScreen(
-            modifier = contentModifier
-        )
+    var lastKnownRoute by remember { mutableStateOf(AppRouteScreen.JOURNEY) }
+    uiState.screen?.let { resolvedRoute ->
+        lastKnownRoute = resolvedRoute
+    }
+
+    val routeToRender = uiState.screen ?: lastKnownRoute
+
+    when (routeToRender) {
 
         AppRouteScreen.PERMISSIONS -> PermissionsScreen(
             modifier = contentModifier,
@@ -191,9 +199,9 @@ fun AppRouter(innerPadding: PaddingValues) {
         AppRouteScreen.JOURNEY,
         AppRouteScreen.STORYBOOK -> {
             Box(modifier = contentModifier) {
-                val isJourneySelected = uiState.screen == AppRouteScreen.JOURNEY
+                val isJourneySelected = routeToRender == AppRouteScreen.JOURNEY
 
-                when (uiState.screen) {
+                when (routeToRender) {
                     AppRouteScreen.JOURNEY -> JourneyScreen(
                         modifier = Modifier
                             .fillMaxSize()
@@ -215,8 +223,6 @@ fun AppRouter(innerPadding: PaddingValues) {
                             .fillMaxSize()
                             .padding(bottom = 88.dp)
                     )
-
-                    else -> Unit
                 }
 
                 BottomNavigationBar(

@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.inkstride.app.MainActivity
 import com.inkstride.app.data.repositories.StoryRepository
-import com.inkstride.app.ui.components.NeutralLoadingScreen
 import com.inkstride.app.ui.rememberViewModel
 import com.inkstride.app.ui.text.StoryTextFormatter
 import com.inkstride.app.ui.viewmodels.StorybookViewModel
@@ -33,7 +32,7 @@ import java.util.Locale
 
 /**
  * StorybookScreen: Displays all read and unlocked story segments in journey order.
- * Shows a loading screen until segments are fetched, then renders each entry with its area label.
+ * Keeps prior content on screen during refreshes to avoid transition flashes.
  */
 @Composable
 fun StorybookScreen(
@@ -54,11 +53,6 @@ fun StorybookScreen(
     // Loads read unlocked segments on composition through the view model.
     LaunchedEffect(storybookViewModel) {
         storybookViewModel.onScreenOpened()
-    }
-
-    if (uiState.loading) {
-        NeutralLoadingScreen(modifier = modifier)
-        return
     }
 
     Surface(modifier = modifier.fillMaxSize(), color = Color.Black) {
@@ -101,10 +95,12 @@ fun StorybookScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 32.dp)
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
             ) {
+                // Adds breathing room above the first line so content does not start flush against the divider.
+                Spacer(modifier = Modifier.height(16.dp))
+
                 // Assigns to a local variable so Kotlin can smart cast the nullable error message.
                 val errorMessage = uiState.errorMessage
                 if (errorMessage != null) {
@@ -115,7 +111,7 @@ fun StorybookScreen(
                         fontWeight = FontWeight.Normal,
                         lineHeight = (18 * 1.4).sp
                     )
-                } else if (uiState.segments.isEmpty()) {
+                } else if (uiState.segments.isEmpty() && !uiState.loading) {
                     Text(
                         text = "No story segments read yet.",
                         color = Color(0xB3FFFFFF),
@@ -141,16 +137,19 @@ fun StorybookScreen(
                         Text(
                             text = StoryTextFormatter.parseItalicMarkup(segment.text),
                             color = Color(0xDEFFFFFF),
-                            fontSize = 20.sp,
+                            fontSize = 18.sp,
                             fontWeight = FontWeight.Normal,
-                            lineHeight = (20 * 1.6).sp
+                            lineHeight = (18 * 1.5).sp
                         )
 
                         // Adds spacing between segments but omits it after the last entry.
                         if (index < uiState.segments.lastIndex) {
-                            Spacer(modifier = Modifier.height(40.dp))
+                            Spacer(modifier = Modifier.height(32.dp))
                         }
                     }
+
+                    // Adds breathing room below the final segment so the ending line is not flush to the bottom.
+                    Spacer(modifier = Modifier.height(56.dp))
                 }
             }
         }
