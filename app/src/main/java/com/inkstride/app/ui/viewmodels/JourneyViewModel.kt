@@ -61,7 +61,7 @@ data class JourneyUiState(
 )
 
 /**
- * JourneyEffect: One-time effects emitted from JourneyViewModel to the screen layer.
+ * JourneyEffect: Holds one-time effects emitted from JourneyViewModel to the screen layer.
  */
 sealed interface JourneyEffect {
     data object PermissionsRevoked : JourneyEffect
@@ -76,9 +76,20 @@ class JourneyViewModel(
     private val appContext: Context,
     private val healthConnectManager: HealthConnectManager
 ) : ViewModel() {
+    companion object {
+        private var cachedSnapshot: PersistedJourneySnapshot? = null
+
+        suspend fun warmCache(appContext: Context) {
+            if (cachedSnapshot != null) return
+            cachedSnapshot = JourneySnapshotRepository(appContext).loadPersistedSnapshot()
+        }
+    }
+
     private val journeySnapshotRepository = JourneySnapshotRepository(appContext)
 
-    private val _uiState = MutableStateFlow(JourneyUiState())
+    private val _uiState = MutableStateFlow(
+        cachedSnapshot?.toJourneyUiState() ?: JourneyUiState()
+    )
     val uiState: StateFlow<JourneyUiState> = _uiState.asStateFlow()
 
     private val _effects = MutableSharedFlow<JourneyEffect>()
@@ -242,6 +253,7 @@ class JourneyViewModel(
      */
     private suspend fun loadPersistedSnapshot() {
         val snapshot = journeySnapshotRepository.loadPersistedSnapshot()
+        cachedSnapshot = snapshot
         _uiState.update {
             it.copy(distanceUnit = snapshot.distanceUnit)
         }
@@ -258,6 +270,21 @@ class JourneyViewModel(
             )
         }
     }
+}
+
+private fun PersistedJourneySnapshot.toJourneyUiState(): JourneyUiState {
+    if (!hasProgressState) {
+        return JourneyUiState(distanceUnit = distanceUnit)
+    }
+
+    return JourneyUiState(
+        dayNumber = dayNumber,
+        todayDistance = todayDistance,
+        totalDistance = totalDistance,
+        nextMilestoneDistance = nextMilestoneDistance,
+        distanceUnit = distanceUnit,
+        journeyAreaName = journeyAreaName
+    )
 }
 
 /**

@@ -26,19 +26,46 @@ class StorybookViewModel(
     private val storyRepository: StoryRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(StorybookUiState())
+    companion object {
+        // Holds pre-loaded storybook segments so the screen renders without a loading state on first open.
+        private var cachedSegments: List<StorybookSegment>? = null
+
+        // warmCache: Loads and caches storybook segments during startup so the screen opens without delay.
+        suspend fun warmCache(storyRepository: StoryRepository) {
+            if (cachedSegments != null) return
+
+            cachedSegments = storyRepository
+                .getReadUnlockedStorybookSegments()
+                .map { it.copy(text = it.text.trim()) }
+                .filter { it.text.isNotBlank() }
+        }
+    }
+
+    private val _uiState = MutableStateFlow(
+        StorybookUiState(
+            loading = cachedSegments == null,
+            segments = cachedSegments.orEmpty(),
+            errorMessage = null
+        )
+    )
     val uiState: StateFlow<StorybookUiState> = _uiState.asStateFlow()
 
     // onScreenOpened: Loads read unlocked storybook segments and maps display-safe values.
     fun onScreenOpened() {
         viewModelScope.launch {
-            _uiState.update { it.copy(loading = true, errorMessage = null) }
+            _uiState.update { currentState ->
+                currentState.copy(
+                    loading = currentState.segments.isEmpty(),
+                    errorMessage = null
+                )
+            }
             runCatching {
                 storyRepository
                     .getReadUnlockedStorybookSegments()
                     .map { it.copy(text = it.text.trim()) }
                     .filter { it.text.isNotBlank() }
             }.onSuccess { segments ->
+                cachedSegments = segments
                 _uiState.update {
                     it.copy(
                         loading = false,
@@ -50,8 +77,11 @@ class StorybookViewModel(
                 _uiState.update {
                     it.copy(
                         loading = false,
-                        segments = emptyList(),
-                        errorMessage = "Unable to load storybook right now."
+                        errorMessage = if (it.segments.isEmpty()) {
+                            "Unable to load storybook right now."
+                        } else {
+                            null
+                        }
                     )
                 }
             }
