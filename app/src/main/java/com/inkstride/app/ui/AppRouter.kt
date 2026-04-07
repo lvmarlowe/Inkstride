@@ -40,12 +40,16 @@ import com.inkstride.app.ui.viewmodels.StorybookViewModel
 
 // Defines the permission string for reading Health Connect data in the background.
 private const val BACKGROUND_PERMISSION = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
+
+// Minimum duration in milliseconds the splash screen stays visible so seeding and warm-up can complete before the first route resolves.
 private const val STARTUP_SPLASH_MIN_DURATION_MS = 3000L
+
+// Persists across recompositions at the process level so the splash screen only shows once per app launch.
 private var hasShownStartupSplashInProcess = false
 
 /**
  * AppRouter: Composes the active screen based on router state and handles permission launchers.
- * Initializes the database, wires permission results to the view model, and re-evaluates routes on resume.
+ * Initializes the database, wires permission results to the view model, and reevaluates routes on resume.
  */
 @Composable
 fun AppRouter(innerPadding: PaddingValues) {
@@ -109,7 +113,7 @@ fun AppRouter(innerPadding: PaddingValues) {
         appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
     }
 
-    // Re-evaluates the route each time the app returns to the started state to catch permission changes.
+    // Reevaluates the route each time the app returns to the started state to catch permission changes.
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
             appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
@@ -120,6 +124,7 @@ fun AppRouter(innerPadding: PaddingValues) {
         .fillMaxSize()
         .padding(innerPadding)
 
+    // Tracks whether the minimum splash duration has passed so the router knows when it is safe to render the first resolved route.
     var startupSplashElapsed by remember { mutableStateOf(hasShownStartupSplashInProcess) }
 
     LaunchedEffect(Unit) {
@@ -130,12 +135,14 @@ fun AppRouter(innerPadding: PaddingValues) {
         }
     }
 
+    // Holds the splash until both the timer has elapsed and the initial route has resolved so neither condition alone dismisses it early.
     val shouldShowStartupSplash = !startupSplashElapsed || !uiState.hasResolvedInitialRoute
     if (shouldShowStartupSplash) {
         StartupSplashScreen(modifier = contentModifier)
         return
     }
 
+    // Retains the last resolved screen so the router keeps rendering the previous screen instead of going blank while a reevaluation is in progress.
     var lastKnownRoute by remember { mutableStateOf(AppRouteScreen.JOURNEY) }
     uiState.screen?.let { resolvedRoute ->
         lastKnownRoute = resolvedRoute
@@ -166,7 +173,7 @@ fun AppRouter(innerPadding: PaddingValues) {
                     storyRepository = storyRepository
                 )
             } else {
-                // Re-checks route if intro state is unexpectedly empty.
+                // Rechecks route if intro state is unexpectedly empty.
                 LaunchedEffect(Unit) {
                     appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
                 }

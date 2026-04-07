@@ -31,6 +31,7 @@ class StoryUnlockViewModel(
 
     /**
      * loadSegments: Loads story text and area labels for the provided segment ids.
+     * Clears existing content before fetching so stale data from a previous session does not appear while the new segments load.
      */
     fun loadSegments(storySegmentIds: List<Int>) {
         viewModelScope.launch {

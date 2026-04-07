@@ -77,8 +77,10 @@ class JourneyViewModel(
     private val healthConnectManager: HealthConnectManager
 ) : ViewModel() {
     companion object {
+        // Holds a process-level snapshot so the initial UI state is populated before the first ViewModel loads.
         private var cachedSnapshot: PersistedJourneySnapshot? = null
 
+        // warmCache: Loads and stores the persisted journey snapshot once, skipping the read when already cached.
         suspend fun warmCache(appContext: Context) {
             if (cachedSnapshot != null) return
             cachedSnapshot = JourneySnapshotRepository(appContext).loadPersistedSnapshot()
@@ -272,6 +274,7 @@ class JourneyViewModel(
     }
 }
 
+// toJourneyUiState: Maps a persisted snapshot to initial UI state so the ViewModel constructor can populate the screen before the first sync completes.
 private fun PersistedJourneySnapshot.toJourneyUiState(): JourneyUiState {
     if (!hasProgressState) {
         return JourneyUiState(distanceUnit = distanceUnit)

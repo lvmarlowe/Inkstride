@@ -22,15 +22,15 @@ data class Milestone(
     // Flags major milestones for prominent UI treatment to distinguish key story moments.
     val isMajor: Boolean = false,
 
-    @ColumnInfo(name = "area_name")
     // Stores the user-facing location label displayed in story and recap views.
+    @ColumnInfo(name = "area_name")
     val areaName: String = "",
 
-    @ColumnInfo(name = "is_persistent")
     // Keeps milestone available across resets so anchor story points are never lost.
+    @ColumnInfo(name = "is_persistent")
     val isPersistent: Boolean = true,
 
-    @ColumnInfo(name = "badge_color")
     // Stores the badge color transition triggered at this milestone, or empty string when none.
+    @ColumnInfo(name = "badge_color")
     val badgeColor: String = ""
 )
