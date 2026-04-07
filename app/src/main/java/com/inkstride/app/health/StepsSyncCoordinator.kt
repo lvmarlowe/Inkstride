@@ -5,7 +5,7 @@ import com.inkstride.app.data.database.DatabaseProvider
 import com.inkstride.app.data.DistanceUnit
 import com.inkstride.app.data.repositories.ProgressRepository
 import com.inkstride.app.data.repositories.StoryRepository
-import com.inkstride.app.services.AppErrorHandler
+import com.inkstride.app.services.ErrorHandler
 import com.inkstride.app.services.MilestoneEngine
 import com.inkstride.app.services.ProgressCalculator
 import kotlinx.coroutines.sync.Mutex
@@ -27,7 +27,7 @@ object StepSyncCoordinator {
     private var pendingManualRerun = false
 
     // Wraps sync execution with error handling and retry logic.
-    private val errorHandler = AppErrorHandler()
+    private val errorHandler = ErrorHandler()
 
     /**
      * syncNow: Runs a step sync for the given trigger type and returns the result.
@@ -144,8 +144,8 @@ object StepSyncCoordinator {
         }
 
         return when (outcome) {
-            is AppErrorHandler.Outcome.Success -> outcome.value
-            is AppErrorHandler.Outcome.Failure -> StepSyncResult.Failure(outcome.shouldRetry)
+            is ErrorHandler.Outcome.Success -> outcome.value
+            is ErrorHandler.Outcome.Failure -> StepSyncResult.Failure(outcome.shouldRetry)
         }
     }
 }

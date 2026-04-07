@@ -6,7 +6,7 @@ import android.util.Log
  * AppErrorHandler: Wraps suspend calls and returns a typed outcome instead of throwing.
  * Keeps error handling consistent across services so callers never deal with raw exceptions.
  */
-class AppErrorHandler {
+class ErrorHandler {
 
     /**
      * Outcome: Represents the result of a wrapped suspend call.
