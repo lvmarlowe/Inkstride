@@ -168,7 +168,7 @@ fun AppRouter(innerPadding: PaddingValues) {
                     onSegmentNavigatedAway = { },
                     onContinue = { appRouterViewModel.onIntroContinue() },
                     showForwardArrow = false,
-                    title = "A New Story Begins",
+                    title = "Your Story Begins",
                     storyRepository = storyRepository
                 )
             } else {
