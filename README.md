@@ -109,7 +109,7 @@ app/src/main/assets/
 
 ## Documentation
 
-Full project documentation: `docs/project-documentation.md`
+Full project documentation: `docs/project-documentation.docx`
 
 ---
 
