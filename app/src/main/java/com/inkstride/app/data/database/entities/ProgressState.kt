@@ -20,6 +20,10 @@ data class ProgressState(
     // Stores lifetime step count for the profile to track overall activity.
     val totalSteps: Long = 0L,
 
+    // Stores cumulative offset added to Health Connect step reads to preserve
+    // lifetime totals when Health Connect reports only a limited history window.
+    val cumulativeOffsetSteps: Long = 0L,
+
     // Stores lifetime distance in the app's base distance unit for journey calculations.
     val totalDistance: Double = 0.0,
 

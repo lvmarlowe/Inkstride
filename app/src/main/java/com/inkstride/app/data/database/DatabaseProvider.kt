@@ -1,4 +1,3 @@
-// app/src/main/java/com/inkstride/app/data/database/DatabaseProvider.kt
 package com.inkstride.app.data.database
 
 import android.content.Context
@@ -37,7 +36,8 @@ object DatabaseProvider {
                 .addMigrations(
                     DatabaseMigrator.MIGRATION_6_7,
                     DatabaseMigrator.MIGRATION_7_8,
-                    DatabaseMigrator.MIGRATION_8_9
+                    DatabaseMigrator.MIGRATION_8_9,
+                    DatabaseMigrator.MIGRATION_9_10
                 )
                 .build()
             instance = newInstance

@@ -267,4 +267,18 @@ object DatabaseMigrator {
             )
         }
     }
+
+    /**
+     * MIGRATION_9_10: Migrates schema from version 9 to version 10.
+     * Adds cumulative offset column to progress state so lifetime totals
+     * survive Health Connect permission regrants with limited history windows.
+     */
+    val MIGRATION_9_10 = object : Migration(9, 10) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            // Adds cumulativeOffsetSteps with a default of zero so existing rows carry no offset.
+            db.execSQL(
+                "ALTER TABLE `progress_state` ADD COLUMN `cumulativeOffsetSteps` INTEGER NOT NULL DEFAULT 0"
+            )
+        }
+    }
 }

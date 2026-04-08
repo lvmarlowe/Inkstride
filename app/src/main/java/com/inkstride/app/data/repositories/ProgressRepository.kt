@@ -25,6 +25,7 @@ class ProgressRepository(
 
     /**
      * persistSnapshotFromHealthConnect: Writes cumulative and daily totals from a Health Connect sync.
+     * Preserves lifetime totals when read scope is limited by maintaining a cumulative offset.
      * Returns the rounded total distance for use by the caller after persisting both rows.
      */
     suspend fun persistSnapshotFromHealthConnect(
@@ -34,21 +35,37 @@ class ProgressRepository(
         val safeDayNumber = dataValidator.coerceDayNumber(dayNumber)
         val safeCumulativeSteps = dataValidator.coerceSteps(stepTotals.cumulativeSteps)
         val safeTodaySteps = dataValidator.coerceSteps(stepTotals.todaySteps)
+        val todayKey = LocalDate.now().toString()
 
-        val totalDistance = progressCalculator.stepsToDistance(safeCumulativeSteps)
+        val existingState = progressStateDao.get()
+        val existingTotalSteps = existingState?.totalSteps ?: 0L
+        val existingOffsetSteps = existingState?.cumulativeOffsetSteps ?: 0L
+
+        // Keeps lifetime totals monotonic when Health Connect reports only a limited history window.
+        // Reuses the existing offset when possible and raises it only when incoming cumulative drops.
+        val baselineWithExistingOffset = safeCumulativeSteps + existingOffsetSteps
+        val adjustedOffsetSteps = if (baselineWithExistingOffset < existingTotalSteps) {
+            existingTotalSteps - safeCumulativeSteps
+        } else {
+            existingOffsetSteps
+        }
+        val effectiveCumulativeSteps = safeCumulativeSteps + adjustedOffsetSteps
+
+        val totalDistance = progressCalculator.stepsToDistance(effectiveCumulativeSteps)
         val todayDistance = progressCalculator.stepsToDistance(safeTodaySteps)
 
         val updatedState = ProgressState(
             id = 1,
             dayNumber = safeDayNumber,
-            totalSteps = safeCumulativeSteps,
+            totalSteps = effectiveCumulativeSteps,
+            cumulativeOffsetSteps = adjustedOffsetSteps,
             totalDistance = progressCalculator.roundDistance(totalDistance),
             lastSyncEpochMilliseconds = System.currentTimeMillis()
         )
         progressStateDao.upsert(updatedState)
 
         val todayStats = DailyStats(
-            dateKey = LocalDate.now().toString(),
+            dateKey = todayKey,
             stepsToday = safeTodaySteps,
             distanceToday = progressCalculator.roundDistance(todayDistance)
         )

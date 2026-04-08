@@ -1,4 +1,3 @@
-// app/src/main/java/com/inkstride/app/ui/screens/StoryUnlockScreen.kt
 package com.inkstride.app.ui.screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -61,8 +60,7 @@ fun StoryUnlockScreen(
     onSegmentNavigatedAway: (Int) -> Unit,
     onContinue: (Int) -> Unit,
     showForwardArrow: Boolean = true,
-    title: String = "A New Memory Made",
-    subtitle: String? = null
+    title: String = "A New Memory Made"
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -123,10 +121,10 @@ fun StoryUnlockScreen(
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                // Uses the provided subtitle or falls back to the current segment's area name.
+                // Derives subtitle from the current segment's area name when available.
                 val currentSegmentId = storySegmentIds.getOrNull(pagerState.currentPage)
-                val currentAreaSubtitle = subtitle ?: currentSegmentId?.let { uiState.areaById[it].orEmpty() }
-                val formattedSubtitle = currentAreaSubtitle
+                val formattedSubtitle = currentSegmentId
+                    ?.let { uiState.areaById[it].orEmpty() }
                     ?.takeIf { it.isNotBlank() }
                     ?.uppercase(Locale.US)
 
@@ -134,8 +132,8 @@ fun StoryUnlockScreen(
                     Text(
                         text = it,
                         color = Color(0x8CFFFFFF),
-                        fontSize = 15.sp,
-                        letterSpacing = 0.1.em,
+                        fontSize = 13.sp,
+                        letterSpacing = 0.08.em,
                         modifier = Modifier.padding(top = 6.dp)
                     )
                 }
@@ -201,9 +199,10 @@ fun StoryUnlockScreen(
                     val segmentId = storySegmentIds[page]
                     Text(
                         text = StoryTextFormatter.parseItalicMarkup(uiState.storyById[segmentId].orEmpty()),
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        lineHeight = 30.sp,
+                        color = Color(0xDEFFFFFF),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Normal,
+                        lineHeight = (18 * 1.5).sp,
                         modifier = Modifier
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState())

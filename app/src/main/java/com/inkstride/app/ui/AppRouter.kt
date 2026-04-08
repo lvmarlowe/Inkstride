@@ -168,8 +168,7 @@ fun AppRouter(innerPadding: PaddingValues) {
                     onSegmentNavigatedAway = { },
                     onContinue = { appRouterViewModel.onIntroContinue() },
                     showForwardArrow = false,
-                    title = "New Journey, New Story",
-                    subtitle = "",
+                    title = "A New Story Begins",
                     storyRepository = storyRepository
                 )
             } else {
@@ -189,7 +188,6 @@ fun AppRouter(innerPadding: PaddingValues) {
                         appRouterViewModel.onStoryUnlockSegmentNavigatedAway(segmentId)
                     },
                     showForwardArrow = true,
-                    title = "A New Memory Made",
                     onContinue = { currentSegmentId ->
                         appRouterViewModel.onStoryUnlockContinueFromPager(currentSegmentId)
                     },
