@@ -63,12 +63,13 @@ MVVM + Repository pattern
 ## App Flow
 
 1. App startup initializes router and local defaults.
-2. Health Connect permission check.
-3. Background permission request (routing then continues).
-4. Route to intro (if unread) or Journey.
-5. Foreground sync every ~5 min and on pull-to-refresh.
-6. New unlocks trigger Storybook tab badge.
-7. Data persists in Room across launches.
+2. App requests Health Connect permissions.
+3. App requests background permissions (routing then continues).
+4. App routes to intro (if unread) or Journey screen.
+5. Foreground sync runs every ~5 min and on pull-to-refresh.
+6. Background sync runs every ~15 minutes.
+7. New unlocks trigger Storybook tab badge.
+8. Data persists in Room across launches.
 
 ---
 
