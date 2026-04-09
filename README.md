@@ -1,15 +1,14 @@
 # Inkstride
 
-Narrative-driven Android walking app that turns real-world steps into story progression across a 168-mile journey. Built with Kotlin, Jetpack Compose, Room, Health Connect, and WorkManager.
+Narrative-driven Android walking app that turns real-world steps into story progression. Built with Kotlin, Jetpack Compose, Room, Health Connect, and WorkManager.
 
 ---
-
 
 ## Demo
 
 <table>
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/e82d6c9c-6c0a-468f-9440-db1d6667316b" width="250" alt="Journey screen"/></td>
+    <td><img src="https://github.com/user-attachments/assets/3ea27c95-e6a0-4c67-88b1-9f0e21e81509" width="250" alt="Journey screen"/></td>
     <td><img src="https://github.com/user-attachments/assets/ca5ce0c6-9c4e-40d4-923b-1b3c59ff11bb" width="250" alt="Story unlock screen"/></td>
     <td><img src="https://github.com/user-attachments/assets/bf025ffd-97dc-4361-a93d-1219ee880e06" width="250" alt="Storybook screen"/></td>
   </tr>
@@ -57,6 +56,12 @@ MVVM + Repository pattern
 | Service | Progress calculations, milestone engine, validation |
 | Data | Room entities, DAOs, repositories |
 | Integration | Health Connect, WorkManager |
+
+---
+
+## Privacy
+
+All data is stored locally on the device. Inkstride does not collect, transmit, or share any user data.
 
 ---
 
@@ -108,9 +113,31 @@ app/src/main/assets/
 
 ---
 
+## Story
+
+**Act 1: The Unmaking** (168 miles) — Something has drained the color from the forest and silenced everything in it. You play the Inker, a traveler with a past as mysterious as the world you're walking through. Accompanied by the woodland creatures who survived the damage, you set out searching for answers.
+
+**Act 2: The Awakening** (TBD) — Coming soon.
+
+**Act 3: The Reckoning** (TBD) — Coming soon.
+
+---
+
 ## Documentation
 
-Full project documentation: `docs/project-documentation.docx`
+[Full project documentation](docs/project-documentation.docx)
+
+---
+
+## Roadmap
+
+- Settings screen with character name and distance unit (km/mi)
+- Push notifications for milestone unlocks
+- Daily stats and activity reports
+- Illustrated map tab showing journey progress
+- Hand-drawn illustrations throughout the story
+- Scrapbook tab collecting unlocked characters, places, and trinkets with unlock dates
+- Local backup and restore for progress across devices and reinstalls
 
 ---
 
