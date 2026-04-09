@@ -1,6 +1,6 @@
 # Inkstride
 
-Narrative-driven Android step tracker that turns real-world walking into story progression. Built with Kotlin, Jetpack Compose, Room, Health Connect, and WorkManager.
+Narrative-driven Android walking app that turns real-world steps into story progression across a 168-mile journey. Built with Kotlin, Jetpack Compose, Room, Health Connect, and WorkManager.
 
 ---
 
@@ -19,7 +19,7 @@ Narrative-driven Android step tracker that turns real-world walking into story p
 
 ## Why I Built This
 
-Most fitness apps optimize for competition. Inkstride explores a different loop: low-pressure movement + narrative reward. Walk more → reach milestones → unlock story.
+Most fitness apps are built around challenges and competition. Inkstride is built around something quieter: the idea that movement itself is worth rewarding and that a story is a better reward than a streak. Walk more, reach the next milestone, unlock part of the 10,000-word story.
 
 ---
 
