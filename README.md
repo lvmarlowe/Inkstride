@@ -131,7 +131,8 @@ app/src/main/assets/
 
 ## Roadmap
 
-- Settings screen with character name and distance unit (km/mi)
+- On-device step-sensor integration with Health Connect write-back
+- Settings screen with customizable character name and distance unit (km/mi) selection
 - Push notifications for milestone unlocks
 - Daily stats and activity reports
 - Illustrated map tab showing journey progress
