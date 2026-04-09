@@ -18,7 +18,7 @@ Narrative-driven Android walking app that turns real-world steps into story prog
 
 ## Why I Built This
 
-Most fitness apps are built around challenges and competition. Inkstride is built around something quieter: the idea that movement itself is worth rewarding and that a story is a better reward than a streak. Walk more, reach the next milestone, unlock part of the 10,000-word story.
+Most fitness apps are built around challenges and competition. Inkstride is built around something quieter: the idea that movement itself is worth rewarding and that a story is a better reward than a streak. With Inkstride, it's simple: you walk, reach a milestone, and unlock the next part of the 10,000-word story.
 
 ---
 
