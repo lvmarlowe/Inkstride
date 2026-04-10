@@ -131,14 +131,13 @@ app/src/main/assets/
 
 ## Roadmap
 
-- On-device step-sensor integration with Health Connect write-back
-- Settings screen with customizable character name and distance unit (km/mi) selection
 - Push notifications for milestone unlocks
+- Local backup and restore for progress across devices and reinstalls
+- Settings screen with customizable character name and distance unit (km/mi) selection
 - Daily stats and activity reports
 - Illustrated map tab showing journey progress
 - Hand-drawn illustrations throughout the story
 - Scrapbook tab collecting unlocked characters, places, and trinkets with unlock dates
-- Local backup and restore for progress across devices and reinstalls
 
 ---
 
