@@ -149,11 +149,10 @@ Inkstride’s use of information received from Health Connect adheres to the Hea
 ## Inspiration
 
 - *Glow* by Bombyx
-- *Fantasy Hike* by Forge7 AB
 - *Fitbit Adventures* by Chris Burkard
+- *Fantasy Hike* by Forge7 AB
 - *Sky: Children of the Light* by thatgamecompany inc
 - *Peek a Phone* by FaintLines, Inc.
-- *An Elmwood Trail* by Techyonic
 
 ## Author
 
