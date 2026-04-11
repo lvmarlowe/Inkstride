@@ -21,12 +21,14 @@ Narrative-driven Android walking app that turns real-world steps into story prog
 
 ---
 
-## Why I Built This
+## Tech Stack
 
-I built Inkstride to capture the compelling "what happens next" curiosity that makes story-driven games so engaging. The goal was to take the best elements of narrative progression and discovery from my favorite apps and games, but strip away the common stressors like competition, streaks, and timers. By focusing on a developing world and unfolding mystery, Inkstride turns physical movement into a low-pressure journey where the story is the primary reward for every step taken.
-
-Beyond the mechanics, this project is a personal exploration of found family and the necessity of supportive connections. I began writing this narrative while navigating the grief of my father’s passing and the complexities of his decade-long battle with dementia. As a result, the story follows characters as they navigate memory loss and the long process of healing from the past. By centering the world on emotional resilience and mutual support, Inkstride is designed to be a quiet space for restoration for anyone walking through their own experiences with loss or trauma.
-
+- Language: Kotlin
+- UI: Jetpack Compose (Material3)
+- Database: Room (SQLite)
+- Async / Sync: WorkManager + Health Connect API
+- Architecture: MVVM + Repository Pattern
+  
 ---
 
 ## Core Features
@@ -37,18 +39,6 @@ Beyond the mechanics, this project is a personal exploration of found family and
 - Storybook archive for previously read segments
 - Local-first persistence with Room
 - Startup routing with permission-aware flow
-
----
-
-## Tech Stack
-
-- Kotlin
-- Jetpack Compose (Material3)
-- AndroidX Lifecycle / Activity Compose
-- Room (SQLite)
-- Health Connect
-- WorkManager
-- JUnit / AndroidX Test
 
 ---
 
@@ -66,9 +56,21 @@ MVVM + Repository pattern
 
 ---
 
-## Privacy
+## Why I Built This
 
-Inkstride’s use of information received from Health Connect adheres to the Health Connect Developer Policy, including the Limited Use requirements, ensuring that health data is accessed only to drive in-app narrative progression and is never shared with third parties. All data is stored locally on the device. Inkstride does not collect, transmit, or share any user data.
+I built Inkstride to capture the compelling "what happens next" curiosity that makes story-driven games so engaging. The goal was to take the best elements of narrative progression and discovery from my favorite apps and games, but strip away the common stressors like competition, streaks, and timers. By focusing on a developing world and unfolding mystery, Inkstride turns physical movement into a low-pressure journey where the story is the primary reward for every step taken.
+
+Beyond the mechanics, this project is a personal exploration of found family and the necessity of supportive connections. I began writing this narrative while navigating the grief of my father’s passing and the complexities of his decade-long battle with dementia. As a result, the story follows characters as they navigate memory loss and the long process of healing from the past. By centering the world on emotional resilience and mutual support, Inkstride is designed to be a quiet space for restoration for anyone walking through their own experiences with loss or trauma.
+
+---
+
+## Story
+
+**Act 1: The Unmaking** (168 miles | 13,200+ words) — Something has drained the color from the forest and left the landscape devastated. You play the Inker, a traveler whose past is as mysterious as the world you traverse. After waking at the edge of the forest with no memory, you start down a path leading deeper into the woods. Accompanied by woodland creatures you encounter along the way, you set out in search of answers about the disaster they call the Unmaking.
+
+**Act 2: The Awakening** (TBD) — Coming soon.
+
+**Act 3: The Reckoning** (TBD) — Coming soon.
 
 ---
 
@@ -100,6 +102,12 @@ app/src/main/assets/
 
 ---
 
+## Documentation
+
+[Full project documentation](docs/project-documentation.docx)
+
+---
+
 ## Getting Started
 
 **Prerequisites**
@@ -120,19 +128,9 @@ app/src/main/assets/
 
 ---
 
-## Story
+## Privacy
 
-**Act 1: The Unmaking** (168 miles | 13,200+ words) — Something has drained the color from the forest and left the landscape devastated. You play the Inker, a traveler whose past is as mysterious as the world you traverse. After waking at the edge of the forest with no memory, you start down a path leading deeper into the woods. Accompanied by woodland creatures you encounter along the way, you set out in search of answers about the disaster they call the Unmaking.
-
-**Act 2: The Awakening** (TBD) — Coming soon.
-
-**Act 3: The Reckoning** (TBD) — Coming soon.
-
----
-
-## Documentation
-
-[Full project documentation](docs/project-documentation.docx)
+Inkstride’s use of information received from Health Connect adheres to the Health Connect Developer Policy, including the Limited Use requirements, ensuring that health data is accessed only to drive in-app narrative progression and is never shared with third parties. All data is stored locally on the device. Inkstride does not collect, transmit, or share any user data.
 
 ---
 
