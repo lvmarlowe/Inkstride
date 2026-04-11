@@ -89,7 +89,7 @@ Beyond the mechanics, this project is a personal exploration of found family and
 
 ## Project Structure
 
-```
+```text
 app/src/main/java/com/inkstride/app/
     ui/          Screens, components, theme, viewmodels, router
     data/        Database, entities, DAOs, repositories
@@ -151,6 +151,7 @@ Inkstride’s use of information received from Health Connect adheres to the Hea
 - *Glow* by Bombyx
 - *Fantasy Hike* by Forge7 AB
 - *Fitbit Adventures* by Chris Burkard
+- *Sky: Children of the Light* by thatgamecompany inc
 - *Peek a Phone* by FaintLines, Inc.
 - *An Elmwood Trail* by Techyonic
 
