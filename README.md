@@ -1,3 +1,8 @@
+![Kotlin](https://img.shields.io/badge/kotlin-%237F52FF.svg?style=for-the-badge&logo=kotlin&logoColor=white)
+![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+![Jetpack Compose](https://img.shields.io/badge/Jetpack%20Compose-4285F4?style=for-the-badge&logo=jetpackcompose&logoColor=white)
+![SQLite](https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white)
+
 # Inkstride
 
 Narrative-driven Android walking app that turns real-world steps into story progression. Built with Kotlin, Jetpack Compose, Room, Health Connect, and WorkManager.
@@ -18,7 +23,9 @@ Narrative-driven Android walking app that turns real-world steps into story prog
 
 ## Why I Built This
 
-Most fitness apps are built around challenges and competition. Inkstride is built around something quieter: the idea that movement itself is worth rewarding and that a story is a better reward than a streak. With Inkstride, it's simple: you walk, reach a milestone, and unlock the next part of the 10,000-word story.
+I built Inkstride to capture the compelling "what happens next" curiosity that makes story-driven games so engaging. The goal was to take the best elements of narrative progression and discovery from my favorite apps and games, but strip away the common stressors like competition, streaks, and timers. By focusing on a developing world and unfolding mystery, Inkstride turns physical movement into a low-pressure journey where the story is the primary reward for every step taken.
+
+Beyond the mechanics, this project is a personal exploration of found family and the necessity of supportive connections. I began writing this narrative while navigating the grief of my father’s passing and the complexities of his decade-long battle with dementia. As a result, the story follows characters as they navigate memory loss and the long process of healing from the past. By centering the world on emotional resilience and mutual support, Inkstride is designed to be a quiet space for restoration for anyone walking through their own experiences with loss or trauma.
 
 ---
 
@@ -61,7 +68,7 @@ MVVM + Repository pattern
 
 ## Privacy
 
-All data is stored locally on the device. Inkstride does not collect, transmit, or share any user data.
+Inkstride’s use of information received from Health Connect adheres to the Health Connect Developer Policy, including the Limited Use requirements, ensuring that health data is accessed only to drive in-app narrative progression and is never shared with third parties. All data is stored locally on the device. Inkstride does not collect, transmit, or share any user data.
 
 ---
 
@@ -115,7 +122,7 @@ app/src/main/assets/
 
 ## Story
 
-**Act 1: The Unmaking** (168 miles) — Something has drained the color from the forest and silenced everything in it. You play the Inker, a traveler with a past as mysterious as the world you're walking through. Accompanied by the woodland creatures who survived the damage, you set out searching for answers.
+**Act 1: The Unmaking** (168 miles | 13,200+ words) — Something has drained the color from the forest and left the landscape devastated. You play the Inker, a traveler whose past is as mysterious as the world you traverse. After waking at the edge of the forest with no memory, you start down a path leading deeper into the woods. Accompanied by woodland creatures you encounter along the way, you set out in search of answers about the disaster they call the Unmaking.
 
 **Act 2: The Awakening** (TBD) — Coming soon.
 
@@ -140,6 +147,14 @@ app/src/main/assets/
 - Scrapbook tab collecting unlocked characters, places, and trinkets with unlock dates
 
 ---
+
+## Inspiration
+
+- *Glow* by Bombyx
+- *Fantasy Hike* by Forge7 AB
+- *Fitbit Adventures* by Chris Burkard
+- *Peek a Phone* by FaintLines, Inc.
+- *An Elmwood Trail* by Techyonic
 
 ## Author
 
