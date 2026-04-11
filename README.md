@@ -23,11 +23,11 @@ Narrative-driven Android walking app that turns real-world steps into story prog
 
 ## Tech Stack
 
-- Language: Kotlin
-- UI: Jetpack Compose (Material3)
-- Database: Room (SQLite)
-- Async / Sync: WorkManager + Health Connect API
-- Architecture: MVVM + Repository Pattern
+- **Language:** Kotlin
+- **UI:** Jetpack Compose (Material3)
+- **Database:** Room (SQLite)
+- **Async / Sync:** WorkManager + Health Connect API
+- **Architecture:** MVVM + Repository Pattern
   
 ---
 
