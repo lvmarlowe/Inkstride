@@ -60,7 +60,7 @@ MVVM + Repository pattern
 
 I built Inkstride to capture the compelling "what happens next" curiosity that makes story-driven games so engaging. The goal was to take the best elements of narrative progression and discovery from my favorite apps and games, but strip away the common stressors like competition, streaks, and timers. By focusing on a developing world and unfolding mystery, Inkstride turns physical movement into a low-pressure journey where the story is the primary reward for every step taken.
 
-Beyond the mechanics, this project is a personal exploration of found family and the necessity of supportive connections. I began writing this narrative while navigating the grief of my father’s passing and the complexities of his decade-long battle with dementia. As a result, the story follows characters as they navigate memory loss and the long process of healing from the past. By centering the world on emotional resilience and mutual support, Inkstride is designed to be a quiet space for restoration for anyone walking through their own experiences with loss or trauma.
+Beyond the mechanics, this project is a personal exploration of found family and the necessity of supportive connections. I began writing this narrative while navigating the grief of my father’s death and the complexities of his decade-long battle with dementia. As a result, the story follows characters as they navigate memory loss and the long process of healing from the past. By centering the world on emotional resilience and mutual support, Inkstride is designed to be a quiet space for restoration for anyone walking through their own experiences with loss or trauma.
 
 ---
 
