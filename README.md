@@ -154,6 +154,7 @@ Inkstride’s use of information received from Health Connect adheres to the Hea
 ## Inspiration
 
 - *Glow* by Bombyx
+- *Zombies, Run!* by Zombies Run! Ltd
 - *Fitbit Adventures* by Chris Burkard
 - *Fantasy Hike* by Forge7 AB
 - *Sky: Children of the Light* by thatgamecompany inc
