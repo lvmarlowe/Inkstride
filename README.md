@@ -66,11 +66,16 @@ Beyond the mechanics, this project is a personal exploration of found family and
 
 ## Story
 
-**Act 1: The Unmaking** (168 miles | 13,200+ words) — Something has drained the color from the forest and left the landscape devastated. You play the Inker, a traveler whose past is as mysterious as the world you traverse. After waking at the edge of the forest with no memory, you start down a path leading deeper into the woods. Accompanied by woodland creatures you encounter along the way, you set out in search of answers about the disaster they call the Unmaking.
+**Act 1: The Unmaking**  
+*168 miles | 13,200+ words*
 
-**Act 2: The Awakening** (TBD) — Coming soon.
+Something has drained the color from the forest and left the landscape devastated. You play the Inker, a traveler whose past is as mysterious as the world you traverse. After waking at the edge of the forest with no memory, you start down a path leading deeper into the woods. Accompanied by woodland creatures you encounter along the way, you set out in search of answers about the disaster they call the Unmaking.
 
-**Act 3: The Reckoning** (TBD) — Coming soon.
+**Act 2: The Awakening**  
+*TBD*
+
+**Act 3: The Reckoning**  
+*TBD*
 
 ---
 
