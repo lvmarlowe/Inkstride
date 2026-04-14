@@ -17,6 +17,12 @@ Narrative-driven Android walking app that turns real-world steps into story prog
     <td><img src="https://github.com/user-attachments/assets/ca5ce0c6-9c4e-40d4-923b-1b3c59ff11bb" width="250" alt="Story unlock screen"/></td>
     <td><img src="https://github.com/user-attachments/assets/bf025ffd-97dc-4361-a93d-1219ee880e06" width="250" alt="Storybook screen"/></td>
   </tr>
+  <tr>
+    <td colspan="3" align="center">
+      <a href="https://youtu.be/yJAeIHPzCXo"><img src="https://img.youtube.com/vi/yJAeIHPzCXo/maxresdefault.jpg" width="375" alt="Demo video"/></a><br/>
+      ▶ Watch the demo
+    </td>
+  </tr>
 </table>
 
 ---
