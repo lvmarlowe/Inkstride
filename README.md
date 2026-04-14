@@ -11,11 +11,21 @@ Narrative-driven Android walking app that turns real-world steps into story prog
 
 ## Demo
 
-<table>
+<table width="100%">
   <tr>
-    <td><img src="https://github.com/user-attachments/assets/3ea27c95-e6a0-4c67-88b1-9f0e21e81509" width="250" alt="Journey screen"/></td>
-    <td><img src="https://github.com/user-attachments/assets/ca5ce0c6-9c4e-40d4-923b-1b3c59ff11bb" width="250" alt="Story unlock screen"/></td>
-    <td><img src="https://github.com/user-attachments/assets/bf025ffd-97dc-4361-a93d-1219ee880e06" width="250" alt="Storybook screen"/></td>
+    <td colspan="2" align="center"><img src="https://github.com/user-attachments/assets/3ea27c95-e6a0-4c67-88b1-9f0e21e81509" width="250" alt="Journey screen"/></td>
+    <td colspan="2" align="center"><img src="https://github.com/user-attachments/assets/ca5ce0c6-9c4e-40d4-923b-1b3c59ff11bb" width="250" alt="Story unlock screen"/></td>
+    <td colspan="2" align="center"><img src="https://github.com/user-attachments/assets/bf025ffd-97dc-4361-a93d-1219ee880e06" width="250" alt="Storybook screen"/></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center">
+      <a href="https://youtu.be/yJAeIHPzCXo"><img src="https://img.youtube.com/vi/yJAeIHPzCXo/maxresdefault.jpg" width="375" alt="Demo video"/></a><br/>
+      ▶ Watch the demo
+    </td>
+    <td colspan="3" align="center">
+      <img src="https://placehold.co/375x211/111111/666666?text=Coming+Soon" width="375" alt="Architecture walkthrough coming soon"/><br/>
+      ▶ Watch the architecture walkthrough
+    </td>
   </tr>
 </table>
 
@@ -60,7 +70,7 @@ MVVM + Repository pattern
 
 I built Inkstride to capture the compelling "what happens next" curiosity that makes story-driven games so engaging. The goal was to take the best elements of narrative progression and discovery from my favorite apps and games, but strip away the common stressors like competition, streaks, and timers. By focusing on a developing world and unfolding mystery, Inkstride turns physical movement into a low-pressure journey where the story is the primary reward for every step taken.
 
-Beyond the mechanics, this project is a personal exploration of found family and the necessity of supportive connections. I began writing this narrative while navigating the grief of my father’s passing and the complexities of his decade-long battle with dementia. As a result, the story follows characters as they navigate memory loss and the long process of healing from the past. By centering the world on emotional resilience and mutual support, Inkstride is designed to be a quiet space for restoration for anyone walking through their own experiences with loss or trauma.
+Beyond the mechanics, this project is a personal exploration of found family and the necessity of supportive connections. I began writing this narrative while navigating the grief of my father’s death and the complexities of his decade-long battle with dementia. As a result, the story follows characters as they navigate memory loss and the long process of healing from the past. By centering the world on emotional resilience and mutual support, Inkstride is designed to be a quiet space for restoration for anyone walking through their own experiences with loss or trauma.
 
 ---
 
