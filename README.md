@@ -19,7 +19,7 @@ Narrative-driven Android walking app that turns real-world steps into story prog
   </tr>
   <tr>
     <td colspan="3" align="center">
-      <a href="https://youtu.be/yJAeIHPzCXo"><img src="https://img.youtube.com/vi/yJAeIHPzCXo/maxresdefault.jpg" width="375" alt="Demo video"/></a><br/>
+      <a href="https://youtu.be/Oal0huWeeeI"><img src="https://img.youtube.com/vi/Oal0huWeeeI/maxresdefault.jpg" width="375" alt="Demo video"/></a><br/>
       ▶ Watch the demo
     </td>
     <td colspan="3" align="center">
