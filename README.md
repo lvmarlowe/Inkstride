@@ -152,7 +152,9 @@ Inkstride’s use of information received from Health Connect adheres to the Hea
 ## Roadmap
 
 - Push notifications for milestone unlocks
+- Storybook scroll position memory with animated reveal
 - Local backup and restore for progress across devices and reinstalls
+- Storybook table of contents
 - Settings screen with customizable character name and distance unit (km/mi) selection
 - Daily stats and activity reports
 - Illustrated map tab showing journey progress
