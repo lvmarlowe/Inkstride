@@ -19,7 +19,7 @@ Narrative-driven Android walking app that turns real-world steps into story prog
   </tr>
   <tr>
     <td colspan="3" align="center">
-      <a href="https://youtu.be/yJAeIHPzCXo"><img src="https://img.youtube.com/vi/yJAeIHPzCXo/maxresdefault.jpg" width="375" alt="Demo video"/></a><br/>
+      <a href="https://youtu.be/Oal0huWeeeI"><img src="https://img.youtube.com/vi/Oal0huWeeeI/maxresdefault.jpg" width="375" alt="Demo video"/></a><br/>
       ▶ Watch the demo
     </td>
     <td colspan="3" align="center">
@@ -152,7 +152,9 @@ Inkstride’s use of information received from Health Connect adheres to the Hea
 ## Roadmap
 
 - Push notifications for milestone unlocks
+- Storybook scroll position memory with animated reveal
 - Local backup and restore for progress across devices and reinstalls
+- Storybook table of contents
 - Settings screen with customizable character name and distance unit (km/mi) selection
 - Daily stats and activity reports
 - Illustrated map tab showing journey progress
