@@ -13,17 +13,17 @@ Narrative-driven Android walking app that turns real-world steps into story prog
 
 <table width="100%">
   <tr>
-    <td colspan="2" align="center"><img src="https://github.com/user-attachments/assets/3ea27c95-e6a0-4c67-88b1-9f0e21e81509" width="250" alt="Journey screen"/></td>
-    <td colspan="2" align="center"><img src="https://github.com/user-attachments/assets/ca5ce0c6-9c4e-40d4-923b-1b3c59ff11bb" width="250" alt="Story unlock screen"/></td>
-    <td colspan="2" align="center"><img src="https://github.com/user-attachments/assets/bf025ffd-97dc-4361-a93d-1219ee880e06" width="250" alt="Storybook screen"/></td>
+    <td colspan="2" align="center"><img src="https://github.com/user-attachments/assets/3ea27c95-e6a0-4c67-88b1-9f0e21e81509" width="100%" alt="Journey screen"/></td>
+    <td colspan="2" align="center"><img src="https://github.com/user-attachments/assets/ca5ce0c6-9c4e-40d4-923b-1b3c59ff11bb" width="100%" alt="Story unlock screen"/></td>
+    <td colspan="2" align="center"><img src="https://github.com/user-attachments/assets/bf025ffd-97dc-4361-a93d-1219ee880e06" width="100%" alt="Storybook screen"/></td>
   </tr>
   <tr>
     <td colspan="3" align="center">
-      <a href="https://youtu.be/Oal0huWeeeI"><img src="https://img.youtube.com/vi/Oal0huWeeeI/maxresdefault.jpg" width="375" alt="Demo video"/></a><br/>
+      <a href="https://youtu.be/Oal0huWeeeI"><img src="https://img.youtube.com/vi/Oal0huWeeeI/maxresdefault.jpg" width="100%" alt="Demo video"/></a><br/>
       ▶ Watch the demo
     </td>
     <td colspan="3" align="center">
-      <img src="https://placehold.co/375x211/111111/666666?text=Coming+Soon" width="375" alt="Architecture walkthrough coming soon"/><br/>
+      <img src="https://placehold.co/375x211/111111/666666?text=Coming+Soon" width="100%" alt="Architecture walkthrough coming soon"/><br/>
       ▶ Watch the architecture walkthrough
     </td>
   </tr>
