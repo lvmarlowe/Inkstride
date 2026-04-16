@@ -18,7 +18,6 @@ Narrative-driven Android walking app that turns real-world steps into story prog
     <td width="33%" align="center"><img src="https://github.com/user-attachments/assets/26acfe24-d340-4aaa-b1f1-f60ab0ec472e" width="100%" alt="Storybook screen"/></td>
   </tr>
 </table>
-
 <table width="100%">
   <tr>
     <td width="50%" align="center">
@@ -26,7 +25,7 @@ Narrative-driven Android walking app that turns real-world steps into story prog
       ▶ Watch the demo
     </td>
     <td width="50%" align="center">
-      <img src="https://placehold.co/375x211/111111/666666?text=Coming+Soon" width="100%" alt="Architecture walkthrough coming soon"/><br/>
+      <a href="https://youtu.be/mmoHv9AYurg"><img src="https://img.youtube.com/vi/mmoHv9AYurg/maxresdefault.jpg" width="100%" alt="Architecture walkthrough"/></a><br/>
       ▶ Watch the architecture walkthrough
     </td>
   </tr>
