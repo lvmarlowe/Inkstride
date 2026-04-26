@@ -49,6 +49,7 @@ Narrative-driven Android walking app that turns real-world steps into story prog
 - Journey dashboard (day, today distance, total distance, next milestone)
 - Story unlock pager for newly unlocked segments
 - Storybook archive for previously read segments
+- Storybook scroll position memory and bookmark for newly unlocked segments
 - Local-first persistence with Room
 - Startup routing with permission-aware flow
 
@@ -154,7 +155,6 @@ Inkstride’s use of information received from Health Connect adheres to the Hea
 ## Roadmap
 
 - Push notifications for milestone unlocks
-- Storybook scroll position memory with animated reveal
 - Local backup and restore for progress across devices and reinstalls
 - Storybook table of contents
 - Settings screen with customizable character name and distance unit (km/mi) selection
