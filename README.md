@@ -161,6 +161,7 @@ Inkstride’s use of information received from Health Connect adheres to the Hea
 - Daily stats and activity reports
 - Illustrated map tab showing journey progress
 - Hand-drawn illustrations throughout the story
+- Audio narration
 - Scrapbook tab collecting unlocked characters, places, and trinkets with unlock dates
 
 ---
