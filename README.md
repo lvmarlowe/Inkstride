@@ -13,17 +13,19 @@ Narrative-driven Android walking app that turns real-world steps into story prog
 
 <table width="100%">
   <tr>
-    <td colspan="2" align="center"><img src="https://github.com/user-attachments/assets/3ea27c95-e6a0-4c67-88b1-9f0e21e81509" width="250" alt="Journey screen"/></td>
-    <td colspan="2" align="center"><img src="https://github.com/user-attachments/assets/ca5ce0c6-9c4e-40d4-923b-1b3c59ff11bb" width="250" alt="Story unlock screen"/></td>
-    <td colspan="2" align="center"><img src="https://github.com/user-attachments/assets/bf025ffd-97dc-4361-a93d-1219ee880e06" width="250" alt="Storybook screen"/></td>
+    <td width="33%" align="center"><img src="https://github.com/user-attachments/assets/fde5c836-0ac0-419f-b520-f57fb6567e10" width="100%" alt="Journey screen"/></td>
+    <td width="33%" align="center"><img src="https://github.com/user-attachments/assets/9d1a4dd5-f50f-4a82-bb04-dce0d78cf964" width="100%" alt="Story unlock screen"/></td>
+    <td width="33%" align="center"><img src="https://github.com/user-attachments/assets/26acfe24-d340-4aaa-b1f1-f60ab0ec472e" width="100%" alt="Storybook screen"/></td>
   </tr>
+</table>
+<table width="100%">
   <tr>
-    <td colspan="3" align="center">
-      <a href="https://youtu.be/Oal0huWeeeI"><img src="https://img.youtube.com/vi/Oal0huWeeeI/maxresdefault.jpg" width="375" alt="Demo video"/></a><br/>
+    <td width="50%" align="center">
+      <a href="https://youtu.be/Oal0huWeeeI"><img src="https://img.youtube.com/vi/Oal0huWeeeI/maxresdefault.jpg" width="100%" alt="Demo video"/></a><br/>
       ▶ Watch the demo
     </td>
-    <td colspan="3" align="center">
-      <img src="https://placehold.co/375x211/111111/666666?text=Coming+Soon" width="375" alt="Architecture walkthrough coming soon"/><br/>
+    <td width="50%" align="center">
+      <a href="https://youtu.be/mmoHv9AYurg"><img src="https://img.youtube.com/vi/mmoHv9AYurg/maxresdefault.jpg" width="100%" alt="Architecture walkthrough"/></a><br/>
       ▶ Watch the architecture walkthrough
     </td>
   </tr>
@@ -47,6 +49,7 @@ Narrative-driven Android walking app that turns real-world steps into story prog
 - Journey dashboard (day, today distance, total distance, next milestone)
 - Story unlock pager for newly unlocked segments
 - Storybook archive for previously read segments
+- Storybook scroll position memory and bookmark for newly unlocked segments
 - Local-first persistence with Room
 - Startup routing with permission-aware flow
 
@@ -152,13 +155,13 @@ Inkstride’s use of information received from Health Connect adheres to the Hea
 ## Roadmap
 
 - Push notifications for milestone unlocks
-- Storybook scroll position memory with animated reveal
 - Local backup and restore for progress across devices and reinstalls
 - Storybook table of contents
 - Settings screen with customizable character name and distance unit (km/mi) selection
 - Daily stats and activity reports
 - Illustrated map tab showing journey progress
 - Hand-drawn illustrations throughout the story
+- Audio narration
 - Scrapbook tab collecting unlocked characters, places, and trinkets with unlock dates
 
 ---
