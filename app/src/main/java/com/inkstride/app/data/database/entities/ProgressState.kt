@@ -28,5 +28,8 @@ data class ProgressState(
     val totalDistance: Double = 0.0,
 
     // Stores last sync time as Unix epoch milliseconds to detect stale data on resume.
-    val lastSyncEpochMilliseconds: Long = 0L
+    val lastSyncEpochMilliseconds: Long = 0L,
+
+    // Stores the furthest distance shown in Storybook to anchor the new-memories divider.
+    val storybookLastSeenDistance: Double = 0.0
 )

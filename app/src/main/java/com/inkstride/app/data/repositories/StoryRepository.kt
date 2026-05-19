@@ -5,6 +5,7 @@ import android.content.Context
 import com.inkstride.app.data.BadgeColor
 import com.inkstride.app.data.database.DatabaseProvider
 import com.inkstride.app.data.database.StorySeedDataSource
+import com.inkstride.app.data.database.entities.ProgressState
 import com.inkstride.app.data.database.entities.Settings
 import com.inkstride.app.data.database.entities.StorySegment
 import com.inkstride.app.services.DataValidator
@@ -20,6 +21,7 @@ class StoryRepository(context: Context) {
     private val storySegmentDao = database.storySegmentDao()
     private val unlockStateDao = database.unlockStateDao()
     private val milestoneDao = database.milestoneDao()
+    private val progressStateDao = database.progressStateDao()
     private val dataValidator = DataValidator()
 
     // Holds the intro segment id after first load so seed data is not re-read on every call.
@@ -55,13 +57,16 @@ class StoryRepository(context: Context) {
     }
 
     /**
-     * getReadUnlockedStorybookSegments: Returns mapped storybook items with optional persistent area names.
-     * Trims area names and converts blank values to null for cleaner display handling.
+     * getUnlockedStorybookSegments: Returns mapped storybook items with distance markers
+     * and optional persistent area names for all unlocked entries. Trims area names and
+     * converts blank values to null for cleaner display handling.
      */
-    suspend fun getReadUnlockedStorybookSegments(): List<StorybookSegment> {
-        return storySegmentDao.getReadUnlockedOrderedByDistance().map { segment ->
+    suspend fun getUnlockedStorybookSegments(): List<StorybookSegment> {
+        return storySegmentDao.getUnlockedOrderedByDistance().map { segment ->
             val milestone = milestoneDao.getById(segment.milestoneId)
             StorybookSegment(
+                id = segment.id,
+                distanceMarker = milestone?.distanceMarker ?: 0.0,
                 text = segment.text,
                 persistentAreaName = if (milestone?.isPersistent == true) {
                     dataValidator.normalizeAreaName(milestone.areaName)
@@ -98,7 +103,27 @@ class StoryRepository(context: Context) {
 
     // getTotalDistance: Returns the current total distance from the progress state row, or zero when not initialized.
     suspend fun getTotalDistance(): Double {
-        return database.progressStateDao().get()?.totalDistance ?: 0.0
+        return progressStateDao.get()?.totalDistance ?: 0.0
+    }
+
+    // getStorybookLastSeenDistance: Reads the deepest distance the user has seen on the Storybook tab.
+    suspend fun getStorybookLastSeenDistance(): Double {
+        return progressStateDao.get()?.storybookLastSeenDistance ?: 0.0
+    }
+
+    // setStorybookLastSeenDistance: Persists the deepest distance the user has seen on the Storybook tab.
+    suspend fun setStorybookLastSeenDistance(distance: Double) {
+        val safeDistance = distance.coerceAtLeast(0.0)
+        val existingState = progressStateDao.get()
+        if (existingState == null) {
+            progressStateDao.upsert(
+                ProgressState(
+                    storybookLastSeenDistance = safeDistance
+                )
+            )
+        } else {
+            progressStateDao.updateStorybookLastSeenDistance(safeDistance)
+        }
     }
 
     // getStoryBadgeColor: Returns the badge color of the furthest unlocked milestone that has one set, or white when none applies.
@@ -155,8 +180,12 @@ data class StoryUnlockSegment(
 /**
  * StorybookSegment: Stores storybook-ready segment text with an optional persistent area label.
  * Separates display-mapped data from raw entity fields to keep UI code clean.
+ * Includes id and distanceMarker so the Storybook UI can key list items and place the
+ * new-memories divider without a second lookup.
  */
 data class StorybookSegment(
+    val id: Int,
+    val distanceMarker: Double,
     val text: String,
     val persistentAreaName: String?
 )

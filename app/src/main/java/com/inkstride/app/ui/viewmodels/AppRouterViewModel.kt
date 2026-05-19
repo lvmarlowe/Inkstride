@@ -1,4 +1,3 @@
-// app/src/main/java/com/inkstride/app/ui/viewmodels/AppRouterViewModel.kt
 package com.inkstride.app.ui.viewmodels
 
 import android.content.Context
@@ -187,6 +186,10 @@ class AppRouterViewModel(
                 else -> AppRouteScreen.JOURNEY
             }
 
+            if (destination == AppRouteScreen.STORYBOOK) {
+                StorybookViewModel.prepareForOpen(storyRepository)
+            }
+
             if (currentGeneration != refreshGeneration) return@launch
 
             _uiState.update {
@@ -245,6 +248,7 @@ class AppRouterViewModel(
                     )
                 }
             } else {
+                StorybookViewModel.prepareForOpen(storyRepository)
                 _uiState.update {
                     it.copy(
                         hasStoryNotification = false,
@@ -319,12 +323,18 @@ class AppRouterViewModel(
         viewModelScope.launch {
             storyRepository.markAsRead(currentSegmentId)
             val unreadSegments = storyRepository.getUnlockedUnreadSegments()
+            val returnScreen = _uiState.value.returnScreenAfterStoryUnlock
+
+            if (returnScreen == AppRouteScreen.STORYBOOK) {
+                StorybookViewModel.prepareForOpen(storyRepository)
+            }
+
             _uiState.update {
                 it.copy(
                     hasStoryNotification = unreadSegments.isNotEmpty(),
                     unreadUnlockSegmentIds = emptyList(),
                     unlockAreaName = "",
-                    screen = it.returnScreenAfterStoryUnlock,
+                    screen = returnScreen,
                     hasResolvedInitialRoute = true
                 )
             }
@@ -335,12 +345,18 @@ class AppRouterViewModel(
     fun onStoryUnlockContinueFromEmptySession() {
         viewModelScope.launch {
             val unreadSegments = storyRepository.getUnlockedUnreadSegments()
+            val returnScreen = _uiState.value.returnScreenAfterStoryUnlock
+
+            if (returnScreen == AppRouteScreen.STORYBOOK) {
+                StorybookViewModel.prepareForOpen(storyRepository)
+            }
+
             _uiState.update {
                 it.copy(
                     hasStoryNotification = unreadSegments.isNotEmpty(),
                     unreadUnlockSegmentIds = emptyList(),
                     unlockAreaName = "",
-                    screen = it.returnScreenAfterStoryUnlock,
+                    screen = returnScreen,
                     hasResolvedInitialRoute = true
                 )
             }

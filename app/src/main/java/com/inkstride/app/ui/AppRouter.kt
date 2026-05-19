@@ -36,7 +36,6 @@ import com.inkstride.app.ui.viewmodels.AppRouteScreen
 import com.inkstride.app.ui.viewmodels.AppRouterEffect
 import com.inkstride.app.ui.viewmodels.AppRouterViewModel
 import com.inkstride.app.ui.viewmodels.JourneyViewModel
-import com.inkstride.app.ui.viewmodels.StorybookViewModel
 
 // Defines the permission string for reading Health Connect data in the background.
 private const val BACKGROUND_PERMISSION = "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
@@ -109,7 +108,6 @@ fun AppRouter(innerPadding: PaddingValues) {
     LaunchedEffect(Unit) {
         DatabaseProvider.ensureDefaults(context)
         runCatching { JourneyViewModel.warmCache(appContext) }
-        runCatching { StorybookViewModel.warmCache(storyRepository) }
         appRouterViewModel.refreshRoute(hasBackgroundPermission = hasBackgroundPermission())
     }
 

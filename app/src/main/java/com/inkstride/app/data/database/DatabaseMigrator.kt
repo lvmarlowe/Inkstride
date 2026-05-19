@@ -281,4 +281,20 @@ object DatabaseMigrator {
             )
         }
     }
+
+    /**
+     * MIGRATION_10_11: Migrates schema from version 10 to version 11.
+     * Adds Storybook bookmark tracking to progress state.
+     */
+    val MIGRATION_10_11 = object : Migration(10, 11) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            /*  Adds storybookLastSeenDistance to progress state so the Storybook screen
+                can track the last memory the user scrolled past while preserving all
+                existing progress, settings, story, and unlock data.
+            */
+            db.execSQL(
+                "ALTER TABLE `progress_state` ADD COLUMN `storybookLastSeenDistance` REAL NOT NULL DEFAULT 0"
+            )
+        }
+    }
 }

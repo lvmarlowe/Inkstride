@@ -28,6 +28,19 @@ interface StorySegmentDao {
     @Query("SELECT * FROM story_segment ORDER BY id ASC")
     suspend fun getAll(): List<StorySegment>
 
+    // getUnlockedOrderedByDistance: Returns unlocked segments ordered by milestone distance for storybook.
+    @Query(
+        """
+        SELECT s.*
+        FROM story_segment s
+        INNER JOIN unlock_state u ON u.storySegmentId = s.id
+        INNER JOIN milestone m ON m.id = s.milestoneId
+        WHERE u.unlocked = 1
+        ORDER BY m.distanceMarker ASC
+        """
+    )
+    suspend fun getUnlockedOrderedByDistance(): List<StorySegment>
+
     // getReadUnlockedOrderedByDistance: Returns unlocked, read segments ordered by milestone distance for the recap view.
     @Query(
         """

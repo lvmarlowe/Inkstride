@@ -28,7 +28,7 @@ import com.inkstride.app.data.database.entities.UnlockState
         StorySegment::class,
         UnlockState::class
     ],
-    version = 10,
+    version = 11,
     exportSchema = true
 )
 abstract class InkstrideDatabase : RoomDatabase() {

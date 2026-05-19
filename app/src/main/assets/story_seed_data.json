@@ -176,7 +176,7 @@
     "distanceMarker": 14.42,
     "isPersistent": true,
     "isMajor": true,
-    "areaName": "The Wandering River",
+    "areaName": "The Wandering River Valley",
     "text": "The tree line thins, revealing a wide, sunken valley. You smell the water, heavy with mineral and silt, before you see it.\n\nBelow, the riverbed is filled with a stagnant grey fluid. There is no current, no flow. You can see ripples, but they're frozen in the thick, still sludge.\n\nThe pull in your bones is leading you directly toward the water, where something is moving. You descend into the valley.",
     "unlockedDefault": false,
     "readDefault": false
@@ -636,7 +636,7 @@
     "isPersistent": false,
     "isMajor": false,
     "areaName": "The Guardian of the Valley",
-    "text": "Luna drifts lower as a draft moves through the canopy, rustling the paper-thin leaves. She gestures with her wing towards the empty sky hanging over the Wandering River, where Pebble reminded you of how you saw the world.\n\n“Pebble came next,” she says. “A round shape sitting low on a long stream of stars, like she was floating on her back down the river. I asked that constellation to watch over the valley.” She turns in a slow arc and bends her head toward the wing holding the delicate firefly, speaking to it in a hushed tone. A look of concern flashes across her face, and she picks up speed, beating her wings more urgently.\n\nYou stay close behind as the path curves gently through the trees.",
+    "text": "Luna drifts lower as a draft moves through the canopy, rustling the paper-thin leaves. She gestures with her wing towards the empty sky hanging over the Wandering River Valley, where Pebble reminded you of how you saw the world.\n\n“Pebble came next,” she says. “A round shape sitting low on a long stream of stars, like she was floating on her back down the river. I asked that constellation to watch over the the valley.” She turns in a slow arc and bends her head toward the wing holding the delicate firefly, speaking to it in a hushed tone. A look of concern flashes across her face, and she picks up speed, beating her wings more urgently.\n\nYou stay close behind as the path curves gently through the trees.",
     "unlockedDefault": false,
     "readDefault": false
   },

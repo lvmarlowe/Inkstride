@@ -3,7 +3,6 @@ package com.inkstride.app.data.repositories
 import com.inkstride.app.data.database.daos.DailyStatsDao
 import com.inkstride.app.data.database.daos.ProgressStateDao
 import com.inkstride.app.data.database.entities.DailyStats
-import com.inkstride.app.data.database.entities.ProgressState
 import com.inkstride.app.health.StepTotals
 import com.inkstride.app.services.DataValidator
 import com.inkstride.app.services.ProgressCalculator
@@ -54,15 +53,13 @@ class ProgressRepository(
         val totalDistance = progressCalculator.stepsToDistance(effectiveCumulativeSteps)
         val todayDistance = progressCalculator.stepsToDistance(safeTodaySteps)
 
-        val updatedState = ProgressState(
-            id = 1,
+        progressStateDao.upsertFromHealthConnectPreservingStorybook(
             dayNumber = safeDayNumber,
             totalSteps = effectiveCumulativeSteps,
             cumulativeOffsetSteps = adjustedOffsetSteps,
             totalDistance = progressCalculator.roundDistance(totalDistance),
             lastSyncEpochMilliseconds = System.currentTimeMillis()
         )
-        progressStateDao.upsert(updatedState)
 
         val todayStats = DailyStats(
             dateKey = todayKey,

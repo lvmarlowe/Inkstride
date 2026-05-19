@@ -37,7 +37,8 @@ object DatabaseProvider {
                     DatabaseMigrator.MIGRATION_6_7,
                     DatabaseMigrator.MIGRATION_7_8,
                     DatabaseMigrator.MIGRATION_8_9,
-                    DatabaseMigrator.MIGRATION_9_10
+                    DatabaseMigrator.MIGRATION_9_10,
+                    DatabaseMigrator.MIGRATION_10_11,
                 )
                 .build()
             instance = newInstance
